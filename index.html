@@ -3,74 +3,39 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="CareerOps — AI 워커의 업무 흐름, 상태, 권한, 검증을 연결하는 DevOps 포트폴리오 프로젝트.">
-  <meta name="color-scheme" content="dark">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>CareerOps / DevOps Engineering</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'">
+  <title>Incident Replay Lab | Backend · SRE</title>
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
 </head>
 <body>
-  <a class="skip" href="#main">본문으로 이동</a>
-  <header class="site-header wrap">
-    <a class="brand" href="#main" aria-label="CareerOps 처음으로"><span class="brand-icon" aria-hidden="true">C/</span> CAREEROPS</a>
-    <nav aria-label="주요 메뉴"><a href="#project">프로젝트</a><a href="#architecture">아키텍처</a><a href="#evidence">실행 근거</a><a href="#profile">프로필</a></nav>
-    <span class="header-note"><span class="dot"></span> ENGINEERING IN PUBLIC</span>
-  </header>
-  <main id="main">
-    <section class="hero wrap" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="eyebrow">DEVOPS · SRE · PLATFORM ENGINEERING</p>
-        <h1 id="hero-title">반복되는 일을,<br><span>운영 가능한</span><br>시스템으로.</h1>
-        <p class="hero-description">AI 워커가 채용 업무를 수행하도록 상태, 권한, 검증과 복구를 연결하는 <strong>CareerOps Autopilot</strong> 프로젝트입니다.</p>
-        <div class="hero-actions"><a class="button primary" href="#project">프로젝트 살펴보기 <span aria-hidden="true">↗</span></a><a class="button secondary" href="#evidence">구현 근거 확인</a></div>
-        <p class="scope-note">목표 범위: 국내 유니콘·중견·대기업 · 정규직 직접 채용</p>
-      </div>
-      <div class="system-card" aria-label="목표 워크플로 개념도, 운영 실시간 상태가 아님">
-        <div class="terminal-heading"><span><i></i><i></i><i></i></span><span>CAREEROPS / WORKFLOW DESIGN</span></div>
-        <div class="terminal-body"><p class="terminal-comment">// 신뢰할 수 있는 자동화의 단위</p><p><span class="code-purple">const</span> workflow = {</p><p class="indent">facts: <span class="code-green">"source-backed"</span>,</p><p class="indent">actions: <span class="code-green">"policy-scoped"</span>,</p><p class="indent">state: <span class="code-green">"durable"</span>,</p><p class="indent">success: <span class="code-green">"evidence-required"</span></p><p>};</p></div>
-        <div class="flow-mini"><span>DISCOVER</span><b aria-hidden="true">→</b><span>BUILD</span><b aria-hidden="true">→</b><span>VERIFY</span></div>
-        <div class="terminal-footer"><span class="dot"></span> 목표 설계 · 실운영 연결은 별도 검증</div>
-      </div>
+  <aside class="rail">
+    <a class="brand" href="#overview"><span class="brand-mark">IR</span><span>Incident<br><strong>Replay Lab</strong></span></a>
+    <p class="rail-label">WORKSPACE</p>
+    <nav aria-label="주요 메뉴"><a class="nav-item active" href="#overview"><span>◫</span> Incident desk</a><a class="nav-item" href="#scenarios"><span>▷</span> Scenario lab</a><a class="nav-item" href="#architecture"><span>⌘</span> How it works</a></nav>
+    <div class="rail-foot"><span class="tiny-dot"></span> LOCAL WORKSPACE<p>Node.js 24 · SQLite<br>합성 장애 실습 환경</p><div id="repository-link"></div></div>
+  </aside>
+  <main>
+    <header class="topbar"><span>ENGINEERING LAB <span class="slash">/</span> INCIDENT DESK</span><span class="synthetic-badge">SYNTHETIC DATA ONLY</span></header>
+    <section class="hero" id="overview">
+      <div><p class="eyebrow">FROM SIGNAL TO RECOVERY</p><h1>장애를 재현하고,<br>복구를 확인합니다.</h1><p class="hero-copy">이벤트를 수집하고 원인을 추적하는 작은 운영 실습실.<br>시나리오를 실행해 API와 SQLite가 만드는 상태 변화를 살펴보세요.</p></div>
+      <div class="health-box"><span id="health-dot" class="health-dot pending"></span><div><span id="health-label">API 연결 확인 중</span><p id="health-detail">Storage Health를 조회합니다.</p><button id="refresh" class="text-button" type="button">새로고침 ↻</button></div></div>
     </section>
-    <div class="principles wrap" aria-label="설계 원칙"><span><b>01</b> 사실 기반 문서</span><span><b>02</b> 권한 안의 실행</span><span><b>03</b> 증거로 확인한 완료</span><span><b>04</b> 복구 가능한 상태</span></div>
-    <section id="project" class="section wrap">
-      <div class="section-heading"><div><p class="eyebrow">01 / FEATURED PROJECT</p><h2>CareerOps Autopilot</h2></div><span class="pill">개인 프로젝트 · AI 지원 개발</span></div>
-      <div class="project-intro"><p>공고 탐색에서 기업별 지원 문서, 프로젝트 개발과 지원 결과 추적까지. 반복 업무를 하나의 상태 기반 워크플로로 연결하는 것이 목표입니다.</p><p class="muted">이 페이지는 실제로 확인된 구현과 향후 연동 범위를 구분합니다. 전체 채용 자동화의 운영 완료, 실무 경력, 접수 실적을 주장하지 않습니다.</p></div>
-      <div id="capabilities" class="cards" aria-live="polite"><p class="muted">공개 프로젝트 데이터를 불러오는 중입니다.</p></div>
+    <div id="error" class="error" role="alert" hidden></div>
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section class="metrics" aria-label="합성 실습 데이터 집계">
+      <article class="metric"><p>OPEN INCIDENTS <span class="status-dot orange"></span></p><strong id="open-count">—</strong><span>조치가 필요한 합성 장애</span></article>
+      <article class="metric"><p>MITIGATING <span class="status-dot blue"></span></p><strong id="mitigating-count">—</strong><span>조치 적용 · 복구 확인 대기</span></article>
+      <article class="metric"><p>RESOLVED <span class="status-dot green"></span></p><strong id="resolved-count">—</strong><span>복구 이벤트가 기록된 장애</span></article>
+      <article class="metric"><p>STORED EVENTS <span class="status-dot gray"></span></p><strong id="event-count">—</strong><span>SQLite에 저장한 고유 이벤트</span></article>
     </section>
-    <section id="architecture" class="section architecture-band">
-      <div class="wrap"><div class="section-heading"><div><p class="eyebrow">02 / SYSTEM ARCHITECTURE</p><h2>작업을 연결하고,<br>경계를 명확하게.</h2></div><span class="pill">목표 아키텍처</span></div>
-        <div class="architecture-grid">
-          <div class="architecture-layer"><span class="layer-number">INPUT</span><h3>신뢰할 수 있는 입력</h3><p>원본 경력 사실 · 공식 채용 공고<br>검증된 코드와 실행 증거</p></div>
-          <div class="architecture-layer core"><span class="layer-number">CONTROL PLANE</span><h3>Harness + Policy + State</h3><p>실행 범위 확인 → Skill 선택 → 워커 실행<br>중복 방지 키 · 상태 전이 · 예산 제한</p></div>
-          <div class="architecture-layer"><span class="layer-number">OUTPUT</span><h3>확인 가능한 결과</h3><p>기업별 문서 · 코드와 배포<br>접수 근거 · 공개 포트폴리오</p></div>
-        </div>
-        <div class="architecture-foot"><p><strong>AI Worker</strong> 맥락 분석과 문서·코드 생성</p><p><strong>Skill</strong> 재사용 가능한 업무 절차</p><p><strong>일반 자동화</strong> 검증·저장·빌드·상태 관리</p></div>
-        <h3 class="subheading">공고에서 접수 증거까지의 목표 흐름</h3>
-        <ol class="workflow"><li><b>01</b><span>공식 공고 확인<small>국내 유니콘·중견·대기업 · 정규직</small></span></li><li><b>02</b><span>사실과 요구 역량 연결<small>필수 조건 PASS / FAIL / UNKNOWN</small></span></li><li><b>03</b><span>프로젝트·문서 갱신<small>검증된 증거와 버전 고정</small></span></li><li><b>04</b><span>정책·품질 검사<small>권한 · 개인정보 · 최신성</small></span></li><li><b>05</b><span>허용 채널 제출<small>채널 연결과 실제 검증 필요</small></span></li><li><b>06</b><span>접수 근거 확인<small>확인 불가 시 재제출 보류</small></span></li></ol>
-      </div>
-    </section>
-    <section id="engineering" class="section wrap">
-      <div class="section-heading"><div><p class="eyebrow">03 / ENGINEERING DECISIONS</p><h2>기능을 넘어, 운영까지.</h2></div></div>
-      <div class="engineering-grid">
-        <article><span class="tile-icon" aria-hidden="true">↗</span><h3>Delivery</h3><p>현재 사이트는 외부 의존성 없는 정적 HTML·CSS·JavaScript입니다. Node 검증과 정적 빌드를 제공합니다.</p><p class="muted">원격 CI, 릴리스와 외부 배포 상태는 실행 근거에서 별도로 확인합니다.</p></article>
-        <article><span class="tile-icon" aria-hidden="true">⟳</span><h3>Reliability</h3><p>목표 런타임은 영속 상태, 제한된 재시도와 멱등성 키로 재실행을 다룹니다. 접수 결과가 불명확하면 조회 후에만 재시도를 판단합니다.</p><p class="muted">실서비스 장애 복구 사례는 아직 게시하지 않았습니다.</p></article>
-        <article><span class="tile-icon" aria-hidden="true">⌘</span><h3>Containers & Observability</h3><p>컨테이너·Kubernetes와 로그·지표 연동은 실행 환경을 확보한 후 검증할 확장 범위입니다.</p><p class="muted">클러스터 운영 경험이나 가동률 수치를 이 프로젝트로 대신 주장하지 않습니다.</p></article>
-        <article><span class="tile-icon" aria-hidden="true">◇</span><h3>Privacy by Design</h3><p>공개 페이지는 허용된 프로젝트 요약 JSON만 읽습니다. 지원자 원본, 기업별 제출 자료, 계정과 비밀은 사이트에 포함하지 않습니다.</p><p class="muted">데이터 변경 시 스키마·링크·민감 패턴 검사를 다시 실행합니다.</p></article>
-      </div>
-    </section>
-    <section id="evidence" class="section wrap">
-      <div class="section-heading"><div><p class="eyebrow">04 / EVIDENCE, NOT PROMISES</p><h2>확인한 만큼만 말합니다.</h2></div></div>
-      <div class="evidence-layout"><div><h3>공개 실행 근거</h3><div id="evidence-list"></div><div id="repository-link"></div></div><aside class="metrics-panel"><p class="eyebrow">AUTOMATION METRICS</p><h3 id="metric-title">실측 데이터 대기</h3><p id="metric-description">실제 실행 이벤트와 분모가 확보된 범위에서만 지표를 게시합니다.</p><p class="muted">실제 접수 수, 수동 개입 수, 처리 시간은 아직 공개 검증하지 않았습니다. 목표값을 성과로 표시하지 않습니다.</p></aside></div>
-    </section>
-    <section id="profile" class="section wrap profile-section">
-      <div><p class="eyebrow">05 / PROFILE & CONTRIBUTION</p><h2>역할에도 출처가<br>필요합니다.</h2><p id="profile-summary" class="profile-summary"></p><p class="muted">이력서 다운로드와 연락처는 공개 허용된 실제 자료가 연결된 후 제공합니다.</p></div>
-      <div class="contributions"><article><span>USER</span><h3>목표와 요구사항 제공</h3><p>국내 유니콘·중견·대기업 DevOps 지원 자동화의 목표와 구현 요구사항을 제시했습니다. 확인되지 않은 경력, 직접 구현·검토 역할은 추가하지 않았습니다.</p></article><article><span>AI</span><h3>이 포트폴리오의 코드 작성</h3><p>요구사항을 바탕으로 공개 페이지, 스타일, 데이터 검증과 로컬 빌드 도구를 작성했습니다.</p></article><article><span>AUTOMATION</span><h3>재현 가능한 검사</h3><p>명시적 데이터 계약 검증, 정적 자산 빌드와 로컬 테스트를 수행하는 스크립트를 제공합니다.</p></article></div>
-    </section>
-    <p id="data-error" class="wrap error" role="alert" hidden>공개 데이터를 읽지 못했습니다. 프로젝트 상태는 확인되지 않았습니다.</p>
-    <noscript><p class="wrap">JavaScript가 꺼져 있어 최신 공개 데이터는 표시하지 않습니다. 아키텍처 설명은 아래 내용으로 확인할 수 있습니다.</p></noscript>
+    <section class="scenario-section" id="scenarios"><div class="section-heading"><div><p class="eyebrow">01 / CREATE A SIGNAL</p><h2>어떤 장애를 재현할까요?</h2></div><span class="section-note">실제 Service에 영향을 주지 않습니다.</span></div><div id="scenario-list" class="scenario-grid"><p class="muted">시나리오를 불러오는 중입니다.</p></div></section>
+    <section class="workbench"><div class="incident-panel"><div class="section-heading"><div><p class="eyebrow">02 / INVESTIGATE</p><h2>Incident inbox <span id="matched-count" class="count-tag">0</span></h2></div></div>
+      <form id="filters" class="filters"><label class="search-wrap"><span class="sr-only">제목 또는 ID 검색</span><input id="search" name="q" maxlength="80" placeholder="제목 또는 Incident ID 검색" autocomplete="off"></label><label><span class="sr-only">상태</span><select id="status-filter" name="status"><option value="">모든 상태</option><option value="open">Open</option><option value="mitigating">Mitigating</option><option value="resolved">Resolved</option></select></label><label><span class="sr-only">Service</span><select id="service-filter" name="service"><option value="">모든 Service</option><option>checkout-api</option><option>catalog-api</option><option>identity-api</option></select></label><button class="button small" type="submit">검색</button></form>
+      <p id="list-caption" class="list-caption">최신 50건 · 제목과 ID를 검색합니다.</p><div id="incident-list" class="incident-list" aria-label="장애 목록"><p class="empty">첫 시나리오를 실행하면 여기에 나타납니다.</p></div>
+    </div><section class="detail-panel" aria-label="장애 상세" aria-live="polite"><div id="detail"><div class="detail-empty"><div class="empty-glyph">↗</div><h3>하나의 장애, 끝까지.</h3><p>시나리오를 실행하거나 장애를 선택하세요.<br>이벤트와 조치 과정이 이곳에 기록됩니다.</p><span>OPEN → MITIGATING → RESOLVED</span></div></div></section></section>
+    <section id="architecture" class="architecture"><div><p class="eyebrow">UNDER THE HOOD</p><h2>읽을 수 있고, 재현할 수 있는 흐름.</h2><p>합성 이벤트만 다루는 AI 지원 구현 Project입니다.<br>개인의 실무 운영 지표나 고객사의 장애 기록은 포함하지 않습니다.</p></div><div class="flow"><span>HTTP API<small>Validate input</small></span><i>→</i><span>State machine<small>Reject invalid transitions</small></span><i>→</i><span>SQLite<small>Atomic + idempotent</small></span></div></section>
+    <footer><span>INCIDENT REPLAY LAB <span class="slash">/</span> BACKEND · SRE PORTFOLIO</span><span>Local persistence. Synthetic evidence.</span></footer>
   </main>
-  <footer class="wrap site-footer"><a class="brand" href="#main">C/ CAREEROPS</a><p>근거가 있는 경험. 검증 가능한 시스템.</p><small id="revision">PUBLIC PROJECT VIEW</small></footer>
 </body>
 </html>

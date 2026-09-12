@@ -1,13 +1,13 @@
 {
-  "name": "careerops-public-portfolio",
-  "version": "1.0.0",
+  "name": "incident-replay-lab",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": { "node": ">=24.0.0" },
   "scripts": {
-    "test": "node tests/portfolio.test.mjs",
+    "test": "node --test --test-isolation=none tests/*.test.mjs",
     "build": "node scripts/build.mjs",
-    "start": "node scripts/serve.mjs",
+    "start": "node src/server.mjs",
     "update:public": "node scripts/update-public.mjs"
   }
 }
