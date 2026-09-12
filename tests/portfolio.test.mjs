@@ -41,6 +41,6 @@ test('all section anchors and local assets resolve', async () => {
 
 test('app uses text nodes for event content and exposes functioning controls', () => {
   assert.ok(!/\.innerHTML\s*=/.test(app));
-  for (const id of ['scenario-list','incident-list','filters','detail','health-label','repository-link']) assert.match(html,new RegExp('id="'+id+'"'));
-  assert.match(app,/\/api\/events/);assert.match(app,/\/api\/scenarios/);
+  for (const id of ['scenario-list','incident-list','filters','detail','health-label','repository-link','topology-map','chart-latency','chart-error','chart-rps','run','step','inject','reset','run-select','replay-tick','load-replay','back-live']) assert.match(html,new RegExp('id="'+id+'"'));
+  for (const route of ['/api/sim/state','/api/sim/control','/api/sim/faults','/api/sim/runbooks','/api/sim/reset','/api/sim/runs/','/api/sim/incidents/']) assert.ok(app.includes(route), 'missing functioning API route '+route);
 });

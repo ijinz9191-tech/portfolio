@@ -3,6 +3,7 @@ import { readFile, mkdir } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { LabStore, LabError, SCENARIOS } from './store.mjs';
+import { SimulationEngine } from './simulation.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const assets = new Map([['/', ['index.html','text/html; charset=utf-8']], ['/index.html',['index.html','text/html; charset=utf-8']], ['/app.js',['app.js','text/javascript; charset=utf-8']], ['/styles.css',['styles.css','text/css; charset=utf-8']], ['/public.data.json',['public.data.json','application/json; charset=utf-8']]]);
@@ -19,8 +20,9 @@ function field(value, name) {
   if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).length !== 1 || !Object.hasOwn(value,name)) throw new LabError(400,'INVALID_FIELDS',`Expected only ${name}.`);
   return value[name];
 }
-export function createLabServer({store = new LabStore(), assetRoot = resolve(ROOT, 'dist')} = {}) {
+export function createLabServer({store = new LabStore(), assetRoot = resolve(ROOT, 'dist'), simulationIntervalMs = 1000} = {}) {
   const started = Date.now();
+  const simulation = new SimulationEngine(store.db, {intervalMs: simulationIntervalMs});
   const server = createServer(async (request,response) => {
     const headers = { 'X-Content-Type-Options':'nosniff', 'Cache-Control':'no-store', 'Content-Security-Policy':CSP, 'Referrer-Policy':'no-referrer' };
     function json(status, data) { response.writeHead(status,{...headers,'Content-Type':'application/json; charset=utf-8'}); response.end(request.method === 'HEAD' ? undefined : JSON.stringify(data)); }
@@ -32,6 +34,25 @@ export function createLabServer({store = new LabStore(), assetRoot = resolve(ROO
       if (request.method === 'POST') {
         const origin = request.headers.origin;
         if (request.headers['sec-fetch-site'] === 'cross-site' || (origin && ![`http://127.0.0.1:${port}`, `http://localhost:${port}`].includes(origin))) throw new LabError(403,'ORIGIN_BLOCKED','Cross-origin writes are blocked.');
+      }
+      if (url.pathname.startsWith('/api/sim/')) {
+        const replay = /^\/api\/sim\/runs\/([A-Za-z0-9_-]{1,80})$/.exec(url.pathname);
+        if (replay && request.method === 'GET') {
+          if ([...url.searchParams.keys()].some(key=>key!=='tick') || url.searchParams.getAll('tick').length!==1 || !/^\d{1,9}$/.test(url.searchParams.get('tick'))) throw new LabError(400,'INVALID_QUERY','Supply one integer replay tick.');
+          return json(200,simulation.replay(replay[1],Number(url.searchParams.get('tick'))));
+        }
+        if ([...url.searchParams].length) throw new LabError(400,'INVALID_QUERY','This simulation endpoint accepts no query parameters.');
+        if (url.pathname === '/api/sim/state' && request.method === 'GET') return json(200,simulation.view());
+        if (url.pathname === '/api/sim/runs' && request.method === 'GET') return json(200,{runs:simulation.runs(),simulation:true});
+        const report = /^\/api\/sim\/incidents\/([A-Za-z0-9_-]{1,80})\/(postmortem|export)$/.exec(url.pathname);
+        if (report && request.method === 'GET') {
+          const data=simulation.postmortem(report[1]);
+          if(report[2]==='export')response.setHeader('Content-Disposition',`attachment; filename="incident-${report[1]}.json"`);
+          return json(200,data);
+        }
+        const commands = new Map([['/api/sim/control','control'],['/api/sim/reset','reset'],['/api/sim/faults','fault'],['/api/sim/runbooks','runbook']]);
+        if (commands.has(url.pathname) && request.method === 'POST') return json(200,simulation.command(commands.get(url.pathname),await body(request)));
+        throw new LabError(404,'NOT_FOUND','Simulation route not found.');
       }
       if (url.pathname === '/api/health' && ['GET','HEAD'].includes(request.method)) return json(200,{status: store.healthy()?'ok':'unavailable', storage:'sqlite', uptimeSeconds:Math.floor((Date.now()-started)/1000), synthetic:true});
       if (url.pathname === '/api/scenarios' && request.method === 'GET') return json(200,{scenarios:SCENARIOS.map(({id,service,title,description})=>({id,service,title,description})),synthetic:true});
@@ -55,6 +76,8 @@ export function createLabServer({store = new LabStore(), assetRoot = resolve(ROO
       json(expected?error.status:500,{error:{code:expected?error.code:'INTERNAL_ERROR',message:expected?error.message:'Request failed. Inspect the local server log.'}});
     }
   });
+  server.on('close',()=>simulation.close());
+  server.simulation=simulation;
   server.requestTimeout=10000; server.headersTimeout=10000;
   return server;
 }
