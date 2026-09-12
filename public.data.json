@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "revision": "initial-public-site",
+  "profileSummary": "DevOps Engineer를 목표로 하는 CareerOps 개인 프로젝트 포트폴리오입니다. 경력·학력·자격·연락처는 공개 가능한 원본 자료가 확인된 후 반영합니다.",
+  "repositoryUrl": "https://github.com/ijinz9191-tech/portfolio",
+  "capabilities": [
+    {"title": "공개 포트폴리오", "status": "implemented", "description": "반응형 정적 페이지, 공개 데이터 분리, 허용 필드 검증과 재현 가능한 빌드 스크립트를 구현했습니다."},
+    {"title": "CareerOps 실행 런타임", "status": "unverified", "description": "영속 워크플로와 국내 유니콘·중견·대기업 선정, 기업별 문서 생성은 런타임의 실제 검사 결과가 연결된 후 공개합니다."},
+    {"title": "실제 채용·배포 연동", "status": "planned", "description": "허용된 계정과 채널에서 Git·CI/CD·배포·접수 근거를 검증한 범위만 운영 완료로 게시합니다."}
+  ],
+  "evidence": [
+    {"title": "포트폴리오 소스", "description": "이 정적 페이지와 공개 데이터 계약, Node 기반 검사·빌드 코드가 제공됩니다. 원격 반영 및 외부 배포는 별도 확인 대상입니다.", "kind": "source", "url": null},
+    {"title": "실행 및 운영 근거", "description": "실제 채용 접수, 원격 CI 성공, 공개 배포와 운영 지표는 아직 이 공개 데이터에 연결되지 않았습니다.", "kind": "pending", "url": null}
+  ],
+  "metrics": null
+}

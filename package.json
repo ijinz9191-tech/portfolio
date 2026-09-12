@@ -1,0 +1,13 @@
+{
+  "name": "careerops-public-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node tests/portfolio.test.mjs",
+    "build": "node scripts/build.mjs",
+    "start": "node scripts/serve.mjs",
+    "update:public": "node scripts/update-public.mjs"
+  }
+}
