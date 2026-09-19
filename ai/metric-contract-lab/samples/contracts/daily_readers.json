@@ -1,0 +1,9 @@
+{
+  "metric_id": "daily_readers",
+  "version": 1,
+  "name": "Daily unique readers",
+  "description": "UTC day with at least one accepted read event; distinct synthetic actor_id. Not cumulative users.",
+  "owner": "Content Analytics",
+  "event_type": "read",
+  "aggregation": "distinct_users"
+}

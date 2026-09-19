@@ -1,0 +1,30 @@
+[
+  {
+    "event_id": "read-01",
+    "actor_id": "actor-a",
+    "occurred_at": "2026-09-19T08:00:00Z",
+    "event_type": "read",
+    "amount_cents": 0
+  },
+  {
+    "event_id": "read-02",
+    "actor_id": "actor-a",
+    "occurred_at": "2026-09-19T09:00:00Z",
+    "event_type": "read",
+    "amount_cents": 0
+  },
+  {
+    "event_id": "read-03",
+    "actor_id": "actor-b",
+    "occurred_at": "2026-09-19T10:00:00Z",
+    "event_type": "read",
+    "amount_cents": 0
+  },
+  {
+    "event_id": "purchase-01",
+    "actor_id": "actor-a",
+    "occurred_at": "2026-09-19T10:05:00Z",
+    "event_type": "purchase",
+    "amount_cents": 1299
+  }
+]

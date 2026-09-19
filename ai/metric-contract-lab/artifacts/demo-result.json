@@ -1,0 +1,157 @@
+{
+  "scenario": "synthetic events with late arrival and rematerialization",
+  "logical_clock": "2026-09-20T12:00:00Z",
+  "initial": {
+    "batch_id": "sample-initial",
+    "inserted": 4,
+    "duplicates": 0,
+    "late": 4,
+    "affected_days": [
+      "2026-09-19"
+    ],
+    "replayed": false
+  },
+  "before": [
+    {
+      "run_id": 1,
+      "metric_id": "daily_readers",
+      "version": 1,
+      "event_day": "2026-09-19",
+      "value": 2,
+      "input_count": 3,
+      "day_revision": 1,
+      "source_hash": "75021ae773bf9d7c5cf2c3089dbfdd7d70f7f27d01fa9159546ccc9be5f9f1b0",
+      "contract_hash": "efc8bbd8cbad1824334fb31200f0a5d4c9d939410ddcec6502fe349547d93bde",
+      "built_at": "2026-09-20T12:00:00Z",
+      "current_revision": 1,
+      "freshness": "FRESH"
+    },
+    {
+      "run_id": 2,
+      "metric_id": "daily_reads",
+      "version": 1,
+      "event_day": "2026-09-19",
+      "value": 3,
+      "input_count": 3,
+      "day_revision": 1,
+      "source_hash": "75021ae773bf9d7c5cf2c3089dbfdd7d70f7f27d01fa9159546ccc9be5f9f1b0",
+      "contract_hash": "9159c24fb8d1b715a49a2a96d39b7759d2dc8ef8d6792564d2a5058447b9bdba",
+      "built_at": "2026-09-20T12:00:00Z",
+      "current_revision": 1,
+      "freshness": "FRESH"
+    },
+    {
+      "run_id": 3,
+      "metric_id": "daily_revenue_cents",
+      "version": 1,
+      "event_day": "2026-09-19",
+      "value": 1299,
+      "input_count": 1,
+      "day_revision": 1,
+      "source_hash": "37c3be66057e958449e4874dab12eb0463bb63768e6eccd68a39fa11b9341293",
+      "contract_hash": "ab029f5d2b33d5ba403c0cb9d07d2ee803df9b63647296a00e27cae4d5d9342c",
+      "built_at": "2026-09-20T12:00:00Z",
+      "current_revision": 1,
+      "freshness": "FRESH"
+    }
+  ],
+  "late": {
+    "batch_id": "sample-late",
+    "inserted": 1,
+    "duplicates": 0,
+    "late": 1,
+    "affected_days": [
+      "2026-09-19"
+    ],
+    "replayed": false
+  },
+  "quality_before_rebuild": {
+    "data_policy": "Synthetic inputs required; content is not classified automatically",
+    "event_count": 5,
+    "event_days": 1,
+    "accepted_batches": 2,
+    "duplicate_events": 0,
+    "late_events": 5,
+    "stale_materializations": 3
+  },
+  "after": [
+    {
+      "run_id": 4,
+      "metric_id": "daily_readers",
+      "version": 1,
+      "event_day": "2026-09-19",
+      "value": 3,
+      "input_count": 4,
+      "day_revision": 2,
+      "source_hash": "6c3556802477528f8396e70f36c217e4b36d9e48462c34101b257d58f1dc6bc3",
+      "contract_hash": "efc8bbd8cbad1824334fb31200f0a5d4c9d939410ddcec6502fe349547d93bde",
+      "built_at": "2026-09-20T12:00:00Z",
+      "current_revision": 2,
+      "freshness": "FRESH"
+    },
+    {
+      "run_id": 5,
+      "metric_id": "daily_reads",
+      "version": 1,
+      "event_day": "2026-09-19",
+      "value": 4,
+      "input_count": 4,
+      "day_revision": 2,
+      "source_hash": "6c3556802477528f8396e70f36c217e4b36d9e48462c34101b257d58f1dc6bc3",
+      "contract_hash": "9159c24fb8d1b715a49a2a96d39b7759d2dc8ef8d6792564d2a5058447b9bdba",
+      "built_at": "2026-09-20T12:00:00Z",
+      "current_revision": 2,
+      "freshness": "FRESH"
+    },
+    {
+      "run_id": 6,
+      "metric_id": "daily_revenue_cents",
+      "version": 1,
+      "event_day": "2026-09-19",
+      "value": 1299,
+      "input_count": 1,
+      "day_revision": 2,
+      "source_hash": "37c3be66057e958449e4874dab12eb0463bb63768e6eccd68a39fa11b9341293",
+      "contract_hash": "ab029f5d2b33d5ba403c0cb9d07d2ee803df9b63647296a00e27cae4d5d9342c",
+      "built_at": "2026-09-20T12:00:00Z",
+      "current_revision": 2,
+      "freshness": "FRESH"
+    }
+  ],
+  "quality_after_rebuild": {
+    "data_policy": "Synthetic inputs required; content is not classified automatically",
+    "event_count": 5,
+    "event_days": 1,
+    "accepted_batches": 2,
+    "duplicate_events": 0,
+    "late_events": 5,
+    "stale_materializations": 0
+  },
+  "lineage": {
+    "run_id": 4,
+    "metric_id": "daily_readers",
+    "version": 1,
+    "event_day": "2026-09-19",
+    "value": 3,
+    "input_count": 4,
+    "day_revision": 2,
+    "source_hash": "6c3556802477528f8396e70f36c217e4b36d9e48462c34101b257d58f1dc6bc3",
+    "contract_hash": "efc8bbd8cbad1824334fb31200f0a5d4c9d939410ddcec6502fe349547d93bde",
+    "built_at": "2026-09-20T12:00:00Z",
+    "contract": {
+      "aggregation": "distinct_users",
+      "description": "UTC day with at least one accepted read event; distinct synthetic actor_id. Not cumulative users.",
+      "event_type": "read",
+      "metric_id": "daily_readers",
+      "name": "Daily unique readers",
+      "owner": "Content Analytics",
+      "version": 1
+    },
+    "source_table": "events",
+    "selection": {
+      "day_utc": "2026-09-19",
+      "event_type": "read"
+    },
+    "lineage_kind": "immutable run with input set hash; raw actor IDs are not returned"
+  }
+}

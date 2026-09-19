@@ -1,0 +1,9 @@
+{
+  "metric_id": "daily_reads",
+  "version": 1,
+  "name": "Daily reading events",
+  "description": "Count accepted unique event IDs of type read during a UTC day. Repeated reads by one actor count separately.",
+  "owner": "Content Analytics",
+  "event_type": "read",
+  "aggregation": "event_count"
+}

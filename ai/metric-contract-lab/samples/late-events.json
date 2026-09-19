@@ -1,0 +1,9 @@
+[
+  {
+    "event_id": "read-04",
+    "actor_id": "actor-c",
+    "occurred_at": "2026-09-19T23:59:59Z",
+    "event_type": "read",
+    "amount_cents": 0
+  }
+]

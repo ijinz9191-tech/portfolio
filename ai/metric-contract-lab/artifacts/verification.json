@@ -1,0 +1,43 @@
+{
+  "project": "metric-contract-lab",
+  "checked_at": "2026-09-19T18:42:05.814213+00:00",
+  "python": "3.12.14",
+  "sqlite": "3.53.1",
+  "platform": "Windows",
+  "command": "python -B -m unittest discover -s tests -v",
+  "exit_code": 0,
+  "status": "PASS",
+  "source_hash": "0c65d022b125254e97d9c84a1c73826c4b957c8146f0483d3954ceb1ad0c2707",
+  "sources": [
+    {
+      "path": "metriclab/__init__.py",
+      "sha256": "3b1b76f8b2bc323d555cddd5636cc780da8b316629824439a5a9c780d8481d84"
+    },
+    {
+      "path": "metriclab/__main__.py",
+      "sha256": "288be55952e0ed110eaae3b4772f00f8537ba119fd1f8a1d3da3a6633bb035e1"
+    },
+    {
+      "path": "metriclab/api.py",
+      "sha256": "b58aaca1948be3b59c3fcb27fde6221829ade6579400bc76df2eae55e6af31ef"
+    },
+    {
+      "path": "metriclab/store.py",
+      "sha256": "ab4be05d392147511f507c7bf75c195146253be11e1df5a998bcf2f30eb709b6"
+    },
+    {
+      "path": "scripts/run_demo.py",
+      "sha256": "e4ff54a78a033437e54b15e475e6ed38c3f2b2cef3f842cb24eeff3b098757c6"
+    },
+    {
+      "path": "scripts/verify.py",
+      "sha256": "5c5f7825cdeee83c544daf4314922c224057e1c56f7de7b9e240cb732023afee"
+    },
+    {
+      "path": "tests/test_store.py",
+      "sha256": "4a482de2cecf867df774ea5d04f57bea94c46038213a005929fdfb9e8fa7efdf"
+    }
+  ],
+  "scope": "Synthetic local Python/SQLite and loopback HTTP tests; no production workload or deployment",
+  "output": "test_actual_http_reads_filters_lineage_and_denies_mutations (test_store.InterfaceTests.test_actual_http_reads_filters_lineage_and_denies_mutations) ... ok\ntest_cli_init_contract_ingest_materialize_and_query (test_store.InterfaceTests.test_cli_init_contract_ingest_materialize_and_query) ... ok\ntest_json_size_duplicate_keys_and_nonfinite (test_store.InterfaceTests.test_json_size_duplicate_keys_and_nonfinite) ... ok\ntest_conflict_mid_batch_rolls_back_earlier_insert (test_store.StoreTests.test_conflict_mid_batch_rolls_back_earlier_insert) ... ok\ntest_contract_version_immutable_and_previous_values_readable (test_store.StoreTests.test_contract_version_immutable_and_previous_values_readable) ... ok\ntest_duplicate_in_batch_and_replay (test_store.StoreTests.test_duplicate_in_batch_and_replay) ... ok\ntest_durable_receipt_replay_after_late_window (test_store.StoreTests.test_durable_receipt_replay_after_late_window) ... ok\ntest_enum_fields_reject_non_string_json_values (test_store.StoreTests.test_enum_fields_reject_non_string_json_values) ... ok\ntest_exact_definitions_and_zero_value (test_store.StoreTests.test_exact_definitions_and_zero_value) ... ok\ntest_invalid_batch_is_atomic (test_store.StoreTests.test_invalid_batch_is_atomic) ... ok\ntest_late_event_marks_stale_then_rebuild_keeps_prior_run (test_store.StoreTests.test_late_event_marks_stale_then_rebuild_keeps_prior_run) ... ok\ntest_limits_and_extra_fields_reject (test_store.StoreTests.test_limits_and_extra_fields_reject) ... ok\ntest_materialization_failure_rolls_back_and_recovers (test_store.StoreTests.test_materialization_failure_rolls_back_and_recovers) ... ok\ntest_older_than_seven_days_and_future_rejected (test_store.StoreTests.test_older_than_seven_days_and_future_rejected) ... ok\ntest_raw_evidence_is_immutable_and_readonly_store_blocks_write (test_store.StoreTests.test_raw_evidence_is_immutable_and_readonly_store_blocks_write) ... ok\ntest_restart_preserves_receipts_and_queries (test_store.StoreTests.test_restart_preserves_receipts_and_queries) ... ok\ntest_sql_injection_is_not_executed (test_store.StoreTests.test_sql_injection_is_not_executed) ... ok\ntest_utc_day_boundary (test_store.StoreTests.test_utc_day_boundary) ... ok\n\n----------------------------------------------------------------------\nRan 18 tests in 10.012s\n\nOK\n"
+}

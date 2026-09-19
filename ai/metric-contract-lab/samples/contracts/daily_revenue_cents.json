@@ -1,0 +1,9 @@
+{
+  "metric_id": "daily_revenue_cents",
+  "version": 1,
+  "name": "Gross purchases in cents",
+  "description": "Sum nonnegative integer amount_cents from accepted purchase events per UTC day; excludes refunds, fees and currency conversion.",
+  "owner": "Content Analytics",
+  "event_type": "purchase",
+  "aggregation": "sum_amount_cents"
+}

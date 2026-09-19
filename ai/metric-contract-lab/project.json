@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "metric-contract-lab",
+  "name": "Metric Contract Lab",
+  "summary": "Versioned metric contracts, atomic synthetic event ingestion, late-arrival freshness and reproducible daily metrics.",
+  "technologies": [
+    "Python",
+    "SQLite",
+    "HTTP",
+    "SQL"
+  ],
+  "source_path": "ai/metric-contract-lab",
+  "entrypoint": "python -B scripts/run_demo.py",
+  "verification": "artifacts/verification.json",
+  "demo_result": "artifacts/demo-result.json",
+  "deployment": "LOCAL_ONLY",
+  "data": "SYNTHETIC_FIXTURES",
+  "contribution": {
+    "user": "Objective and authorized scope",
+    "ai": "Implementation, synthetic fixtures, tests and documentation",
+    "tools": "Python, SQLite and local HTTP test execution"
+  }
+}
