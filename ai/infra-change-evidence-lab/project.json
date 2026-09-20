@@ -1,0 +1,9 @@
+{
+  "project_id": "infra-change-evidence-lab",
+  "origin_application_id": "samsung-welstory-it-infra-2026-09",
+  "problem": "Pre-change validation and immutable evidence for synthetic server and network operations",
+  "jd_requirements": ["IT infrastructure planning", "server and network operations", "IT asset governance"],
+  "new_implementation_scope": ["dependency blast radius", "risk gates", "SQLite evidence", "read-only API"],
+  "experience_type": "CAREEROPS_PROJECT",
+  "data_classification": "synthetic-only"
+}

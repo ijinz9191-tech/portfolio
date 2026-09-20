@@ -1,0 +1,20 @@
+{
+  "project": "infra-change-evidence-lab",
+  "status": "PASS",
+  "tests": {
+    "passed": 22,
+    "total": 22,
+    "failed": 0
+  },
+  "runtime": "Python 3.13",
+  "command": "python -m unittest discover -s tests -v",
+  "verifiedAt": "2026-09-20T06:08:37.0338724Z",
+  "sourceHash": "287b898da3e0014d9e04eab682361a0ada5c89796696528f6b78de073706f726",
+  "scope": "Synthetic inventory and change data only",
+  "checks": [
+    "validator normal/failure paths",
+    "SQLite idempotency and conflict rejection",
+    "loopback read-only HTTP",
+    "CLI approved and blocked exit codes"
+  ]
+}
