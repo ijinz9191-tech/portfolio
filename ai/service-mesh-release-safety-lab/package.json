@@ -1,0 +1,12 @@
+{
+  "name": "service-mesh-release-safety-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "demo": "node src/cli.js demo",
+    "verify": "node --test && node src/cli.js demo"
+  },
+  "engines": { "node": ">=22" }
+}
