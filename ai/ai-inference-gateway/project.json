@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "id": "ai-inference-gateway",
+  "name": "AI Inference Gateway",
+  "summary": "Java 21 local inference gateway with bounded queue, idempotency, TTL cache and Circuit Breaker.",
+  "technologies": [
+    "Java 21",
+    "HTTP",
+    "Concurrency",
+    "Circuit Breaker"
+  ],
+  "source_path": "ai/ai-inference-gateway",
+  "verification": "artifacts/verification.json",
+  "deployment": "LOCAL_ONLY",
+  "model": "DETERMINISTIC_SYNTHETIC",
+  "contribution": {
+    "user": "Objective and authorized scope",
+    "ai": "Implementation, tests and documentation",
+    "tools": "Javac, Java and real loopback HTTP test execution"
+  },
+  "limitations": [
+    "In-memory only; restart loses idempotency",
+    "No external model or trained model",
+    "No public production deployment"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "scope": "Local synthetic model, real HTTP and bounded failure tests; no external model or deployment",
+  "status": "PASS",
+  "java_version": "java version \"21.0.10\" 2026-01-20 LTS\nJava(TM) SE Runtime Environment (build 21.0.10+8-LTS-217)\nJava HotSpot(TM) 64-Bit Server VM (build 21.0.10+8-LTS-217, mixed mode, sharing)",
+  "checked_at": "2026-09-20T00:49:57.7336334Z",
+  "source_hash": "e8044737517b9bb3aef7182da6ab19a4c6bb41aa049edbebd7faf0799c8c27e2",
+  "compile_exit": 0,
+  "command": "javac --release 21 -d .build src/lab/Gateway.java tests/lab/GatewayTest.java; java -ea -cp .build lab.GatewayTest",
+  "sources": [
+    {
+      "path": "src/lab/Gateway.java",
+      "sha256": "fdea5531d319d4a46865b7b9a5755f68998c527f106742ff8f42c45a4339186b"
+    },
+    {
+      "path": "tests/lab/GatewayTest.java",
+      "sha256": "5c1d83dfc107ee3179b59b4236363a8a813bf69b5786481713445f003b8a9c5d"
+    }
+  ],
+  "test_exit": 0,
+  "output": [
+    "PASS deterministic prediction and finite validation",
+    "PASS idempotency replay conflict and immutable feature copy",
+    "PASS TTL cache expiry and record eviction",
+    "PASS bounded queue saturation removes rejected idempotency reservation",
+    "PASS bounded retries recover transient worker failure",
+    "PASS circuit opens blocks calls and half-open probe recovers",
+    "PASS nonfinite model output cannot enter cache",
+    "PASS record capacity cannot evict active idempotency",
+    "PASS graceful shutdown drains work then denies admissions",
+    "PASS forced shutdown cancels running and queued jobs",
+    "PASS restart explicitly loses ephemeral state but serves new work",
+    "PASS actual HTTP inference polling metrics and invalid inputs",
+    "RESULT 12 passed, 0 failed"
+  ]
+}
