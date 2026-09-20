@@ -1,0 +1,8 @@
+{
+  "projectId": "delivery-command-ledger",
+  "type": "CAREEROPS_PROJECT",
+  "problem": "Synthetic last-mile delivery commands require idempotency, valid state transitions, capacity controls, auditability, and restart recovery.",
+  "stack": ["Java 21", "JDK HttpServer", "atomic snapshot"],
+  "validation": ["18 normal/failure/recovery/API tests"],
+  "disclosure": "AI-assisted synthetic portfolio project; not production logistics experience."
+}
