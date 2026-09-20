@@ -3,7 +3,7 @@
   "source": "synthetic-only",
   "testCommand": "npm test",
   "simulationCommand": "npm run simulate",
-  "testedRevision": "workspace-content:2026-09-20T22:10:25.2728759+09:00",
+  "testedRevision": "b1cf4af07fe079ebc7edded9c030ac93234ac279",
   "testCount": 20,
   "failed": 0,
   "simulation": {
@@ -11,5 +11,7 @@
     "agentExecution": "COMPLETED",
     "ledgerValid": true
   },
-  "checkedAt": "2026-09-20T22:10:25.2728759+09:00"
+  "checkedAt": "2026-09-20T22:10:25.2728759+09:00",
+  "publishedCommit": "b1cf4af07fe079ebc7edded9c030ac93234ac279",
+  "fixedSourceUrl": "https://github.com/ijinz9191-tech/portfolio/tree/b1cf4af07fe079ebc7edded9c030ac93234ac279/ai/agentic-sdlc-control-plane"
 }
