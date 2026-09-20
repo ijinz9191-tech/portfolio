@@ -1,0 +1,15 @@
+{
+  "status": "PASSED",
+  "source": "synthetic-only",
+  "testCommand": "npm test",
+  "simulationCommand": "npm run simulate",
+  "testedRevision": "workspace-content:2026-09-20T22:10:25.2728759+09:00",
+  "testCount": 20,
+  "failed": 0,
+  "simulation": {
+    "releaseDecision": "RELEASABLE",
+    "agentExecution": "COMPLETED",
+    "ledgerValid": true
+  },
+  "checkedAt": "2026-09-20T22:10:25.2728759+09:00"
+}
