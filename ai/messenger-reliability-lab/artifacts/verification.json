@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-09-20T19:49:34+09:00",
+  "environment": {
+    "platform": "Windows",
+    "node": "v24.13.1"
+  },
+  "sourceManifest": {
+    "algorithm": "sha256",
+    "scope": "package.json, README.md, src/**, tests/**, docs/**; paths sorted and combined with each file SHA-256",
+    "digest": "1257e13b625dede4aee20dcce35ed828124d0b488bf11d962b70650b2b1dc7d2"
+  },
+  "test": {
+    "command": "npm test",
+    "resolvedCommand": "node --test --test-isolation=none tests/*.test.js",
+    "exitCode": 0,
+    "tests": 19,
+    "passed": 19,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "durationMs": 611.0259,
+    "coverage": [
+      "real loopback HTTP enqueue, dispatch, acknowledgement and read",
+      "malformed JSON and unsupported route rejection",
+      "idempotency replay and conflict rejection",
+      "per-conversation ordering and capacity",
+      "payload bounds",
+      "bounded retry and dead-letter transition",
+      "snapshot restore and corruption rejection",
+      "strictly monotonic audit sequence"
+    ]
+  },
+  "simulation": {
+    "command": "npm run simulate",
+    "exitCode": 0,
+    "result": "one synthetic message reached DELIVERED after MESSAGE_QUEUED and DELIVERY_DISPATCHED"
+  },
+  "limitations": [
+    "Synthetic, local evidence only.",
+    "No production messenger, company system, cloud service or external message broker was used.",
+    "The Windows sandbox blocked the test runner's per-file child-process isolation with EPERM, so the project uses Node's documented in-process isolation mode while preserving independent node:test cases."
+  ]
+}

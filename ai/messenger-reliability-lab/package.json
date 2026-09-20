@@ -1,0 +1,14 @@
+{
+  "name": "messenger-reliability-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-isolation=none tests/*.test.js",
+    "start": "node src/server.js",
+    "simulate": "node src/cli.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
