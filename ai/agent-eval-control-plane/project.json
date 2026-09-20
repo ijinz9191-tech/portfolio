@@ -1,0 +1,7 @@
+{
+  "project": "Agent Eval Control Plane",
+  "problem": "AI Agent releases need reproducible quality, policy, latency and cost gates tied to inspectable execution traces.",
+  "runtime": "Python 3.11+ standard library",
+  "data": "synthetic only",
+  "productionClaim": false
+}

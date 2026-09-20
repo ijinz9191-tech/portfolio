@@ -1,0 +1,15 @@
+[project]
+name = "agent-eval-control-plane"
+version = "1.0.0"
+description = "Deterministic evaluation and release gates for synthetic AI-agent traces"
+requires-python = ">=3.11"
+
+[project.scripts]
+agent-eval = "agent_eval_control_plane.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}

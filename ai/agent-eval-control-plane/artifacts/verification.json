@@ -1,0 +1,21 @@
+{
+  "verified_at": "2026-09-20T14:00:05+09:00",
+  "runtime": "Python 3.13.13",
+  "command": ".\\\\verify.ps1",
+  "total": 22,
+  "passed": 22,
+  "failed": 0,
+  "cli_demo_gate": "PASS",
+  "source_sha256": "8f28344a1cfdb0345a12b8ccaa80f300637d418953fb27e7075c3c5c3ad44395",
+  "coverage": [
+    "schema validation",
+    "deterministic evaluation",
+    "policy and budget failures",
+    "SQLite idempotency and conflict rejection",
+    "restart persistence",
+    "loopback HTTP",
+    "read-only API",
+    "subprocess CLI"
+  ],
+  "scope": "Synthetic local fixtures only; no external model, cloud or company data."
+}
