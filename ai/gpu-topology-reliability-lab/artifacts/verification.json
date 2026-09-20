@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-09-20T20:48:48+09:00",
+  "environment": {
+    "platform": "Windows",
+    "node": "v24.13.1"
+  },
+  "sourceManifest": {
+    "algorithm": "sha256",
+    "scope": "package.json, README.md, src/**, tests/**, docs/**; paths sorted and combined with each file SHA-256",
+    "digest": "3a8fbe2a8f22b159a125242158c1f021bbc7a4c7c153df776e6e4a8e91a3ff0e"
+  },
+  "test": {
+    "command": "npm test",
+    "resolvedCommand": "node --test --test-isolation=none tests/*.test.js",
+    "exitCode": 0,
+    "tests": 23,
+    "passed": 23,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "coverage": [
+      "topology validation and duplicate identity rejection",
+      "same-NUMA and cross-NUMA GPU placement",
+      "GPU memory and NIC capacity constraints",
+      "maintenance-node and duplicate workload rejection",
+      "NUMA, PCIe, RDMA, CPU feed and GPU health diagnosis",
+      "approval-bound remediation and stale-plan rejection",
+      "hash-linked audit and snapshot corruption detection"
+    ]
+  },
+  "simulation": {
+    "command": "npm run simulate",
+    "exitCode": 0,
+    "result": "synthetic workload placed on one NUMA domain; four evidence-backed causes diagnosed; approved remediation verified; audit chain valid"
+  },
+  "limitations": [
+    "Synthetic, local evidence only.",
+    "No production GPU, NPU, RDMA, data-center, cloud or employer system was used.",
+    "AI-assisted tooling implemented and tested this CareerOps project; it is not represented as prior employment experience."
+  ]
+}
