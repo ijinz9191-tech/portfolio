@@ -9,7 +9,7 @@ class EvidenceError(ValueError):
     """The before/after comparison does not support the conclusion."""
 
 
-QUERY = ("SELECT order_id, tenant_id, created_at FROM synthetic_orders "
+QUERY = ("SELECT order_id, tenant_id, status, created_at FROM synthetic_orders "
          "WHERE tenant_id = ? AND status = ? AND created_at >= ? "
          "ORDER BY created_at, order_id LIMIT 20")
 PARAMS = ("tenant-07", "PENDING", 200)
@@ -30,12 +30,14 @@ def verify(before, after, before_plan, after_plan):
         raise EvidenceError("result rows changed after indexing")
     if len(after) > 20 or len({row[0] for row in after}) != len(after):
         raise EvidenceError("result limit or unique order key violated")
-    if after != sorted(after, key=lambda row: (row[2], row[0])):
+    if after != sorted(after, key=lambda row: (row[3], row[0])):
         raise EvidenceError("result order is not deterministic")
-    if any(row[2] < PARAMS[2] for row in after):
+    if any(row[3] < PARAMS[2] for row in after):
         raise EvidenceError("result escaped the requested time window")
     if any(row[1] != PARAMS[0] for row in after):
         raise EvidenceError("cross-tenant row returned")
+    if any(row[2] != PARAMS[1] for row in after):
+        raise EvidenceError("wrong-status row returned")
     if not any("SCAN synthetic_orders" in line for line in before_plan):
         raise EvidenceError("baseline table scan was not observed")
     if not any("SEARCH synthetic_orders USING COVERING INDEX " + INDEX in line for line in after_plan):
@@ -63,6 +65,7 @@ def reproduce():
                 "result_rows": len(after), "before_plan": before_plan,
                 "after_plan": after_plan, "results_equal": before == after,
                 "tenant_isolated": all(row[1] == PARAMS[0] for row in after),
+                "status_filtered": all(row[2] == PARAMS[1] for row in after),
                 "evidence_sha256": digest,
                 "limits": "Synthetic SQLite plan evidence only; no wall-clock speedup, production database, or employer-system claim."}
     finally:

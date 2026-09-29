@@ -1,0 +1,7 @@
+{
+  "version": "synthetic-1",
+  "commands": [
+    {"request_id": "r-001", "robot_id": "robot-a", "action": "MOVE_TO_STATION", "requested_at": "2026-09-29T09:00:00Z", "accepted_at": "2026-09-29T09:00:01Z", "completed_at": "2026-09-29T09:00:09Z", "result": "SUCCEEDED"},
+    {"request_id": "r-002", "robot_id": "robot-a", "action": "LOAD", "requested_at": "2026-09-29T09:00:10Z", "accepted_at": "2026-09-29T09:00:11Z", "completed_at": null, "result": null}
+  ]
+}
