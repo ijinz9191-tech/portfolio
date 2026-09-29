@@ -1,18 +1,20 @@
-# Settlement Reconciliation Evidence Lab
+# 정산 대사 근거 실습
 
-An offline Python exercise for comparing a synthetic posting ledger with a
-synthetic merchant settlement batch. Each transaction ID must appear exactly
-once on each side with the same merchant and signed integer amount. The report
-separates a missing settlement, an unmatched settlement, and a changed amount
-or merchant. A canonical SHA-256 digest binds the inspected input evidence.
+가상의 거래 원장(`postings`)과 가맹점 정산 명세(`settlements`)를 거래 ID별로 비교하는 오프라인 Python 실습입니다. 각 ID는 양쪽에 한 번씩 나타나야 하며, 가맹점과 **부호 있는 정수 금액(원)**이 일치해야 합니다.
+
+## 확인하는 항목
+
+- 정산 명세가 없는 거래, 원장에 없는 정산 명세, 가맹점 또는 금액이 다른 거래를 따로 보고합니다.
+- 중복 ID, 잘못된 자료형, 0원 금액은 입력 오류로 처리합니다.
+- 정렬·정규화한 입력의 SHA-256을 보고서에 넣어 어떤 자료를 검사했는지 다시 확인할 수 있게 합니다.
+
+## 실행과 검증
+
+저장소의 `samples/match.json`은 모두 가상 데이터입니다. 저장소에 포함된 표준 라이브러리만 사용합니다.
 
 ```powershell
 python -B reconcile.py samples/match.json
 python -B -m unittest discover -s tests -v
 ```
 
-The exit code is `0` for a complete match, `1` when review is required, and
-`2` for malformed input. The sample is made up. This program neither moves
-money nor connects to PAYCO, a bank, or a past employer system. It supports an
-engineering discussion about the evidence needed before a settlement can be
-called reconciled; it is not proof of financial-domain production experience.
+종료 코드는 완전 일치 `0`, 검토할 불일치 `1`, 입력 형식 오류 `2`입니다. 이 도구는 돈을 이동시키거나 PAYCO·은행·과거 근무 회사의 시스템에 연결하지 않습니다. 실제 금융 서비스 운영 경력의 증빙이 아니라, 정산 결과를 신뢰하기 전에 어떤 근거를 확인할지 보여 주는 예제입니다.

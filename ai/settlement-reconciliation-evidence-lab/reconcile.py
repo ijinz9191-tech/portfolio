@@ -1,7 +1,6 @@
-"""Offline reconciliation of synthetic merchant postings and settlement lines.
+"""가상의 거래 원장과 정산 명세를 오프라인에서 대조한다.
 
-The lab deliberately has no payment gateway, bank, or company integration.
-Amounts are integer minor units (KRW won in the sample), never floats.
+결제 게이트웨이·은행·회사 시스템과 연결하지 않는다. 금액은 원 단위 정수로만 처리한다.
 """
 
 from __future__ import annotations
@@ -30,7 +29,7 @@ def _record(row: object, label: str) -> tuple[str, str, int]:
 
 
 def reconcile(payload: object) -> dict:
-    """Match each posting to one settlement line and expose every evidence gap."""
+    """거래와 정산 명세를 ID별로 비교하고 확인이 필요한 차이를 보고한다."""
     if not isinstance(payload, dict) or set(payload) != {"postings", "settlements"}:
         raise EvidenceError("postings and settlements lists required")
     postings, settlements = payload["postings"], payload["settlements"]

@@ -1,4 +1,4 @@
-"""Print a synthetic, deterministic SQL plan comparison."""
+"""재현 가능한 합성 SQL 실행 계획 비교 결과를 출력한다."""
 
 import json
 

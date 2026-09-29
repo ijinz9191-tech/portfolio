@@ -1,4 +1,4 @@
-"""Deterministic SQLite plan comparison, without timing claims."""
+"""처리 시간 수치를 주장하지 않는 재현 가능한 SQLite 실행 계획 비교."""
 
 import hashlib
 import json
@@ -6,7 +6,7 @@ import sqlite3
 
 
 class EvidenceError(ValueError):
-    """The before/after comparison does not support the conclusion."""
+    """인덱스 전후의 비교 결과가 검증 기준을 충족하지 않을 때 사용한다."""
 
 
 QUERY = ("SELECT order_id, tenant_id, status, created_at FROM synthetic_orders "
@@ -29,7 +29,7 @@ def _plan(db):
 
 
 def verify(before, after, before_plan, after_plan):
-    """Reject changed results or unsupported scan/index interpretations."""
+    """결과 변경, 범위 이탈, 기대한 실행 계획 누락을 거절한다."""
     if before != after:
         raise EvidenceError("result rows changed after indexing")
     if len(after) > 20 or len({row[0] for row in after}) != len(after):
@@ -49,7 +49,7 @@ def verify(before, after, before_plan, after_plan):
 
 
 def verify_cursor_pages(first, second, expected):
-    """Prove cursor pagination has neither duplicates nor a boundary gap."""
+    """커서 페이지 사이에 중복이나 경계 누락이 없는지 확인한다."""
     if not first or not second:
         raise EvidenceError("two populated pages are required")
     combined = first + second
@@ -63,7 +63,7 @@ def verify_cursor_pages(first, second, expected):
 
 
 def reproduce():
-    """Build isolated synthetic rows and return a reproducible plan witness."""
+    """격리된 합성 데이터를 만들고 다시 실행할 수 있는 계획 근거를 반환한다."""
     db = sqlite3.connect(":memory:")
     try:
         db.execute("CREATE TABLE synthetic_orders (order_id INTEGER PRIMARY KEY, "
