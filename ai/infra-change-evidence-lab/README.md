@@ -10,6 +10,7 @@ Server and network changes fail when ownership, dependencies, rollback, approval
 
 - Inventory checks for asset existence, ownership, lifecycle state and duplicate IPs
 - Dependency-aware blast-radius calculation and scope validation
+- Network cutover baseline, post-change and rollback probe plans per affected network asset
 - Time-zone-aware maintenance windows capped at four hours
 - Ordered execution and rollback plan requirements
 - Risk-based unique approval quorum and production downtime budget

@@ -62,6 +62,21 @@ def validate_change(inventory: dict[str, Any], change: dict[str, Any]) -> Decisi
     uncovered = sorted(dep for dep in dependencies if dep not in set(map(str, requested)))
     checks.append(Check("dependency_coverage", not uncovered, "dependencies included" if not uncovered else f"not included: {', '.join(uncovered)}"))
 
+    # Network cutovers need an executable verification plan for both directions of change.
+    network_ids = {str(a["id"]) for a in selected if a.get("type") == "network"}
+    probes = change.get("network_probe_plan", {})
+    probes_valid = isinstance(probes, dict)
+    missing_probes = sorted(
+        asset_id for asset_id in network_ids
+        if not probes_valid or not isinstance(probes.get(asset_id), dict)
+        or any(not isinstance(probes[asset_id].get(phase), str) or not probes[asset_id][phase].strip()
+               for phase in ("before", "after", "rollback"))
+    )
+    checks.append(Check(
+        "network_probe_plan", not missing_probes,
+        "network cutover probes present" if not missing_probes else f"missing before/after/rollback probes: {', '.join(missing_probes)}",
+    ))
+
     try:
         start, end = _parse_utc(str(change.get("window_start", ""))), _parse_utc(str(change.get("window_end", "")))
         duration = int((end - start).total_seconds() // 60)

@@ -18,6 +18,7 @@ def change():
         "change_id": "CHG-100", "asset_ids": ["edge-01", "dns-01"], "risk": "medium",
         "window_start": "2026-09-21T01:00:00+09:00", "window_end": "2026-09-21T02:00:00+09:00",
         "steps": ["backup config", "apply and verify"], "rollback_steps": ["restore config", "verify health"],
+        "network_probe_plan": {"edge-01": {"before": "check path baseline", "after": "check restored service path", "rollback": "check previous path"}},
         "approvers": ["network-lead", "service-owner"], "expected_downtime_minutes": 10,
     }
 
@@ -39,6 +40,11 @@ class ValidatorTests(unittest.TestCase):
     def test_dependency_must_be_in_scope(self):
         c = change(); c["asset_ids"] = ["edge-01"]
         self.assertEqual(validate_change(inventory(), c).status, "BLOCKED")
+    def test_network_cutover_requires_forward_and_rollback_probes(self):
+        c = change(); c["network_probe_plan"]["edge-01"]["rollback"] = ""
+        d = validate_change(inventory(), c)
+        self.assertEqual(d.status, "BLOCKED")
+        self.assertFalse(next(x for x in d.checks if x.name == "network_probe_plan").passed)
     def test_invalid_window_blocks(self):
         c = change(); c["window_end"] = c["window_start"]
         self.assertEqual(validate_change(inventory(), c).status, "BLOCKED")
