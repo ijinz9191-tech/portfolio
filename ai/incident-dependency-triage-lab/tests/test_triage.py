@@ -44,6 +44,8 @@ class TriageTests(unittest.TestCase):
         result = analyze(changed)
         self.assertIn("api", result["healthy_downstream_counterevidence"])
         self.assertNotIn("api", result["observed_failed"])
+        self.assertEqual(result["observed_failed_downstream"]["database"], ["checkout"])
+        self.assertIn("api", result["potentially_affected_by_candidate"]["database"])
 
     def test_no_failure_does_not_invent_cause(self):
         changed = snapshot()

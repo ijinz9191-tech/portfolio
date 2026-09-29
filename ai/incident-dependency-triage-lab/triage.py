@@ -60,12 +60,15 @@ def analyze(document: dict) -> dict:
     counterevidence = [name for name in order if graph[name]["healthy"] and
                        any(not graph[dep]["healthy"] for dep in graph[name]["depends_on"])]
     downstream = {}
+    observed_downstream = {}
     for root in roots:
         reached = {root}
         for name in order:
             if name not in reached and any(dep in reached for dep in graph[name]["depends_on"]):
                 reached.add(name)
         downstream[root] = sorted(reached - {root})
+        observed_downstream[root] = sorted(name for name in reached - {root}
+                                           if not graph[name]["healthy"])
     canonical = {"incident_id": incident_id, "services": [
         {"id": name, **{**graph[name], "depends_on": sorted(graph[name]["depends_on"])}}
         for name in sorted(graph)]}
@@ -76,6 +79,7 @@ def analyze(document: dict) -> dict:
             "dependency_first_review_order": failed,
             "healthy_downstream_counterevidence": counterevidence,
             "potentially_affected_by_candidate": downstream,
+            "observed_failed_downstream": observed_downstream,
             "evidence_sha256": digest,
             "limits": "Synthetic health snapshots only. Candidates require human verification; no automated remediation or production root-cause claim."}
 

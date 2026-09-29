@@ -1,0 +1,13 @@
+{
+  "scenario": "synthetic-shopping-listing",
+  "traces": [
+    {"id": "request-1", "spans": [
+      {"id": "gateway", "service": "gateway", "parent": null, "start_ms": 0, "duration_ms": 110},
+      {"id": "catalog", "service": "catalog", "parent": "gateway", "start_ms": 10, "duration_ms": 75},
+      {"id": "cache", "service": "cache", "parent": "catalog", "start_ms": 20, "duration_ms": 10}]},
+    {"id": "request-2", "spans": [
+      {"id": "gateway", "service": "gateway", "parent": null, "start_ms": 0, "duration_ms": 240},
+      {"id": "catalog", "service": "catalog", "parent": "gateway", "start_ms": 10, "duration_ms": 210},
+      {"id": "cache", "service": "cache", "parent": "catalog", "start_ms": 20, "duration_ms": 10}]}
+  ]
+}
