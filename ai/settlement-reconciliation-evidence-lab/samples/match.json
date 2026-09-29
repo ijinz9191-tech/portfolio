@@ -1,0 +1,10 @@
+{
+  "postings": [
+    {"id": "charge-1", "merchant": "merchant-a", "amount_won": 1200},
+    {"id": "refund-1", "merchant": "merchant-a", "amount_won": -300}
+  ],
+  "settlements": [
+    {"id": "refund-1", "merchant": "merchant-a", "amount_won": -300},
+    {"id": "charge-1", "merchant": "merchant-a", "amount_won": 1200}
+  ]
+}
