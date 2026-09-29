@@ -7,11 +7,14 @@ function assertNumber(name, value, min, max) {
 }
 
 export class ReleaseController {
-  constructor({ clusters, errorBudgetRemaining = 1, minErrorBudget = 0.25, approvalToken, steps = DEFAULT_STEPS } = {}) {
+  constructor({ clusters, errorBudgetRemaining = 1, minErrorBudget = 0.25, approvalToken, steps = DEFAULT_STEPS, requireClusterSamples = false, maxSampleAgeMs = 60000, clock = () => Date.now() } = {}) {
     if (!Array.isArray(clusters) || clusters.length < 2 || new Set(clusters).size !== clusters.length) throw new Error('at least two unique clusters are required');
     assertNumber('errorBudgetRemaining', errorBudgetRemaining, 0, 1);
     assertNumber('minErrorBudget', minErrorBudget, 0, 1);
     if (!approvalToken) throw new Error('approvalToken is required');
+    if (typeof requireClusterSamples !== 'boolean') throw new Error('requireClusterSamples must be boolean');
+    if (!Number.isSafeInteger(maxSampleAgeMs) || maxSampleAgeMs <= 0) throw new Error('maxSampleAgeMs must be positive');
+    if (typeof clock !== 'function') throw new Error('clock must be a function');
     if (!Array.isArray(steps) || !steps.length || steps.at(-1) !== 100 || steps.some((value, index) => value <= 0 || value > 100 || (index && value <= steps[index - 1]))) {
       throw new Error('steps must be ascending and end at 100');
     }
@@ -20,6 +23,9 @@ export class ReleaseController {
     this.minErrorBudget = minErrorBudget;
     this.approvalToken = approvalToken;
     this.steps = [...steps];
+    this.requireClusterSamples = requireClusterSamples;
+    this.maxSampleAgeMs = maxSampleAgeMs;
+    this.clock = clock;
     this.ledger = new EvidenceLedger();
     this.releases = new Map();
   }
@@ -41,10 +47,9 @@ export class ReleaseController {
 
   observe(releaseId, sample) {
     const release = this.#getRunning(releaseId);
-    const normalized = this.#validateSample(sample);
+    const { normalized, breach } = this.#validateObservation(sample);
     const nextStep = this.steps[release.stepIndex + 1];
     if (nextStep === undefined) throw new Error('release already completed');
-    const breach = this.#breach(normalized);
     this.ledger.append('METRICS_OBSERVED', { releaseId, intendedTrafficPercent: nextStep, ...normalized, breach });
     if (breach) return this.rollback(releaseId, breach);
     release.stepIndex += 1;
@@ -92,6 +97,35 @@ export class ReleaseController {
     assertNumber('saturation', saturation, 0, 1);
     if (!Number.isInteger(securityViolations) || securityViolations < 0) throw new Error('securityViolations must be a non-negative integer');
     return { errorRate, p99LatencyMs, saturation, securityViolations };
+  }
+
+  #validateObservation(sample) {
+    if (sample?.clusterSamples !== undefined) {
+      const entries = sample.clusterSamples;
+      if (!entries || typeof entries !== 'object' || Array.isArray(entries) ||
+          Object.keys(entries).length !== this.clusters.length ||
+          Object.keys(entries).some((cluster) => !this.clusters.includes(cluster))) {
+        throw new Error('clusterSamples must cover exactly the configured clusters');
+      }
+      const now = this.clock();
+      if (!Number.isFinite(now)) throw new Error('clock returned invalid time');
+      const clusterSamples = {};
+      let breach = null;
+      for (const cluster of this.clusters) {
+        const raw = entries[cluster];
+        const observedAt = Date.parse(raw?.observedAt);
+        if (!Number.isFinite(observedAt) || observedAt > now || now - observedAt > this.maxSampleAgeMs) {
+          throw new Error(`${cluster} telemetry is stale or future-dated`);
+        }
+        clusterSamples[cluster] = { ...this.#validateSample(raw), observedAt: new Date(observedAt).toISOString() };
+        const reason = this.#breach(clusterSamples[cluster]);
+        if (reason && !breach) breach = `${cluster}: ${reason}`;
+      }
+      return { normalized: { clusterSamples }, breach };
+    }
+    if (this.requireClusterSamples) throw new Error('clusterSamples are required');
+    const normalized = this.#validateSample(sample);
+    return { normalized, breach: this.#breach(normalized) };
   }
 
   #breach(sample) {

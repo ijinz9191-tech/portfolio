@@ -1,0 +1,12 @@
+{
+  "project": "k8s-capacity-budget-lab",
+  "executed_at": "2026-09-29T02:05:55Z",
+  "runtime": "Conda heo-ai-coding Python 3.11.15",
+  "command": "conda run -p C:\\Users\\ijinz\\miniconda3\\envs\\heo-ai-coding -- python -m unittest discover -s tests -v",
+  "tests": 9,
+  "passed": 9,
+  "failed": 0,
+  "planner_sha256": "4355cd7762cc459aa4e9a13a8cf7db57d02c2f6917934dd2473f5b1287bcfb23",
+  "cli_normal_and_rejection_paths": "passed",
+  "data_scope": "synthetic-only"
+}

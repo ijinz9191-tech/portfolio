@@ -1,0 +1,23 @@
+{
+  "workload": {
+    "replicas": 6,
+    "max_surge": 2,
+    "cpu_request_m": 300,
+    "memory_request_mib": 512,
+    "min_zones": 2,
+    "target_cpu_utilization": 0.65,
+    "memory_headroom_fraction": 0.25
+  },
+  "telemetry": {
+    "observed_at": "2026-09-29T00:00:00Z",
+    "p95_cpu_m_per_pod": 400,
+    "p95_memory_mib_per_pod": 550
+  },
+  "max_telemetry_age_seconds": 300,
+  "system_reserve_fraction": 0.1,
+  "monthly_cost_ceiling_usd": 300,
+  "node_offerings": [
+    { "id": "small", "cpu_m": 2000, "memory_mib": 4096, "max_pods": 20, "hourly_cost_usd": 0.08, "zones": ["a", "b"] },
+    { "id": "medium", "cpu_m": 4000, "memory_mib": 8192, "max_pods": 30, "hourly_cost_usd": 0.20, "zones": ["a", "b", "c"] }
+  ]
+}

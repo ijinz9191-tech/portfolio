@@ -26,3 +26,40 @@ test('supports operator rollback', () => { const c = make(); start(c); assert.eq
 test('rejects unknown releases', () => assert.throws(() => make().get('missing'), /not found/));
 test('creates a valid hash-chained evidence ledger', () => { const c = make(); start(c); c.observe('r1', healthy); assert.equal(c.ledger.verify(), true); });
 test('detects evidence tampering', () => { const c = make(); start(c); const events = c.ledger.list(); events[0].payload.version = 'tampered'; assert.equal(c.ledger.verify(events), false); });
+
+const observedAt = '2026-09-29T00:00:00.000Z';
+const clusterMode = (overrides = {}) => make({ requireClusterSamples: true, clock: () => Date.parse(observedAt) + 1000, ...overrides });
+const perCluster = (overrides = {}) => ({ clusterSamples: {
+  a: { ...healthy, observedAt },
+  b: { ...healthy, observedAt, ...overrides }
+} });
+
+test('advances only when every cluster has fresh healthy telemetry', () => {
+  const c = clusterMode(); start(c);
+  assert.equal(c.observe('r1', perCluster()).trafficPercent, 5);
+  assert.equal(c.ledger.verify(), true);
+});
+test('rolls back when one cluster breaches despite healthy peers', () => {
+  const c = clusterMode(); start(c);
+  const r = c.observe('r1', perCluster({ errorRate: 0.03 }));
+  assert.equal(r.status, 'ROLLED_BACK');
+  assert.equal(r.rollbackReason, 'b: error rate SLO breach');
+  assert.equal(r.clusters.a.trafficPercent, 0);
+});
+test('does not allow aggregate-only telemetry in strict cluster mode', () => {
+  const c = clusterMode(); start(c);
+  assert.throws(() => c.observe('r1', healthy), /clusterSamples are required/);
+  assert.equal(c.get('r1').trafficPercent, 0);
+});
+test('rejects missing, extra and stale cluster telemetry without advancing', () => {
+  const c = clusterMode(); start(c);
+  assert.throws(() => c.observe('r1', { clusterSamples: { a: { ...healthy, observedAt } } }), /exactly/);
+  assert.throws(() => c.observe('r1', { clusterSamples: { ...perCluster().clusterSamples, unknown: { ...healthy, observedAt } } }), /exactly/);
+  assert.throws(() => c.observe('r1', perCluster({ observedAt: '2026-09-28T23:58:00.000Z' })), /stale/);
+  assert.equal(c.get('r1').trafficPercent, 0);
+});
+test('rejects future and malformed cluster telemetry', () => {
+  const c = clusterMode(); start(c);
+  assert.throws(() => c.observe('r1', perCluster({ observedAt: '2026-09-29T00:00:02.000Z' })), /future/);
+  assert.throws(() => c.observe('r1', perCluster({ saturation: -1 })), /saturation/);
+});

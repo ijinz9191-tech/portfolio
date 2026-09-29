@@ -1,13 +1,14 @@
 {
   "project": "service-mesh-release-safety-lab",
-  "executed_at": "2026-09-20T14:15:42.3823007Z",
+  "executed_at": "2026-09-29T02:01:52Z",
   "runtime": "v24.13.1",
   "command": "npm run verify",
-  "tests": 20,
-  "passed": 20,
+  "tests": 25,
+  "passed": 25,
   "failed": 0,
   "demo_status": "COMPLETED",
   "evidence_chain_valid": true,
-  "source_manifest_sha256": "caff24212357e2d5f3314b8c5ceafc4c0d0cc2b6fe7c0b1bba34d4ffe68cc1e5",
+  "controller_sha256": "97c97f6e8b2e5786e4ec8d49fb52d13cc3cd70cd6573732e31d87ee1dcb07c84",
+  "improvement": "strict per-cluster telemetry freshness and asymmetric breach rollback",
   "data_scope": "synthetic-only"
 }
