@@ -1,0 +1,29 @@
+{
+  "baseline": {
+    "version": "지도-v1",
+    "segments": [
+      {"id": "판교역-분기", "geometry_revision": "좌표-a1"},
+      {"id": "분기-광장", "geometry_revision": "좌표-b1"},
+      {"id": "분기-공원", "geometry_revision": "좌표-c1"}
+    ],
+    "routes": [
+      {"id": "광장행", "segment_ids": ["판교역-분기", "분기-광장"]},
+      {"id": "공원행", "segment_ids": ["판교역-분기", "분기-공원"]}
+    ]
+  },
+  "candidate": {
+    "version": "지도-v2",
+    "segments": [
+      {"id": "판교역-분기", "geometry_revision": "좌표-a1"},
+      {"id": "분기-광장", "geometry_revision": "좌표-b2"},
+      {"id": "분기-공원", "geometry_revision": "좌표-c1"}
+    ],
+    "routes": [
+      {"id": "광장행", "segment_ids": ["판교역-분기", "분기-광장"]},
+      {"id": "공원행", "segment_ids": ["판교역-분기", "분기-공원"]}
+    ]
+  },
+  "acknowledgements": [
+    {"route_id": "광장행", "reviewer": "가상 담당자", "rollback_version": "지도-v1"}
+  ]
+}

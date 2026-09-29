@@ -38,6 +38,23 @@ class SpatialAuditTests(unittest.TestCase):
         with self.assertRaisesRegex(SpatialError, "disconnected"):
             audit(case)
 
+    def test_rejects_wrong_planned_destination(self):
+        case = copy.deepcopy(CASE)
+        case["routes"][0]["stops"][-1] = "transfer"
+        with self.assertRaisesRegex(SpatialError, "endpoints"):
+            audit(case)
+
+    def test_rejects_missing_or_reordered_stop(self):
+        case = copy.deepcopy(CASE)
+        case["routes"][0]["stops"] = ["hub", "dropoff", "dropoff"]
+        with self.assertRaisesRegex(SpatialError, "misses or reorders"):
+            audit(case)
+
+    def test_route_without_planned_stops_remains_compatible(self):
+        case = copy.deepcopy(CASE)
+        del case["routes"][0]["stops"]
+        self.assertEqual(audit(case)["decision"], "TOPOLOGY_VERIFIED")
+
     def test_rejects_impossible_distance(self):
         case = copy.deepcopy(CASE)
         case["edges"][0]["distance_m"] = 1

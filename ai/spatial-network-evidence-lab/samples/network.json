@@ -9,5 +9,5 @@
     {"id": "a", "from": "hub", "to": "transfer", "distance_m": 90},
     {"id": "b", "from": "transfer", "to": "dropoff", "distance_m": 120}
   ],
-  "routes": [{"id": "demo-route", "edge_ids": ["a", "b"]}]
+  "routes": [{"id": "demo-route", "edge_ids": ["a", "b"], "stops": ["hub", "transfer", "dropoff"]}]
 }

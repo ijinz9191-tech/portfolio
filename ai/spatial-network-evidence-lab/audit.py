@@ -1,4 +1,4 @@
-"""Offline topology and distance audit for synthetic route data."""
+"""가상 이동 경로의 연결·거리·지정 경유지를 오프라인에서 검증한다."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 class SpatialError(ValueError):
-    """Route evidence is incomplete or internally inconsistent."""
+    """경로 근거가 부족하거나 내부에서 서로 맞지 않는다."""
 
 
 def _identifier(value: object, kind: str) -> str:
@@ -67,7 +67,7 @@ def audit(document: dict) -> dict:
     results = []
     route_ids = set()
     for row in routes_raw:
-        if not isinstance(row, dict) or set(row) != {"id", "edge_ids"}:
+        if not isinstance(row, dict) or not {"id", "edge_ids"} <= set(row) or set(row) - {"id", "edge_ids", "stops"}:
             raise SpatialError("route fields are incomplete")
         key = _identifier(row["id"], "route")
         path = row["edge_ids"]
@@ -79,6 +79,22 @@ def audit(document: dict) -> dict:
         for left, right in zip(path, path[1:]):
             if edges[left][1] != edges[right][0]:
                 raise SpatialError("route has a disconnected handoff")
+        visited = [edges[path[0]][0], *(edges[edge][1] for edge in path)]
+        if "stops" in row:
+            stops = row["stops"]
+            if (not isinstance(stops, list) or len(stops) < 2
+                    or len(stops) > len(visited)
+                    or any(not isinstance(stop, str) or stop not in nodes for stop in stops)):
+                raise SpatialError("route stops are invalid")
+            if stops[0] != visited[0] or stops[-1] != visited[-1]:
+                raise SpatialError("route endpoints do not match planned stops")
+            cursor = 0
+            for stop in stops:
+                while cursor < len(visited) and visited[cursor] != stop:
+                    cursor += 1
+                if cursor == len(visited):
+                    raise SpatialError("route misses or reorders a planned stop")
+                cursor += 1
         results.append({"id": key, "start": edges[path[0]][0], "end": edges[path[-1]][1],
                         "distance_m": round(sum(edges[edge][2] for edge in path), 2),
                         "edge_count": len(path)})
