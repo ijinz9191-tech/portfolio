@@ -1,5 +1,7 @@
 # SLO Burn Evidence Lab
 
+When a full six-hour window has no requests, the CLI returns `INSUFFICIENT_DATA` instead of treating zero traffic as a healthy service. In segmented assessments, an unobserved path keeps the overall result unknown unless another path independently triggers `PAGE`. This prevents quiet paths from silently passing the incident review gate.
+
 An offline Python 3.11+ decision aid for a **synthetic request-error SLI**. It checks complete, contiguous five-minute buckets for two multiwindow alert policies: 5 minutes and 1 hour above 14.4× error-budget burn, or 30 minutes and 6 hours above 6×. The windows are request weighted; missing and stale evidence is rejected.
 
 ## Reproduce

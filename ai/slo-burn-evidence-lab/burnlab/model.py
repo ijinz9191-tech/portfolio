@@ -84,8 +84,10 @@ def assess(data: dict, *, now: datetime | None = None) -> dict:
     fast = above("5m", "14.4") and above("1h", "14.4")
     slow = above("30m", "6") and above("6h", "6")
     digest = hashlib.sha256(json.dumps(recent, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    has_traffic = windows["6h"]["total"] > 0
     return {"service": service, "objective": str(objective), "observed_until": recent[-1]["end"],
-            "decision": "PAGE" if fast or slow else "NO_PAGE", "fast_burn": fast, "slow_burn": slow,
+            "decision": "PAGE" if fast or slow else ("NO_PAGE" if has_traffic else "INSUFFICIENT_DATA"),
+            "fast_burn": fast, "slow_burn": slow,
             "windows": windows, "evidence_sha256": digest,
             "limits": "Synthetic, request-count-based error SLI; no live metrics or latency percentile."}
 
@@ -109,6 +111,7 @@ def assess_segments(data: dict, *, now: datetime | None = None) -> dict:
     paged = [name for name, result in results.items() if result["decision"] == "PAGE"]
     evidence = hashlib.sha256(json.dumps({name: result["evidence_sha256"] for name, result in results.items()},
                                       sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-    return {"service": service, "decision": "PAGE" if paged else "NO_PAGE",
+    unknown = [name for name, result in results.items() if result["decision"] == "INSUFFICIENT_DATA"]
+    return {"service": service, "decision": "PAGE" if paged else ("INSUFFICIENT_DATA" if unknown else "NO_PAGE"),
             "paged_segments": paged, "segments": results, "evidence_sha256": evidence,
             "limits": "Each synthetic path is evaluated separately; no real payment or production metrics."}

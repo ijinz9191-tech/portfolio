@@ -51,8 +51,17 @@ class BurnTests(unittest.TestCase):
         for bucket in data["buckets"]:
             bucket["total"] = 0
         result = assess(data, now=NOW)
-        self.assertEqual(result["decision"], "NO_PAGE")
+        self.assertEqual(result["decision"], "INSUFFICIENT_DATA")
         self.assertIsNone(result["windows"]["6h"]["burn"])
+
+    def test_zero_traffic_segment_keeps_aggregate_unknown(self):
+        quiet = fixture()["buckets"]
+        for bucket in quiet:
+            bucket["total"] = 0
+        result = assess_segments({"service": "checkout-synthetic", "objective": "0.999",
+                                  "segments": {"active": fixture()["buckets"], "quiet": quiet}}, now=NOW)
+        self.assertEqual(result["decision"], "INSUFFICIENT_DATA")
+        self.assertEqual(result["segments"]["quiet"]["decision"], "INSUFFICIENT_DATA")
 
     def test_missing_or_stale_observations_reject(self):
         data = fixture()
