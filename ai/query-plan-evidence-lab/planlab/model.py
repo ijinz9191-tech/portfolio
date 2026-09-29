@@ -28,6 +28,12 @@ def verify(before, after, before_plan, after_plan):
     """Reject changed results or unsupported scan/index interpretations."""
     if before != after:
         raise EvidenceError("result rows changed after indexing")
+    if len(after) > 20 or len({row[0] for row in after}) != len(after):
+        raise EvidenceError("result limit or unique order key violated")
+    if after != sorted(after, key=lambda row: (row[2], row[0])):
+        raise EvidenceError("result order is not deterministic")
+    if any(row[2] < PARAMS[2] for row in after):
+        raise EvidenceError("result escaped the requested time window")
     if any(row[1] != PARAMS[0] for row in after):
         raise EvidenceError("cross-tenant row returned")
     if not any("SCAN synthetic_orders" in line for line in before_plan):

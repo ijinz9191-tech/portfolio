@@ -1,0 +1,111 @@
+"""Offline topology and distance audit for synthetic route data."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import math
+import sys
+from pathlib import Path
+
+
+class SpatialError(ValueError):
+    """Route evidence is incomplete or internally inconsistent."""
+
+
+def _identifier(value: object, kind: str) -> str:
+    if not isinstance(value, str) or not value.strip() or len(value) > 80:
+        raise SpatialError(f"{kind} id must be a bounded nonempty string")
+    return value
+
+
+def _coordinate(value: object, low: float, high: float, name: str) -> float:
+    if type(value) not in (int, float) or not math.isfinite(value) or not low <= value <= high:
+        raise SpatialError(f"{name} is out of range")
+    return float(value)
+
+
+def _meters(a: tuple[float, float], b: tuple[float, float]) -> float:
+    lat1, lon1, lat2, lon2 = map(math.radians, (a[0], a[1], b[0], b[1]))
+    dlat, dlon = lat2 - lat1, lon2 - lon1
+    h = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
+    return 12_742_000 * math.asin(min(1.0, math.sqrt(h)))
+
+
+def audit(document: dict) -> dict:
+    if not isinstance(document, dict) or set(document) != {"version", "nodes", "edges", "routes"}:
+        raise SpatialError("version, nodes, edges and routes are required")
+    version = _identifier(document["version"], "version")
+    nodes_raw, edges_raw, routes_raw = (document[name] for name in ("nodes", "edges", "routes"))
+    if not all(isinstance(rows, list) and 1 <= len(rows) <= 1000
+               for rows in (nodes_raw, edges_raw, routes_raw)):
+        raise SpatialError("each collection requires 1 to 1000 rows")
+    nodes: dict[str, tuple[float, float]] = {}
+    for row in nodes_raw:
+        if not isinstance(row, dict) or set(row) != {"id", "lat", "lon"}:
+            raise SpatialError("node fields are incomplete")
+        key = _identifier(row["id"], "node")
+        if key in nodes:
+            raise SpatialError("duplicate node id")
+        nodes[key] = (_coordinate(row["lat"], -90, 90, "latitude"),
+                      _coordinate(row["lon"], -180, 180, "longitude"))
+    edges: dict[str, tuple[str, str, float]] = {}
+    for row in edges_raw:
+        if not isinstance(row, dict) or set(row) != {"id", "from", "to", "distance_m"}:
+            raise SpatialError("edge fields are incomplete")
+        key = _identifier(row["id"], "edge")
+        source, target = _identifier(row["from"], "source"), _identifier(row["to"], "target")
+        if key in edges or source == target or source not in nodes or target not in nodes:
+            raise SpatialError("duplicate, self-loop or dangling edge")
+        claimed = row["distance_m"]
+        if type(claimed) not in (int, float) or not math.isfinite(claimed) or claimed <= 0:
+            raise SpatialError("edge distance must be positive and finite")
+        direct = _meters(nodes[source], nodes[target])
+        if claimed + 1 < direct:
+            raise SpatialError("edge distance is shorter than geodesic distance")
+        edges[key] = (source, target, float(claimed))
+    results = []
+    route_ids = set()
+    for row in routes_raw:
+        if not isinstance(row, dict) or set(row) != {"id", "edge_ids"}:
+            raise SpatialError("route fields are incomplete")
+        key = _identifier(row["id"], "route")
+        path = row["edge_ids"]
+        if key in route_ids or not isinstance(path, list) or not 1 <= len(path) <= 1000:
+            raise SpatialError("route id or edge sequence invalid")
+        route_ids.add(key)
+        if any(not isinstance(edge, str) or edge not in edges for edge in path):
+            raise SpatialError("route references unknown edge")
+        for left, right in zip(path, path[1:]):
+            if edges[left][1] != edges[right][0]:
+                raise SpatialError("route has a disconnected handoff")
+        results.append({"id": key, "start": edges[path[0]][0], "end": edges[path[-1]][1],
+                        "distance_m": round(sum(edges[edge][2] for edge in path), 2),
+                        "edge_count": len(path)})
+    canonical = {"version": version,
+                 "nodes": sorted(nodes_raw, key=lambda row: row["id"]),
+                 "edges": sorted(edges_raw, key=lambda row: row["id"]),
+                 "routes": sorted(routes_raw, key=lambda row: row["id"])}
+    digest = hashlib.sha256(json.dumps(canonical, ensure_ascii=False, sort_keys=True,
+                                      separators=(",", ":")).encode("utf-8")).hexdigest()
+    return {"decision": "TOPOLOGY_VERIFIED", "version": version,
+            "nodes": len(nodes), "edges": len(edges), "routes": sorted(results, key=lambda row: row["id"]),
+            "evidence_sha256": digest,
+            "limits": "Synthetic topology and straight-line lower-bound evidence only; no map accuracy or production routing claim."}
+
+
+def main() -> int:
+    if len(sys.argv) != 2:
+        print("usage: python audit.py NETWORK.json", file=sys.stderr)
+        return 2
+    try:
+        result = audit(json.loads(Path(sys.argv[1]).read_text(encoding="utf-8")))
+    except (OSError, json.JSONDecodeError, SpatialError) as exc:
+        print(f"REJECTED: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

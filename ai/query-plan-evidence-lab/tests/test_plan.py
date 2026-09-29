@@ -36,6 +36,22 @@ class QueryPlanTests(unittest.TestCase):
         self.assertEqual(child.returncode, 0, child.stderr)
         self.assertEqual(json.loads(child.stdout)["evidence_sha256"], first["evidence_sha256"])
 
+    def test_duplicate_or_reordered_rows_reject_evidence(self):
+        rows = [(2, "tenant-07", 201), (1, "tenant-07", 200)]
+        plans = (["SCAN synthetic_orders"],
+                 ["SEARCH synthetic_orders USING COVERING INDEX idx_orders_tenant_status_created_order"])
+        with self.assertRaisesRegex(EvidenceError, "deterministic"):
+            verify(rows, rows, *plans)
+        rows = [(1, "tenant-07", 200), (1, "tenant-07", 200)]
+        with self.assertRaisesRegex(EvidenceError, "unique"):
+            verify(rows, rows, *plans)
+
+    def test_time_window_violation_rejects_evidence(self):
+        rows = [(1, "tenant-07", 199)]
+        with self.assertRaisesRegex(EvidenceError, "time window"):
+            verify(rows, rows, ["SCAN synthetic_orders"],
+                   ["SEARCH synthetic_orders USING COVERING INDEX idx_orders_tenant_status_created_order"])
+
 
 if __name__ == "__main__":
     unittest.main()

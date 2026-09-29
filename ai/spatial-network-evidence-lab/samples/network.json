@@ -1,0 +1,13 @@
+{
+  "version": "synthetic-v1",
+  "nodes": [
+    {"id": "hub", "lat": 37.3947, "lon": 127.1113},
+    {"id": "transfer", "lat": 37.3951, "lon": 127.1120},
+    {"id": "dropoff", "lat": 37.3958, "lon": 127.1126}
+  ],
+  "edges": [
+    {"id": "a", "from": "hub", "to": "transfer", "distance_m": 90},
+    {"id": "b", "from": "transfer", "to": "dropoff", "distance_m": 120}
+  ],
+  "routes": [{"id": "demo-route", "edge_ids": ["a", "b"]}]
+}

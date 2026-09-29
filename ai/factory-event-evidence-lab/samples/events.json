@@ -1,0 +1,12 @@
+{
+  "version": "synthetic-v1",
+  "route": ["inspection", "assembly", "packing"],
+  "events": [
+    {"id": "e-01", "lot": "lot-A", "station": "inspection", "kind": "START", "at": "2026-09-29T09:00:00+09:00"},
+    {"id": "e-02", "lot": "lot-A", "station": "inspection", "kind": "COMPLETE", "at": "2026-09-29T09:01:00+09:00"},
+    {"id": "e-03", "lot": "lot-A", "station": "assembly", "kind": "START", "at": "2026-09-29T09:02:00+09:00"},
+    {"id": "e-04", "lot": "lot-A", "station": "assembly", "kind": "COMPLETE", "at": "2026-09-29T09:03:00+09:00"},
+    {"id": "e-05", "lot": "lot-A", "station": "packing", "kind": "START", "at": "2026-09-29T09:04:00+09:00"},
+    {"id": "e-06", "lot": "lot-A", "station": "packing", "kind": "COMPLETE", "at": "2026-09-29T09:05:00+09:00"}
+  ]
+}
