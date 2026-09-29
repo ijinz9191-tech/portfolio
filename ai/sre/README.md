@@ -1,18 +1,16 @@
-# portfolio
+# 장애 재현 실습
 
-## Incident Replay Lab
+서비스 간 장애 전파를 재현하고 운영 절차의 복구 효과를 확인하는 백엔드·SRE 실습 앱입니다. Node.js HTTP API, SQLite, 결과를 재현할 수 있는 시뮬레이션 엔진과 브라우저 화면이 함께 동작합니다.
 
-Service 간 장애 전파를 재현하고 Runbook의 복구 효과를 확인하는 Backend/SRE 실습 앱입니다. Node.js HTTP API, SQLite, 결정적 Simulation Engine과 Browser Console이 함께 동작합니다.
+- **상호작용 연결 구조**: 서비스 8개의 의존 관계, 최초 장애와 영향 경로를 탐색합니다.
+- **장애 주입**: 사례 4개와 강도를 선택하고 실행·일시 정지·시간 진행을 제어합니다.
+- **실시간 신호**: 서버가 계산한 지연·오류율·처리량 변화를 확인합니다.
+- **장애 대응**: 원인에 맞는 운영 절차를 적용하고 복구 과정과 시간 순서를 확인합니다.
+- **재현과 사후 분석**: SQLite의 스냅샷을 재생하고 사후 분석 JSON을 내보냅니다.
 
-- **Interactive Topology** — 8개 Service의 의존 관계, Root Fault와 영향 경로를 탐색합니다.
-- **Fault Injection** — 4개 Scenario와 Intensity를 선택하고 Run·Pause·Tick으로 시간을 제어합니다.
-- **Live Signals** — 서버가 계산한 Latency·Error Rate·Throughput의 변화를 확인합니다.
-- **Incident Response** — 원인에 맞는 Runbook을 적용하고 복구 과정과 Timeline을 확인합니다.
-- **Replay & Postmortem** — SQLite에 저장된 Snapshot을 재생하고 Postmortem JSON을 내보냅니다.
+## 빠른 시작
 
-### Quickstart
-
-Node.js **24 이상**이 필요합니다. 외부 npm Dependency 설치 없이 실행합니다.
+Node.js **24 이상**이 필요합니다. 외부 npm 의존 패키지 설치 없이 실행합니다.
 
 ```sh
 node --version
@@ -21,8 +19,8 @@ npm run build
 npm start
 ```
 
-Browser에서 **http://127.0.0.1:4173**을 엽니다. 서버는 로컬 주소에만 연결되며, 기본 기록은 `data/lab.sqlite`에 저장됩니다.
+브라우저에서 **http://127.0.0.1:4173**을 엽니다. 서버는 로컬 주소에만 연결되고 기본 기록은 `data/lab.sqlite`에 저장됩니다.
 
-[실습 순서·Architecture·API·보존 정책 보기](APP.md)
+[실습 순서·설계·API·보존 정책](APP.md)을 참고하세요.
 
-AI 지원으로 구현한 합성 장애 Simulation입니다. 모든 Metric은 모델의 출력이며 실제 고객 Traffic이나 개인의 실무 운영 성과가 아닙니다.
+AI 보조 도구로 구현한 가상 장애 시뮬레이션입니다. 모든 지표는 모델의 출력이며 실제 고객 요청이나 개인의 과거 운영 성과가 아닙니다.

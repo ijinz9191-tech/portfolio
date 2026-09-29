@@ -1,22 +1,22 @@
-# Engineering Portfolio site
+# 엔지니어링 포트폴리오 사이트
 
-Static, dependency-free public introduction. Publish ONLY `index.html` and `styles.css` from this directory. This page has no API, account integration, application data, cookies, forms or external fonts.
+외부 패키지가 필요 없는 공개 정적 소개 페이지입니다. 이 디렉터리에서는 `index.html`과 `styles.css`만 게시합니다. API, 계정 연동, 지원자 자료, 쿠키, 양식, 외부 글꼴은 없습니다.
 
-## Local checks
+## 로컬 확인
 
-From repository root, Node.js 24:
+저장소 루트에서 Node.js 24로 실행합니다.
 
-```
+```sh
 node --test --test-isolation=none site/test.mjs
 node site/serve.mjs
 ```
 
-Preview: http://127.0.0.1:4189 (local only). Stop with Ctrl+C. The preview allows two public assets; unknown paths return 404 and writes return 405. Automated tests cover content, links/anchors, CSS asset, headers, forbidden paths and writes. Browser mobile/desktop visual verification is a separate check.
+미리보기 주소는 http://127.0.0.1:4189 이며 로컬에서만 열립니다. Ctrl+C로 종료합니다. 미리보기는 공개 자산 두 개만 제공하고 다른 경로는 `404`, 쓰기 요청은 `405`를 반환합니다. 자동 테스트는 내용, 링크·앵커, CSS 자산, 헤더, 금지 경로와 쓰기 요청을 확인합니다. 모바일·데스크톱 시각 점검은 별도입니다.
 
-## Publication
+## 게시
 
-No deployment is performed by these commands. GitHub Pages can serve these static assets through an approved Pages workflow or a publishing branch. Repository Pages settings, credentials and actual anonymous URL must be verified by the publisher. Do not publish the whole repository or runtime SQLite files. The `ai/sre` application needs its own local Node API and is linked as source, not an online demo.
+위 명령만으로 배포되지는 않습니다. 승인된 Pages 절차 또는 게시 브랜치로 정적 자산을 제공할 수 있습니다. 게시자는 저장소 Pages 설정, 자격 증명과 실제 비로그인 접근 주소를 확인해야 합니다. 저장소 전체나 실행 중 SQLite 파일을 게시하지 않습니다. `ai/sre` 앱은 별도 로컬 Node API가 필요하므로 온라인 데모가 아닌 소스 링크로 표시합니다.
 
-## Truth and maintenance
+## 사실성과 유지 관리
 
-Existing Incident Replay Lab is not attributed to a new job application. Append newly verified projects to the site and `ai/PROJECTS.md`; preserve `ai/README.md`. Public application counts and unmeasured automation metrics are omitted. AI authored these site files under user-provided goals; no claim of independent user implementation is made.
+기존 장애 재현 실습을 새 공고 지원의 신규 작업으로 돌리지 않습니다. 새로 검증한 프로젝트는 사이트와 `ai/PROJECTS.md`에 추가하고 `ai/README.md`를 보존합니다. 공개 지원 건수와 측정하지 않은 자동화 지표는 넣지 않습니다. 사용자 목표를 바탕으로 AI가 사이트 파일을 작성했으며 사용자가 혼자 구현했다고 주장하지 않습니다.

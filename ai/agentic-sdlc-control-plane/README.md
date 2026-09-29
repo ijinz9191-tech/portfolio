@@ -1,38 +1,36 @@
-# Agentic SDLC Control Plane
+# 에이전트 개발 절차 제어 실습
 
-A dependency-free Node.js 24 control-plane lab for synthetic NPU fleet inventory, resource scheduling, multi-component release gates and approval-bound agentic remediation.
+가상 NPU 자산 목록, 자원 배치, 여러 구성 요소의 배포 판단, 승인 범위 안의 자동 조치를 다루는 Node.js 24 제어 실습입니다. 외부 패키지는 필요하지 않습니다. NPU 카드·파이프라인 결과·서비스 신호·장애는 모두 가상이며 실제 NPU·베어메탈·Slurm·OpenStack·Rebellions 운영 경험을 주장하지 않습니다.
 
-The project uses synthetic NPU cards, pipeline results, service signals and incidents. It does not claim production NPU, bare-metal, Slurm, OpenStack or Rebellions experience.
-
-## Run
+## 실행
 
 ```bash
 npm test
 npm run simulate
 ```
 
-## Problem
+## 해결하려는 문제
 
-Driver, firmware and collective-communication components must be built and tested together while scarce accelerator resources are reserved safely. An AI-assisted incident workflow also needs strict tool boundaries, current evidence and explicit approval before it mutates fleet state.
+드라이버·펌웨어·집합 통신 구성 요소는 함께 빌드하고 시험해야 하며, 희소한 가속기 자원은 안전하게 예약해야 합니다. AI 보조 장애 절차에서 자산 상태를 바꾸려면 엄격한 도구 경계, 최신 근거와 명시적 승인이 필요합니다.
 
-## Capabilities
+## 주요 기능
 
-- Validates NPU nodes and globally unique card inventory
-- Reserves healthy cards by memory, feature, firmware and maximum-node constraints
-- Rejects stale leases, degraded capacity and duplicate allocation
-- Gates driver, firmware and collective-library releases on build, unit, integration, hardware-simulation and security evidence
-- Binds every component result to the candidate source revision and current fleet lease
-- Applies SLO error-budget and p95 latency gates
-- Builds deterministic, bounded agent plans with an explicit tool allow-list
-- Requires a plan-bound approval hash for quarantine or rollback actions
-- Stores tool results in a tamper-evident evidence ledger
+- NPU 노드와 전체에서 고유한 카드 목록을 검증합니다.
+- 메모리·기능·펌웨어·최대 노드 수 조건으로 정상 카드를 예약합니다.
+- 오래된 임대, 성능이 저하된 용량, 중복 할당을 거부합니다.
+- 드라이버·펌웨어·통신 라이브러리 배포에 빌드·단위·통합·하드웨어 시뮬레이션·보안 근거를 요구합니다.
+- 구성 요소별 결과를 후보 소스 버전과 현재 자산 임대에 연결합니다.
+- SLO 오류 예산과 p95 지연 조건을 적용합니다.
+- 도구 허용 목록이 명시된, 범위가 제한되고 재현 가능한 에이전트 계획을 만듭니다.
+- 격리·롤백 조치에는 계획에 연결된 승인 해시를 요구합니다.
+- 도구 결과를 변조 감지 근거 원장에 저장합니다.
 
-## Verification
+## 검증 범위
 
-The suite covers inventory corruption, capacity constraints, degraded cards, firmware mismatch, duplicate leases, release-stage failures, stale source and lease evidence, SLO breaches, approval enforcement, stale facts, tool allow-list enforcement and audit tampering.
+자산 목록 손상, 용량 제약, 저하된 카드, 펌웨어 불일치, 중복 임대, 배포 단계 실패, 오래된 소스·임대 근거, SLO 위반, 승인 강제, 오래된 사실, 도구 허용 목록과 감사 변조를 테스트합니다.
 
-See `docs/architecture.md`, `docs/runbook.md` and `docs/verification.md`.
+[설계 설명](docs/architecture.md), [실행 절차](docs/runbook.md), [검증 기준](docs/verification.md)을 참고하세요.
 
-## Contribution boundary
+## 기여 및 사용 범위
 
-The applicant supplied the career objective, source facts and review decisions. AI-assisted tooling implemented and tested this code and documentation. This CareerOps project is portfolio evidence and is separate from employment or production results.
+지원자는 경력 목표·원본 사실·검토 판단을 제공했습니다. AI 보조 도구로 코드와 문서를 구현·테스트했습니다. 이 자료는 공개 포트폴리오 근거이며 과거 재직 업무나 운영 성과와 구분합니다.

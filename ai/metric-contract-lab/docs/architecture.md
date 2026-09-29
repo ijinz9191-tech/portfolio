@@ -1,27 +1,27 @@
-# Architecture
+# 설계
 
 ```text
-Synthetic JSON -> validation -> transaction -> events + batch receipt + day revision
-Contract JSON -> validated enum -> immutable contract version
-latest contracts + UTC day inputs -> transaction -> immutable runs + current heads
-readonly SQLite connection -> loopback GET API -> metrics / quality / lineage
+가상 JSON → 검증 → 트랜잭션 → 이벤트 + 배치 접수증 + 일자 버전
+계약 JSON → 허용 값 검증 → 불변 계약 버전
+최신 계약 + UTC 일자 입력 → 트랜잭션 → 불변 실행 + 현재 머리 버전
+읽기 전용 SQLite 연결 → 로컬 GET API → 지표 / 품질 / 계보
 ```
 
-| Table | Role |
+| 테이블 | 역할 |
 |---|---|
-| contracts | Immutable JSON definition and hash by metric/version |
-| events | Immutable accepted event, content hash and event/receive times |
-| batches | Durable receipt and ordered payload hash |
-| day_revisions | Revision per affected day |
-| metric_runs | Immutable value, input count, revision and hashes |
-| metric_heads | Current run by metric/version/day |
+| contracts | 지표·버전별 변경 불가 JSON 정의와 해시 |
+| events | 승인된 불변 이벤트, 내용 해시, 발생·수신 시각 |
+| batches | 지속 접수증과 입력 순서가 반영된 해시 |
+| day_revisions | 영향받은 날짜별 버전 |
+| metric_runs | 변경 불가 값·입력 수·버전·해시 |
+| metric_heads | 지표·버전·날짜별 현재 실행 |
 
-BEGIN IMMEDIATE, WAL and foreign keys keep writes within a single SQLite transaction. A mid-batch conflict rolls back earlier inserts. Metric runs and heads commit together. HTTP requests open mode=ro connections with query_only enabled.
+`BEGIN IMMEDIATE`, WAL, 외래 키로 쓰기를 단일 SQLite 트랜잭션에 묶습니다. 배치 중간에 충돌하면 앞선 삽입도 롤백합니다. 지표 실행과 머리 버전은 함께 커밋합니다. HTTP 요청은 `query_only`를 켠 `mode=ro` 연결을 엽니다.
 
-SQL selects typed inputs and joins heads to revisions. Python implements the three validated aggregation operations. No contract text is evaluated as SQL or code.
+SQL은 타입을 확인한 입력을 선택하고 현재 머리 버전과 날짜 버전을 연결합니다. 검증된 집계 방식 세 가지는 Python에서 구현합니다. 계약 문구를 SQL이나 코드로 실행하지 않습니다.
 
-Lineage hashes sorted [event ID, content hash] pairs. Each run retains exact contract hash/version, selected day/type, input count and revision. The API returns no raw actor IDs. It stores an input-set fingerprint, not a historical input ID list or independent attestation. Database ownership can bypass triggers.
+계보 해시는 정렬된 `[이벤트 ID, 내용 해시]` 쌍에서 만듭니다. 각 실행에는 정확한 계약 해시·버전, 선택 날짜·유형, 입력 수와 버전이 남습니다. API는 원래 담당자 ID를 반환하지 않습니다. 입력 집합의 지문은 저장하지만 과거 입력 ID 전체 목록이나 독립적인 증명은 아닙니다. DB 소유자는 트리거를 우회할 수 있습니다.
 
-Day-level invalidation deliberately over-invalidates unaffected metric types. Rebuild is explicit, not scheduled. A synthetic failure-injection test checks that partial materialization leaves all previous heads intact.
+날짜 단위 무효화는 영향이 없는 지표 유형도 보수적으로 무효화합니다. 재집계는 명시적으로 실행하며 예약 실행하지 않습니다. 가상 실패 주입 테스트는 집계 도중 일부만 완료돼도 이전 머리 버전 전체가 유지됨을 확인합니다.
 
-The standard-library server is local, single-threaded and unauthenticated. Host checks reduce DNS-rebinding exposure but do not create an authorization boundary.
+표준 라이브러리 서버는 로컬·단일 스레드·무인증입니다. Host 검사로 DNS 재결합 노출을 줄이지만 인증 경계를 만들지는 않습니다.

@@ -1,5 +1,5 @@
-# Architecture
+# 설계
 
-`topology.js` validates a synthetic cluster graph. `scheduler.js` creates a topology-aware placement and mutates allocation state only after every capacity constraint passes. `diagnostics.js` turns measured signals into ranked, inspectable hypotheses. `remediation.js` requires a proposed allow-listed action, an approval bound to the exact plan hash, execution evidence and a health verification result. `snapshot.js` binds stored state to a SHA-256 digest.
+`topology.js`는 가상 클러스터 연결 그래프를 검증합니다. `scheduler.js`는 연결 구조를 고려해 배치 계획을 만들고, 모든 용량 제약을 통과한 뒤에만 할당 상태를 바꿉니다. `diagnostics.js`는 관측 신호를 순위와 근거가 보이는 진단 가설로 바꿉니다. `remediation.js`는 허용된 조치 계획, 그 계획의 정확한 해시에 연결된 승인, 실행 근거와 변경 후 상태 확인을 요구합니다. `snapshot.js`는 저장 상태를 SHA-256 해시로 묶습니다.
 
-The scheduler and diagnostic rules are intentionally deterministic so test failures can be reproduced. No external cluster, cloud account or production endpoint is contacted.
+배치·진단 규칙을 결정적으로 만들어 실패 테스트를 재현할 수 있습니다. 외부 클러스터, 클라우드 계정 또는 운영 경로에는 접속하지 않습니다.

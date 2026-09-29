@@ -1,23 +1,23 @@
-# Requirements and metric semantics
+# 요구사항과 지표 의미
 
-Business users need an explicit metric definition and visibility when late data changes a number. Contracts contain metric_id, sequential version, name, description, owner, event_type and aggregation. Definitions are JSON; the project has no graphical authoring UI.
+업무 사용자는 지표 정의를 명시하고 지연 자료가 값을 바꿀 때 알 수 있어야 합니다. 계약에는 `metric_id`, 순차 버전, 이름, 설명, 소유자, 이벤트 유형과 집계 방식이 들어갑니다. 정의는 JSON이며 그래픽 작성 화면은 없습니다.
 
-- Timestamps are strict UTC seconds: YYYY-MM-DDTHH:MM:SSZ. Days are [00:00:00, next day 00:00:00) UTC.
-- event_count counts accepted unique event IDs of the selected type.
-- distinct_users counts distinct actor IDs among those events.
-- sum_amount_cents sums integer purchase amounts: gross amount without refunds, fees, tax or FX.
-- Read amounts must be zero; purchase amounts are integers from 0 to 1,000,000,000 cents.
-- New batches accept events up to seven UTC calendar dates before receipt, and at most five minutes ahead.
-- An accepted batch ID with identical ordered payload returns its durable receipt even after the late window. Different content conflicts. Array order is part of the batch fingerprint.
-- An identical repeated event ID is a duplicate. Changed content aborts the whole batch, including earlier inserts in the transaction.
-- Each inserted day's revision increments once per batch. All metric heads for that day become STALE, including unaffected event types.
-- Materialization computes the latest version of every contract atomically. Old versions and runs remain queryable. Each rebuild creates new runs.
-- A day never materialized is absent, not implicitly zero. Explicit empty-day materialization returns zero.
+- 시각은 엄격한 UTC 초 단위 `YYYY-MM-DDTHH:MM:SSZ`입니다. 날짜 구간은 UTC `[00:00:00, 다음 날 00:00:00)`입니다.
+- `event_count`는 선택한 유형에서 승인된 고유 이벤트 ID 수입니다.
+- `distinct_users`는 해당 이벤트의 고유 담당자 ID 수입니다.
+- `sum_amount_cents`는 정수 구매 금액의 합입니다. 환불·수수료·세금·환율을 반영하지 않은 총액입니다.
+- 읽기 이벤트의 금액은 0이어야 합니다. 구매 금액은 0~1,000,000,000센트의 정수입니다.
+- 신규 배치는 수신일보다 최대 UTC 달력 날짜 7일 앞선 이벤트와 최대 5분 미래 이벤트까지 받습니다.
+- 이미 승인된 배치 ID와 입력 순서·내용이 같으면 지연 허용 기간이 지나도 기존 접수증을 반환합니다. 내용이 다르면 충돌입니다. 배열 순서는 배치 지문에 포함됩니다.
+- 같은 이벤트 ID와 같은 내용은 중복입니다. 내용이 바뀌면 트랜잭션 앞부분의 삽입을 포함해 배치 전체를 취소합니다.
+- 이벤트가 삽입된 날짜의 버전은 배치마다 한 번 증가합니다. 그 날짜의 모든 지표 머리 버전이 관련 없는 이벤트 유형까지 `STALE`이 됩니다.
+- 집계는 모든 계약의 최신 버전을 원자적으로 계산합니다. 이전 버전과 실행 기록은 계속 조회할 수 있고 재집계 때 새 실행 기록을 만듭니다.
+- 한 번도 집계하지 않은 날짜는 암묵적 0이 아니라 결과 없음입니다. 빈 날짜를 명시적으로 집계하면 0을 반환합니다.
 
-## Limits and acceptance
+## 제한과 수용 기준
 
-Identifiers: 1-64 ASCII alphanumeric/underscore/hyphen, first character alphanumeric. Text: 1-500 characters. Contract versions: sequential 1-1000. Batch: 1-1000 events and at most 1 MiB canonical JSON; file input is also byte-limited. Queries: at most 31 inclusive dates and 1000 results. No arbitrary SQL expression is accepted.
+식별자는 1~64자의 ASCII 영문·숫자·밑줄·하이픈이며 첫 글자는 영문 또는 숫자입니다. 문구는 1~500자, 계약 버전은 연속된 1~1000입니다. 배치는 1~1000개 이벤트와 정규화 JSON 1MiB 이하로 제한하고 입력 파일도 바이트 수를 제한합니다. 조회는 포함 날짜 31일, 결과 1000개 이내입니다. 임의 SQL 식은 받지 않습니다.
 
-Tests cover metric values, midnight, atomic invalid/conflicting batches, restart/replay, late-window boundaries, contract versions, stale/rebuild, injected database failure and recovery, input limits, injection attempts, readonly enforcement, actual CLI and HTTP.
+테스트는 지표 값, 자정 경계, 원자적 오류·충돌 배치, 재시작·재실행, 지연 허용 경계, 계약 버전, 오래된 값과 재집계, DB 실패 주입·복구, 입력 한도, 주입 시도, 읽기 전용 강제, 실제 명령행과 HTTP를 다룹니다.
 
-Storage volume and contract catalog size are not globally capped. A metric/day input set is loaded into Python memory. This lab is not a large-volume warehouse.
+전체 저장량과 계약 목록 크기에는 전역 상한이 없습니다. 지표·날짜별 입력 집합은 Python 메모리로 읽습니다. 대용량 창고용 구현은 아닙니다.

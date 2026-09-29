@@ -1,20 +1,20 @@
-# Runbook
+# 실행 절차
 
-## Message remains `IN_FLIGHT`
+## 메시지가 `IN_FLIGHT`에 남을 때
 
-1. Read the message and latest audit event.
-2. Confirm `nextAttemptAt` and current attempt count.
-3. Run `POST /tick` only when the acknowledgement deadline has passed.
-4. If the message reaches `DEAD_LETTER`, preserve the audit trail and investigate the recipient or transport before replay.
+1. 메시지와 최근 감사 이벤트를 확인합니다.
+2. `nextAttemptAt`과 현재 시도 횟수를 확인합니다.
+3. 확인 응답의 마감 시각이 지난 뒤에만 `POST /tick`을 실행합니다.
+4. `DEAD_LETTER`가 되면 감사 기록을 보존하고 재실행 전에 수신자나 전송 경로를 조사합니다.
 
-## `IDEMPOTENCY_CONFLICT`
+## `IDEMPOTENCY_CONFLICT`가 발생할 때
 
-Do not overwrite the earlier command. Compare the producer request tied to the key and issue a new key only for a distinct business command.
+이전 명령을 덮어쓰지 않습니다. 같은 키에 연결된 발신 요청을 대조하고 실제로 다른 업무 명령일 때만 새 키를 발급합니다.
 
-## `CAPACITY_EXCEEDED`
+## `CAPACITY_EXCEEDED`가 발생할 때
 
-Check unacknowledged deliveries for the conversation. Restore recipient health or drain terminal work; do not raise the limit before understanding the backlog.
+대화의 미확인 배송을 확인합니다. 수신 측 상태를 복구하거나 종료 가능한 작업을 비웁니다. 적체 원인을 알기 전에는 한도를 올리지 않습니다.
 
-## Recovery
+## 복구
 
-Persist a verified `snapshot()` value atomically, restore it with `MessageLedger.restore`, then run focused idempotency, sequence and dispatch checks before accepting traffic.
+검증된 `snapshot()` 값을 원자적으로 저장하고 `MessageLedger.restore`로 복원합니다. 트래픽을 받기 전에 멱등성·순서·발송 검사를 집중 실행합니다.

@@ -1,28 +1,28 @@
-# Runbook
+# 실행 절차
 
-Run ./verify.ps1 from PowerShell 7 with JDK 21 on PATH. It compiles source and tests into ignored .build, executes the test program, and writes artifacts/verification.json. Start with java -cp .build lab.Gateway 4193.
+JDK 21이 PATH에 있는 PowerShell 7에서 `./verify.ps1`을 실행합니다. 이 스크립트는 소스·테스트를 무시 대상인 `.build`에 컴파일하고 테스트 프로그램을 실행한 뒤 `artifacts/verification.json`을 기록합니다. `java -cp .build lab.Gateway 4193`으로 서버를 시작합니다.
 
-## API
+## API 경로
 
-| Method and route | Behavior |
+| 메서드와 경로 | 동작 |
 |---|---|
-| POST /infer | Validate features, key and admission; returns job snapshot |
-| GET /jobs/{id} | Current retained result; 404 when unknown or expired |
-| GET /metrics | Counts, queue depth, records, cache size and circuit state |
-| GET /health | Liveness identity only; does not certify model readiness |
+| POST /infer | 특성·키·요청 접수를 검증하고 작업 스냅샷을 반환 |
+| GET /jobs/{id} | 보관 중인 결과 반환, ID가 없거나 만료되면 404 |
+| GET /metrics | 처리 수·대기열 깊이·기록·캐시 크기·회로 상태 |
+| GET /health | 생존 식별 정보만 반환하며 모델 준비 상태를 보증하지 않음 |
 
-Query parameters are rejected. Host must be localhost or 127.0.0.1 with the bound port. JSON responses are no-store and nosniff. No raw feature vectors or provider exceptions appear in results.
+조회 매개변수는 거부합니다. Host는 연결된 포트를 포함한 `localhost` 또는 `127.0.0.1`이어야 합니다. JSON 응답은 `no-store`, `nosniff`를 사용합니다. 원본 특성 배열이나 모델 제공자의 예외는 결과에 담지 않습니다.
 
-## Diagnose
+## 문제 진단
 
-- 400: malformed key/features/body; fix the request without changing an accepted key's meaning.
-- 409: retained key already binds different features.
-- 429 QUEUE_FULL: retry later with the same unchanged key; reservation was rolled back.
-- 429 RECORD_CAPACITY: wait for completed-record TTL expiry.
-- FAILED CIRCUIT_OPEN: inspect model failures and cooldown. Failed jobs remain idempotent until TTL.
-- 503 SHUTTING_DOWN: instance is draining.
-- 404: unknown, expired, or lost across restart. Do not imply durable processing.
+- `400`: 키·특성·본문이 잘못됐습니다. 이미 받은 키의 의미를 바꾸지 않고 요청을 고칩니다.
+- `409`: 보관 중인 키가 다른 특성과 이미 연결돼 있습니다.
+- `429 QUEUE_FULL`: 키 예약은 되돌렸으므로 같은 입력·키로 나중에 재시도합니다.
+- `429 RECORD_CAPACITY`: 완료 기록의 TTL 만료를 기다립니다.
+- `FAILED CIRCUIT_OPEN`: 모델 실패와 회로 대기 시간을 확인합니다. 실패 작업도 TTL까지 멱등성을 유지합니다.
+- `503 SHUTTING_DOWN`: 인스턴스가 진행 작업을 정리하고 있습니다.
+- `404`: ID가 없거나 만료됐거나 재시작으로 사라졌습니다. 지속 처리를 주장하지 않습니다.
 
-Ctrl+C stops HTTP and drains model work for up to three seconds, then requests interruption and marks unfinished jobs CANCELLED. A non-cooperative model may continue running; this demo model does not perform blocking external work.
+Ctrl+C를 누르면 HTTP를 멈추고 모델 작업을 최대 3초 기다린 뒤 중단을 요청하고 미완료 작업을 `CANCELLED`로 표시합니다. 비협조적 모델은 계속 실행될 수 있지만 이 데모 모델은 외부 차단 작업을 하지 않습니다.
 
-There are no remote resources to clean up. .build contains generated classes and can be removed when no Java process is using them. Artifacts contain synthetic test names/results only. Do not send candidate documents, payment data or secrets to this unauthenticated local demonstration.
+정리할 원격 자원은 없습니다. `.build`에는 생성된 클래스가 있으며 Java 프로세스가 사용하지 않을 때 정리할 수 있습니다. 산출물에는 가상 테스트 이름과 결과만 있습니다. 지원자 서류·결제 자료·비밀 정보를 이 무인증 로컬 데모에 보내지 않습니다.

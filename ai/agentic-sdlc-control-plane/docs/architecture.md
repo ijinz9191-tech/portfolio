@@ -1,20 +1,20 @@
-# Architecture
+# 설계
 
-## Components
+## 구성 요소
 
-1. `inventory.js` validates nodes/cards and issues immutable lease evidence after constrained scheduling.
-2. `pipeline-gate.js` verifies all required stages, source revision, lease proof and SLO headroom.
-3. `agentic-runner.js` creates deterministic plans from evidence. Mutating steps require a hash bound to the exact plan and incident.
-4. `evidence-ledger.js` stores hash-linked observations and action results.
+1. `inventory.js`는 노드·카드를 검증하고 제약 조건에 따른 배치 뒤 불변 임대 근거를 발급합니다.
+2. `pipeline-gate.js`는 필수 단계, 소스 버전, 임대 근거, 남은 SLO 여유를 확인합니다.
+3. `agentic-runner.js`는 근거에서 재현 가능한 계획을 만듭니다. 상태를 바꾸는 단계에는 정확한 계획과 장애에 연결된 해시가 필요합니다.
+4. `evidence-ledger.js`는 해시로 이어진 관측과 조치 결과를 저장합니다.
 
-## Trust boundaries
+## 신뢰 경계
 
-- Fixtures are synthetic and contain no employer data.
-- The agent cannot add tools outside a fixed allow-list.
-- An approval is scoped to one plan hash and cannot approve a changed plan.
-- Release evidence must match the exact candidate revision and resource request.
-- This lab does not execute shell commands, reach external infrastructure or expose credentials.
+- 예제는 가상이며 고용주 자료를 포함하지 않습니다.
+- 에이전트는 고정된 허용 목록 밖의 도구를 추가할 수 없습니다.
+- 승인은 하나의 계획 해시에만 적용되며 변경된 계획을 승인하지 않습니다.
+- 배포 근거는 정확한 후보 버전과 자원 요청에 일치해야 합니다.
+- 이 실습은 셸 명령 실행, 외부 인프라 접근, 자격 증명 노출을 하지 않습니다.
 
-## New implementation
+## 새 구현 범위
 
-This project adds a multi-component SDLC gate and approval-bound agent workflow. It does not reuse the placement diagnosis or remediation model from earlier topology projects.
+여러 구성 요소의 개발 절차 판단과 승인된 에이전트 작업 흐름을 구현합니다. 이전 연결 구조 프로젝트의 배치 진단·조치 모델을 그대로 재사용하지 않습니다.

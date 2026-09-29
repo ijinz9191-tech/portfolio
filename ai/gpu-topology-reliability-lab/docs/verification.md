@@ -1,8 +1,8 @@
-# Verification
+# 검증 기준
 
-- Runtime: Node.js 24 or newer
-- Command: `npm test`
-- Scope: topology validation, safe placement, failure diagnosis, remediation control, audit integrity and snapshot recovery
-- Data: synthetic only
+- 실행 환경: Node.js 24 이상
+- 명령: `npm test`
+- 범위: 연결 구조 검증, 안전한 배치, 실패 진단, 조치 통제, 감사 무결성과 스냅샷 복구
+- 자료: 가상 자료만 사용
 
-The verification result is valid only for the tested source revision. Changes to source, tests or runtime configuration require a new run.
+검증 결과는 테스트한 소스 버전에만 유효합니다. 소스·테스트·실행 환경 설정이 바뀌면 다시 실행해야 합니다.

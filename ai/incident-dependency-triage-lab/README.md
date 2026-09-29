@@ -1,12 +1,12 @@
-# Incident Dependency Triage Lab
+# 장애 의존 관계 진단 실습
 
-An offline Python tool for reviewing a synthetic multi-service incident. It orders observed failures dependency-first, identifies failed services with no failed dependency as *candidates* for first investigation, and shows possible downstream impact. A healthy downstream probe remains explicit counterevidence rather than being converted into a failure.
+가상의 다중 서비스 장애를 검토하는 오프라인 Python 도구입니다. 관측된 실패를 의존성 앞단부터 정렬하고, 실패한 의존 서비스가 없는 실패 서비스를 첫 조사 **후보**로 제시합니다. 이후 서비스에 미칠 수 있는 영향도 표시합니다. 정상인 후속 탐침은 장애로 바꾸지 않고 명시적인 반증으로 남깁니다.
 
 ```powershell
 conda run -n base python -B -m unittest discover -s tests -v
 conda run -n base python -B triage.py samples/incident.json
 ```
 
-The input is a bounded directed acyclic graph. Unknown dependencies, cycles, duplicate services, missing evidence and invalid health values fail closed. Potential reachability is reported separately from observed failed downstream services: a healthy probe never becomes an observed failure simply because it is reachable. A SHA-256 digest binds the canonical snapshot to the result. The output is a diagnostic review plan, not a proven root cause or an instruction to automatically restart production services.
+입력은 크기가 제한된 비순환 방향 그래프입니다. 알 수 없는 의존성, 순환, 중복 서비스, 근거 누락, 잘못된 상태 값은 거부합니다. 잠재 영향 범위와 실제 관측된 후속 실패를 따로 보고하므로, 연결돼 있다는 이유만으로 정상 탐침을 실패로 취급하지 않습니다. SHA-256 해시로 정규화한 입력과 결과를 연결합니다. 출력은 조사 계획이며 확정 원인이나 운영 서비스의 자동 재시작 지시가 아닙니다.
 
-All data are synthetic. This lab does not use any employer systems, live telemetry, or confidential incident data. It is a new resource for reasoning about SRE incident dependencies, separate from the existing Incident Replay Lab's fault simulation and runbook state machine.
+모든 자료는 가상입니다. 고용주 시스템, 실시간 관측값 또는 비공개 장애 자료를 사용하지 않습니다. 기존 장애 재현 실습의 장애 시뮬레이션·운영 절차 상태 기계와 구분되는 신규 SRE 의존 관계 분석 자료입니다.

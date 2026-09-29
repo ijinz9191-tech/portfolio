@@ -1,10 +1,10 @@
-# Tail Latency Attribution Lab
+# 꼬리 지연 분석 실습
 
-An offline Python lab for reviewing **synthetic** shopping request traces. It calculates nearest-rank p95 request latency and points to the span with the largest exclusive wall time in each slow trace. A parent span's overlapping direct child intervals are merged before subtraction; concurrent children are not double counted.
+가상의 쇼핑 요청 추적을 검토하는 오프라인 Python 실습입니다. 최근접 순위 방식으로 요청 p95 지연을 계산하고 느린 추적마다 독점 실행 시간이 가장 긴 구간을 제시합니다. 상위 구간에서 직접 하위 구간의 겹친 시간을 합친 뒤 빼므로 동시에 실행된 하위 작업을 중복 계산하지 않습니다.
 
 ```powershell
 conda run -n base python -B -m unittest discover -s tests -v
 conda run -n base python -B latency.py samples/shopping.json
 ```
 
-The input requires one root per request, valid parent links, nested time intervals and bounded integer milliseconds. Bad, cyclic, orphaned or impossible traces are rejected. The SHA-256 digest is stable across trace and span ordering. Outputs are **investigation candidates** only. A small sample p95 is not a production SLO measurement, and exclusive span time is not a causal performance proof. No live service or private employer data is used.
+입력에는 요청별 루트 하나, 올바른 부모 연결, 포함 관계가 맞는 시간 구간, 제한된 정수 밀리초가 필요합니다. 잘못된·순환된·고립된·불가능한 추적은 거부합니다. SHA-256 해시는 추적·구간의 입력 순서와 무관합니다. 출력은 **조사 후보**일 뿐입니다. 적은 가상 표본의 p95는 운영 SLO 측정값이 아니며 독점 실행 시간도 인과 관계의 증거가 아닙니다. 실서비스나 고용주의 비공개 자료를 사용하지 않습니다.

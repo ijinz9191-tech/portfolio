@@ -1,19 +1,19 @@
-# Architecture
+# 설계
 
 ```text
-Versioned evaluation case
+버전이 지정된 평가 사례
         +
-Synthetic Agent run trace
+가상 에이전트 실행 추적
         ↓
-Schema and sequence validation
+구조와 순서 검증
         ↓
-Deterministic quality / policy / latency / cost checks
+결과 품질 / 정책 / 지연 / 비용 검사
         ↓
-Immutable run ID + SQLite evidence
+불변 실행 ID + SQLite 근거
         ↓
-Suite release gate → read-only HTTP report
+평가 묶음 배포 판단 → 읽기 전용 HTTP 보고
 ```
 
-The control plane separates the output being judged from the evidence used to judge it. A case fixes required facts, forbidden terms, allowed tools and operational budgets. A trace records ordered retrieval, tool and model steps. The evaluator produces individual checks and a fail-closed suite gate.
+제어 기능은 평가할 출력과 이를 판단할 근거를 분리합니다. 사례에는 필수 사실, 금지 문구, 허용 도구, 운영 예산을 고정합니다. 실행 추적은 검색·도구·모델 단계를 순서대로 기록합니다. 평가기는 개별 검사를 만들고 하나라도 중요한 조건을 실패하면 평가 묶음을 차단합니다.
 
-This reference implementation does not call an LLM, Kubernetes or a cloud service. It uses synthetic fixtures so every result is reproducible on a local Python runtime.
+이 참고 구현은 LLM, Kubernetes 또는 클라우드 서비스를 호출하지 않습니다. 가상 예제를 사용하므로 로컬 Python 환경에서 결과를 재현할 수 있습니다.

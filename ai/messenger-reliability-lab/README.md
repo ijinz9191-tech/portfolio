@@ -1,10 +1,10 @@
-# Messenger Reliability Lab
+# 메신저 신뢰성 실습
 
-Synthetic Node.js 24 lab for the delivery boundary of an enterprise messenger. It demonstrates how a service can reject duplicate or out-of-order message commands, bound per-conversation work, retry missing acknowledgements, move exhausted deliveries to a dead-letter state, and preserve an append-only audit trail across restart snapshots.
+기업용 메신저의 메시지 전달 경계를 다루는 가상 Node.js 24 실습입니다. 중복·순서가 어긋난 명령을 거부하고 대화별 처리량을 제한합니다. 확인 응답 누락을 재시도하고, 횟수가 소진되면 실패 메시지 상태로 옮기며, 재시작 스냅샷 전후에 추가 전용 감사 기록을 보존합니다.
 
-This project uses synthetic messages only and does not claim production messenger, cloud, mobile-client or company-system experience.
+가상 메시지만 사용하며 실제 메신저·클라우드·모바일 클라이언트·회사 시스템 운영 경험을 주장하지 않습니다.
 
-## Run
+## 실행
 
 ```bash
 npm test
@@ -12,23 +12,23 @@ npm run simulate
 npm start
 ```
 
-The HTTP server binds to `127.0.0.1:3000` by default.
+HTTP 서버의 기본 주소는 `127.0.0.1:3000`입니다.
 
-## Capabilities
+## 주요 기능
 
-- Idempotency-key replay and conflict rejection
-- Per-conversation monotonic sequence checks
-- UTF-8 payload and active-delivery capacity limits
-- Explicit `QUEUED → IN_FLIGHT → DELIVERED | DEAD_LETTER` state model
-- Acknowledgement timeout with bounded exponential retry
-- Append-only audit events with monotonic event sequence
-- Snapshot restoration of message, idempotency and sequence state
-- Dependency-free loopback HTTP adapter and typed failures
+- 멱등 키 재실행과 내용 충돌 거부
+- 대화별 단조 증가 메시지 순서 검사
+- UTF-8 내용과 진행 중 전달 수 제한
+- `QUEUED → IN_FLIGHT → DELIVERED | DEAD_LETTER` 상태 모델
+- 확인 응답 시간 초과와 횟수 제한 지수 재시도
+- 순서가 단조 증가하는 추가 전용 감사 이벤트
+- 메시지·멱등성·순서 상태의 스냅샷 복원
+- 외부 패키지가 필요 없는 로컬 HTTP 연결기와 유형별 실패
 
-## Verification
+## 검증 범위
 
-The test suite covers normal, duplicate, conflict, capacity, ordering, retry, dead-letter, snapshot, malformed-input and real loopback HTTP paths. See [verification](docs/verification.md), [architecture](docs/architecture.md) and the [runbook](docs/runbook.md).
+정상·중복·충돌·용량·순서·재시도·실패 메시지·스냅샷·잘못된 입력과 실제 로컬 HTTP 경로를 테스트합니다. [검증 기준](docs/verification.md), [설계 설명](docs/architecture.md), [실행 절차](docs/runbook.md)를 참고하세요.
 
-## Contribution boundary
+## 기여 및 사용 범위
 
-The applicant supplied the objective, career facts and review decisions. AI-assisted tooling implemented and tested the code and documentation. This lab is portfolio evidence, separate from past employment and production results.
+지원자는 목표·경력 사실·검토 판단을 제공했습니다. AI 보조 도구로 코드와 문서를 구현·테스트했습니다. 이 자료는 포트폴리오 근거이며 과거 재직 업무나 운영 성과와 구분합니다.

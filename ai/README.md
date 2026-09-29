@@ -1,4 +1,4 @@
-# Autonomous CareerOps
+# 채용 준비 자동화 프로젝트
 
 > **다양한 AI Skill을 활용해 프로젝트를 개발하고, 테스트로 검증한 뒤 GitHub에 Push하고, 최종적으로 Playwright를 활용해 실제 채용공고 지원까지 자동화한 시스템입니다.**
 
@@ -17,9 +17,9 @@
         ↓
 검증 완료
         ↓
-Git Commit
+변경 사항 커밋
         ↓
-GitHub Push
+GitHub 게시
         ↓
 포트폴리오 최신화
         ↓
@@ -61,14 +61,14 @@ Playwright 기반 채용 사이트 자동화
 
 각 단계는 단순히 텍스트를 생성하는 것이 아니라 다음 작업으로 연결됩니다.
 
-### 2. Coding
+### 2. 코드 구현
 
 분석된 요구사항과 계획을 기준으로 실제 프로젝트 코드를 작성하거나 수정합니다.
 
 기존 프로젝트 구조와 기술 스택을 분석하고,
 필요한 기능 구현 및 개선 작업을 수행합니다.
 
-### 3. Test
+### 3. 테스트와 재검증
 
 코드 작성 이후 바로 완료 처리하지 않습니다.
 
@@ -76,9 +76,9 @@ Playwright 기반 채용 사이트 자동화
 문제가 발생하면 원인을 분석한 뒤 수정과 재검증을 반복합니다.
 
 ```text
-Coding
+코드 구현
    ↓
-Test
+테스트
    ↓
 실패
    ↓
@@ -86,28 +86,28 @@ Test
    ↓
 코드 수정
    ↓
-Re-Test
+재검증
    ↓
 통과
 ```
 
-### 4. GitHub Push
+### 4. GitHub 게시
 
 테스트를 통과한 변경사항만 Git에 반영합니다.
 
 ```text
-Test Passed
+테스트 통과
     ↓
 변경사항 확인
     ↓
-Git Commit
+변경 사항 커밋
     ↓
-GitHub Push
+GitHub 게시
 ```
 
 이를 통해 GitHub에는 실제 검증이 완료된 작업 결과가 지속적으로 쌓이도록 구성합니다.
 
-### 5. Portfolio Update
+### 5. 포트폴리오 갱신
 
 GitHub에 반영된 프로젝트 결과를 기준으로 포트폴리오도 최신 상태로 갱신합니다.
 
@@ -116,11 +116,11 @@ GitHub에 반영된 프로젝트 결과를 기준으로 포트폴리오도 최�
 문제 해결 과정,
 테스트 결과 등을 포트폴리오에 반영합니다.
 
-### 6. Playwright를 활용한 채용공고 지원
+### 6. 브라우저를 활용한 채용공고 지원
 
 개발과 GitHub 반영이 끝나면 채용 지원 단계로 연결됩니다.
 
-Playwright를 활용해 실제 채용 사이트에서 브라우저 기반 지원 작업을 자동화합니다.
+채용 사이트의 실제 화면과 입력 상태를 확인하며 지원 작업을 진행합니다.
 
 - 채용공고 페이지 접근
 - 지원 페이지 이동
@@ -139,33 +139,33 @@ Playwright를 활용해 실제 채용 사이트에서 브라우저 기반 지원
 ## 전체 자동화 구조
 
 ```text
-[AI Skills]
+[AI 스킬]
      ↓
-[Analysis / Planning]
+[분석 / 계획]
      ↓
-[Coding]
+[코드 구현]
      ↓
-[Test]
+[테스트]
      ↓
-[Debug / Re-Test]
+[원인 분석 / 재검증]
      ↓
-[Verification]
+[결과 검증]
      ↓
-[Git Commit]
+[변경 사항 커밋]
      ↓
-[GitHub Push]
+[GitHub 게시]
      ↓
-[Portfolio Update]
+[포트폴리오 갱신]
      ↓
-[Job Posting Analysis]
+[채용 공고 분석]
      ↓
-[Application Content]
+[지원 서류 작성]
      ↓
-[Playwright]
+[브라우저 입력]
      ↓
-[Job Application]
+[입사 지원]
      ↓
-[Tracking]
+[접수 결과 기록]
 ```
 
 ## GitHub 소개 문구
@@ -174,12 +174,12 @@ Playwright를 활용해 실제 채용 사이트에서 브라우저 기반 지원
 
 ## 한 줄 소개
 
-> **AI Skills → Coding → Test → GitHub Push → Playwright Job Application**
+> **AI 스킬 → 코드 구현 → 테스트 → GitHub 게시 → 채용 사이트 지원**
 
 ## 강조 문구
 
 > **다양한 Skill을 활용한 개발부터 테스트, GitHub Push, 그리고 Playwright를 통한 실제 채용공고 지원까지 하나의 자동화 흐름으로 연결했습니다.**
 
-## Short Description
+## 간단 소개
 
-**Multi-Skill Autonomous CareerOps — Coding → Test → GitHub Push → Playwright-based Job Application**
+**여러 스킬을 활용한 코드 구현 → 테스트 → GitHub 게시 → 실제 채용 사이트 지원**

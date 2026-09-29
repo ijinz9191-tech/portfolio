@@ -1,18 +1,18 @@
-# SLO Burn Evidence Lab
+# SLO 오류 예산 소진 근거 실습
 
-When a full six-hour window has no requests, the CLI returns `INSUFFICIENT_DATA` instead of treating zero traffic as a healthy service. In segmented assessments, an unobserved path keeps the overall result unknown unless another path independently triggers `PAGE`. This prevents quiet paths from silently passing the incident review gate.
+6시간 전체에 요청이 없으면 명령행 도구는 무트래픽을 정상 서비스로 판정하지 않고 `INSUFFICIENT_DATA`를 반환합니다. 경로별 평가에서 한 경로의 관측이 없으면 다른 경로가 독립적으로 `PAGE` 조건을 만족하지 않는 한 전체 결과를 미확인으로 둡니다.
 
-An offline Python 3.11+ decision aid for a **synthetic request-error SLI**. It checks complete, contiguous five-minute buckets for two multiwindow alert policies: 5 minutes and 1 hour above 14.4× error-budget burn, or 30 minutes and 6 hours above 6×. The windows are request weighted; missing and stale evidence is rejected.
+오프라인 Python 3.11 이상 도구가 **가상 요청 오류 SLI**를 평가합니다. 완전하고 연속된 5분 구간을 사용해 두 가지 다중 구간 경보 정책을 확인합니다. 5분과 1시간의 소진율이 14.4배를 넘거나, 30분과 6시간의 소진율이 6배를 넘는 경우입니다. 요청 수로 가중하며 누락·오래된 근거는 거부합니다.
 
-## Reproduce
+## 재현 방법
 
 ```powershell
 conda run -p <compatible-environment-prefix> python -B -m unittest discover -s tests -v
 conda run -p <compatible-environment-prefix> python -B -m burnlab samples/sustained.json --now 2026-09-29T00:01:00Z
 ```
 
-The `--now` value is a fixture clock. Omit it with fresh data. The CLI exits 0 for an assessed decision and 2 for rejected evidence. `NO_PAGE` with zero traffic means insufficient error observations, not proof of health. The SHA-256 ID binds the normalized latest six-hour bucket set to the output.
+`--now`는 예제 시각입니다. 현재 자료에서는 생략합니다. 평가한 결정은 종료 코드 0, 근거 거부는 코드 2로 끝납니다. 무트래픽의 `NO_PAGE`는 오류 관측이 부족하다는 뜻이며 정상이라는 증거가 아닙니다. SHA-256 ID는 정규화된 최근 6시간 구간과 출력을 연결합니다.
 
-For separate payment paths, provide `{"service": "checkout", "objective": "0.999", "segments": {"card": [...], "transfer": [...]}}`. Each path is evaluated independently, so healthy high-volume requests cannot mask a lower-volume path's burn. All configured paths need complete and fresh evidence; one invalid path rejects the whole decision. The aggregate result lists paged paths and includes an evidence hash derived from each path's hash. Segment names are bounded to 19 characters.
+결제 경로를 나누려면 `{"service": "checkout", "objective": "0.999", "segments": {"card": [...], "transfer": [...]}}`을 입력합니다. 각 경로를 독립 평가하므로 정상 대량 요청이 소량 경로의 소진을 가리지 않습니다. 모든 설정 경로의 근거가 완전하고 최신이어야 하며 하나라도 잘못되면 결정을 거부합니다. 통합 결과는 경보 경로와 각 경로 해시에서 만든 근거 해시를 표시합니다. 경로 이름은 19자로 제한합니다.
 
-This lab does not query Prometheus, page humans, prove an SLO is met, or represent any employer system. It is an AI-built, synthetic portfolio resource under the user's direction, not a claim of prior production implementation.
+Prometheus를 조회하거나 사람에게 실제 경보를 보내지 않습니다. 실제 SLO 달성이나 고용주 시스템 운영도 주장하지 않습니다. 사용자 지시에 따라 AI 보조 도구로 만든 가상 포트폴리오 자료입니다.

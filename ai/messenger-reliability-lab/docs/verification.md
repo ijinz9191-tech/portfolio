@@ -1,5 +1,5 @@
-# Verification
+# 검증 기준
 
-Run `npm test` from the project root. The suite uses Node's built-in test runner without per-file subprocess isolation so it also runs in restricted Windows environments, while every test still receives a separate `node:test` context. The HTTP checks use a real loopback server. A passing record must state the Node version, command, exit code, pass/fail counts, source hash and execution time. Generated documentation alone is not test evidence.
+프로젝트 루트에서 `npm test`를 실행합니다. 제한된 Windows 환경에서도 실행되도록 파일별 별도 프로세스 격리 없이 Node 내장 테스트 실행기를 사용하며, 각 테스트는 별도의 `node:test` 문맥을 갖습니다. HTTP 검사는 실제 로컬 서버를 사용합니다. 통과 기록에는 Node 버전, 명령, 종료 코드, 성공·실패 수, 소스 해시와 실행 시각이 있어야 합니다. 문서 생성만으로 테스트 실행을 증명할 수 없습니다.
 
-Required failure paths include idempotency conflict, unexpected sequence, payload and capacity limits, early acknowledgement, bounded retry to dead-letter, invalid snapshot, malformed JSON and unknown route.
+필수 실패 경로는 멱등성 충돌, 예상 밖 순서, 내용·용량 한도, 조기 확인 응답, 횟수 제한 재시도 후 실패 메시지 보관, 잘못된 스냅샷·JSON과 알 수 없는 경로입니다.

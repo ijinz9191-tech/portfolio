@@ -1,35 +1,35 @@
-# Infrastructure Change Evidence Lab
+# 인프라 변경 근거 실습
 
-A dependency-free Python reference project for validating synthetic enterprise infrastructure changes before execution. It checks inventory integrity, dependency blast radius, maintenance windows, execution and rollback plans, approval quorum, downtime budgets and emergency controls, then stores immutable evidence in SQLite.
+가상의 기업 인프라 변경을 실행 전에 검증하는 Python 참고 구현입니다. 자산 목록 정합성, 의존 범위, 점검 시간, 실행·롤백 계획, 승인 정족수, 중단 시간 예산과 긴급 변경 통제를 확인하고 변경할 수 없는 근거를 SQLite에 저장합니다.
 
-## Problem
+## 해결하려는 문제
 
-Server and network changes fail when ownership, dependencies, rollback, approval or impact are discovered only during an outage. This project turns a proposed change and a versioned synthetic inventory into deterministic, reviewable evidence before an operator touches infrastructure.
+서버와 네트워크 변경 중에 소유자·의존성·롤백·승인·영향 범위를 처음 알게 되면 장애 위험이 커집니다. 이 프로젝트는 버전이 고정된 가상 자산 목록과 제안된 변경을 검토 가능한 결정적 근거로 바꿉니다.
 
-## Implemented
+## 구현한 기능
 
-- Inventory checks for asset existence, ownership, lifecycle state and duplicate IPs
-- Dependency-aware blast-radius calculation and scope validation
-- Network cutover baseline, post-change and rollback probe plans per affected network asset
-- Time-zone-aware maintenance windows capped at four hours
-- Ordered execution and rollback plan requirements
-- Risk-based unique approval quorum and production downtime budget
-- Emergency-change ticket and approval controls
-- SHA-256 evidence binding the input inventory, request and checks
-- SQLite idempotency with conflicting change ID rejection
-- Read-only HTTP health, summary and decision endpoints
-- CLI and normal/failure-path tests with real temporary SQLite and loopback HTTP
+- 자산의 존재, 소유자, 수명 상태, 중복 IP를 검사합니다.
+- 의존 관계로 영향 범위를 계산하고 요청 범위와 대조합니다.
+- 네트워크 전환 시 영향 자산별 변경 전·후·롤백 탐침 계획을 요구합니다.
+- 시간대를 반영하고 최대 4시간으로 제한한 점검 시간을 검사합니다.
+- 실행·롤백 단계의 순서를 확인합니다.
+- 위험도별로 중복 없는 승인 정족수와 운영 중단 시간 예산을 적용합니다.
+- 긴급 변경에는 티켓과 승인 통제를 요구합니다.
+- 자산 목록, 요청, 검사 결과를 SHA-256 근거로 연결합니다.
+- SQLite에서 동일 변경의 재요청은 허용하고 같은 ID의 상충 입력은 거부합니다.
+- 읽기 전용 HTTP 상태·요약·결정 경로와 명령행 도구를 제공합니다.
+- 임시 SQLite와 로컬 HTTP를 사용해 정상·실패 경로를 테스트합니다.
 
-## Quick verification
+## 빠른 검증
 
 ```powershell
 .\verify.ps1
 ```
 
-Python 3.11 or newer is sufficient. No package download is required.
+Python 3.11 이상이면 실행할 수 있으며 패키지를 내려받지 않습니다.
 
-## Scope and provenance
+## 범위와 출처
 
-All assets, addresses, owners, approvals and changes are synthetic. The project does not connect to Samsung Welstory or any company system and does not claim Cisco, Windows or IT asset-management production experience. It demonstrates a transferable approach built from verified Linux, deployment, CI/CD and observability experience. The user supplied the goal and career evidence; AI-assisted tooling implemented and tested this public reference project.
+자산, 주소, 소유자, 승인, 변경은 모두 가상입니다. 삼성웰스토리 또는 다른 회사 시스템과 연결하지 않았고 Cisco·Windows·IT 자산 관리 운영 경험을 주장하지 않습니다. 확인된 Linux·배포·CI/CD·관측 경험에서 옮겨 적용할 수 있는 방법을 보여줍니다. 사용자가 목표와 경력 근거를 제공했고 AI 보조 도구로 이 공개 참고 프로젝트를 구현·검증했습니다.
 
-See [architecture](docs/architecture.md) and [runbook](docs/runbook.md).
+[설계 설명](docs/architecture.md)과 [실행 절차](docs/runbook.md)를 참고하세요.

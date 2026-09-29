@@ -1,21 +1,21 @@
-# Service Mesh Release Safety Lab
+# 서비스 메시 배포 안전 실습
 
-A dependency-free Node.js 24 control plane that rehearses safe multi-cluster service-mesh releases with progressive traffic shifts, SLO gates, security checks, automatic rollback, and tamper-evident evidence.
+Node.js 24로 만든 다중 클러스터 서비스 메시 배포 제어 실습입니다. 외부 패키지 없이 점진적 트래픽 전환, SLO 조건, 보안 검사, 자동 롤백과 변조 감지 근거를 재현합니다.
 
-## Why it exists
+## 필요한 이유
 
-Large Kubernetes fleets need repeatable release decisions. A successful deployment command is insufficient when error rate, latency, saturation, security, and remaining error budget are unknown. This lab models the decision boundary without claiming access to a production cluster.
+큰 Kubernetes 환경에서는 배포 명령의 성공만으로 안전성을 판단할 수 없습니다. 오류율·지연·자원 포화도·보안·남은 오류 예산을 함께 확인해야 합니다. 이 실습은 운영 클러스터에 접속하지 않고 판단 경계를 모델링합니다.
 
-## Capabilities
+## 주요 기능
 
-- Validates two or more unique clusters, an approval token, and remaining error budget before release.
-- Applies deterministic 5% → 25% → 50% → 100% traffic shifts across every cluster.
-- Stops and rolls back on error-rate, p99 latency, resource saturation, or security-policy breaches.
-- Optional strict per-cluster telemetry mode requires a fresh sample from every configured cluster before advancing. A breach in one cluster rolls back the whole release, even when another cluster is healthy. Missing, extra, stale and future-dated cluster samples cannot advance traffic.
-- Records start, observations, decisions, traffic changes, completion, and rollback in a SHA-256 hash chain.
-- Includes 25 normal and failure-path tests with only synthetic data.
+- 배포 전 서로 다른 클러스터 둘 이상, 승인 토큰, 남은 오류 예산을 검증합니다.
+- 모든 클러스터의 트래픽을 5% → 25% → 50% → 100% 순서로 결정적으로 전환합니다.
+- 오류율, p99 지연, 자원 포화도 또는 보안 정책 위반 시 중단하고 롤백합니다.
+- 선택적인 엄격 모드에서는 모든 클러스터의 최신 관측 표본이 있어야 진행합니다. 한 클러스터가 위반하면 다른 클러스터가 정상이어도 전체를 롤백합니다. 누락·추가·오래된·미래 시각 표본으로는 진행할 수 없습니다.
+- 시작·관측·결정·트래픽 변경·완료·롤백을 SHA-256 해시 연결에 기록합니다.
+- 가상 자료로 정상·실패 경로 테스트 25개를 제공합니다.
 
-## Run
+## 실행
 
 ```powershell
 npm test
@@ -23,12 +23,12 @@ npm run demo
 npm run verify
 ```
 
-The demo prints JSON for a healthy checkout-service rollout. It does not require Kubernetes, cloud credentials, or network access.
+데모는 정상 결제 서비스 배포의 JSON을 출력합니다. Kubernetes, 클라우드 자격 증명, 네트워크 접근은 필요하지 않습니다.
 
-For multi-cluster rehearsal, construct `ReleaseController` with `requireClusterSamples: true` and an optional `maxSampleAgeMs`. Then call `observe(releaseId, { clusterSamples: { 'seoul-a': { errorRate, p99LatencyMs, saturation, observedAt }, 'seoul-b': { ... } } })`. `observedAt` is an ISO-8601 timestamp. The default aggregate mode remains available for older local fixtures, but strict mode is the safer multi-cluster decision path.
+다중 클러스터를 연습하려면 `ReleaseController`를 `requireClusterSamples: true`와 선택적 `maxSampleAgeMs`로 생성합니다. 그런 다음 `observe(releaseId, { clusterSamples: { 'seoul-a': { errorRate, p99LatencyMs, saturation, observedAt }, 'seoul-b': { ... } } })`를 호출합니다. `observedAt`은 ISO-8601 시각입니다. 과거 로컬 예제를 위해 통합 지표 모드를 유지하지만 다중 클러스터 판단에는 엄격 모드가 더 적합합니다.
 
-## Boundaries
+## 사용 범위
 
-This is a deterministic local engineering lab. It does not claim production Toss, Istio, Kubernetes, Prometheus, or financial-system operation. The interfaces mirror the decision inputs that a real adapter could obtain from a service mesh and monitoring stack.
+결과가 재현되는 로컬 공학 실습입니다. 토스·Istio·Kubernetes·Prometheus·금융 시스템의 운영 경험을 주장하지 않습니다. 입력 인터페이스는 실제 서비스 메시와 관측 시스템에서 연결기가 가져올 수 있는 결정 자료를 본뜬 것입니다.
 
-See [architecture](docs/architecture.md), [runbook](docs/runbook.md), and [verification](docs/verification.md).
+[설계 설명](docs/architecture.md), [실행 절차](docs/runbook.md), [검증 기준](docs/verification.md)을 참고하세요.

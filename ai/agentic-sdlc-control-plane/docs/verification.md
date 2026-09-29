@@ -1,11 +1,11 @@
-# Verification
+# 검증 기준
 
-Run `npm test` from the project root. The tests use only Node.js built-ins and synthetic data.
+프로젝트 루트에서 `npm test`를 실행합니다. Node.js 내장 기능과 가상 자료만 사용합니다.
 
-The required evidence is:
+필요한 근거는 다음과 같습니다.
 
-- All tests exit with code 0.
-- `npm run simulate` emits a `RELEASABLE` gate, an approved quarantine action and `ledgerValid: true`.
-- The published source hash is recorded after the project is merged to `main`.
+- 모든 테스트가 종료 코드 0으로 끝나야 합니다.
+- `npm run simulate`에서 `RELEASABLE` 판단, 승인된 격리 조치와 `ledgerValid: true`가 출력돼야 합니다.
+- 프로젝트를 `main`에 병합한 후 게시 소스 해시를 기록해야 합니다.
 
-Tests intentionally fail closed when inventory, pipeline stages, source binding, lease proof, SLO headroom, plan facts, approval or the evidence chain is invalid.
+자산 목록, 파이프라인 단계, 소스 연결, 임대 근거, SLO 여유, 계획 사실, 승인 또는 근거 연결이 잘못되면 테스트는 보수적으로 실패하도록 설계됐습니다.

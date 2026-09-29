@@ -1,24 +1,24 @@
-# Kubernetes Capacity Budget Lab
+# 쿠버네티스 용량·예산 실습
 
-This offline Python 3.11+ tool estimates the cheapest **uniform** node shape for a Kubernetes workload during a rolling release. It combines p95 observed demand, CPU utilization target, memory headroom, rollout surge, per-node pod limits, fixed system reserve, minimum zone diversity, and an explicit monthly cost ceiling. It refuses stale telemetry and infeasible plans.
+오프라인 Python 3.11 이상 도구가 순차 배포 중 필요한 Kubernetes 작업의 비용이 가장 낮은 **단일 노드 규격**을 추정합니다. 관측 p95 수요, CPU 사용률 목표, 메모리 여유, 배포 추가 복제본, 노드별 파드 한도, 시스템 예비 용량, 최소 구역 수, 월간 비용 상한을 함께 계산합니다. 오래된 관측 자료나 실행 불가능한 계획은 거부합니다.
 
-## Why this resource is different
+## 기존 자료와 다른 질문
 
-The existing Service Mesh Release Safety Lab decides whether to advance or roll back a release from SLO telemetry. This tool answers a different question **before** release: can the requested replica count plus surge fit across zones within a cost ceiling? A successful rollout gate cannot compensate for insufficient scheduled capacity.
+서비스 메시 배포 안전 실습은 SLO 관측값으로 배포 진행·롤백 여부를 결정합니다. 이 도구는 배포 **전**에 복제본과 추가 배포분을 비용 상한 안에서 각 구역에 수용할 수 있는지 검사합니다.
 
-## Reproduce
+## 재현 방법
 
 ```powershell
 conda run -p <compatible-environment-prefix> python -m unittest discover -s tests -v
 conda run -p <compatible-environment-prefix> python -m capacitylab samples/rollout.json --now 2026-09-29T00:01:00Z
 ```
 
-The fixed `--now` is for the synthetic fixture only. In operational use, omit it so the tool checks the current clock. The CLI prints JSON and exits 0 for a feasible plan; invalid or stale inputs print `REJECTED` to stderr and exit 2. No cloud credentials or network access are used.
+`--now`의 고정 시각은 가상 예제용입니다. 현재 자료를 검사할 때는 생략해 실제 시계를 사용합니다. 명령행 결과는 JSON이며 실행 가능한 계획은 종료 코드 0, 잘못되거나 오래된 입력은 표준 오류에 `REJECTED`를 출력하고 코드 2로 끝납니다. 클라우드 자격 증명이나 네트워크는 사용하지 않습니다.
 
-## Decision model and limits
+## 판단 모델과 한계
 
-- Per-pod effective CPU is the greater of requested CPU and p95 observed CPU divided by the utilization target. Effective memory is the greater of requested memory and observed p95 memory plus headroom.
-- Per-node pod capacity is the smallest of CPU capacity after system reserve, memory capacity after reserve, and maximum pod count. At least one node is placed in each required zone; remaining nodes are distributed round-robin.
-- Set `workload.survive_single_zone_loss` to `true` to require steady-state replicas to fit after the fullest selected zone disappears. Rollout surge is still checked against normal total capacity. The result reports surviving pod capacity so the assumption is inspectable.
-- Cost assumes a 730-hour month and only node hourly price. It excludes storage, network, discounts, autoscaler behavior and live placement constraints. It picks one node shape; it does not optimize mixed pools.
-- This is a synthetic planning aid. It neither connects to Kubernetes nor claims production operation, real cost savings, or work performed for Toss.
+- 파드별 유효 CPU는 요청 CPU와 관측 p95 CPU를 목표 사용률로 나눈 값 중 큰 값입니다. 유효 메모리는 요청량과 관측 p95에 여유를 더한 값 중 큰 값입니다.
+- 노드별 파드 수용량은 시스템 예비 용량을 뺀 CPU·메모리 수용량과 최대 파드 수 가운데 가장 작은 값입니다. 필수 구역마다 노드를 하나 이상 배치하고 나머지는 차례로 분산합니다.
+- `workload.survive_single_zone_loss`를 `true`로 설정하면 선택된 구역 중 가장 큰 구역이 사라져도 정상 상태 복제본을 수용해야 합니다. 배포 중 추가 복제본은 정상 총 용량으로 검사하며 남는 파드 용량을 결과에 표시합니다.
+- 비용은 월 730시간과 노드 시간당 가격만 사용합니다. 저장소, 네트워크, 할인, 자동 확장 동작과 실시간 배치 제약은 제외합니다. 서로 다른 노드 규격의 혼합은 최적화하지 않습니다.
+- 가상 계획 도구이며 Kubernetes에 접속하거나 실제 운영·비용 절감·토스 업무를 주장하지 않습니다.

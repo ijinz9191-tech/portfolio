@@ -1,9 +1,9 @@
-# Verification
+# 검증 기준
 
-The verifier runs javac --release 21 and java -ea -cp .build lab.GatewayTest. Its report contains compile/test exit codes, actual UTC time, Java version, test output and per-Java-file SHA-256. source_hash hashes sorted path:sha256 lines separated by LF without a trailing newline.
+검증기는 `javac --release 21`과 `java -ea -cp .build lab.GatewayTest`를 실행합니다. 보고서에는 컴파일·테스트 종료 코드, 실제 UTC 시각, Java 버전, 테스트 출력과 Java 파일별 SHA-256 해시가 들어갑니다. `source_hash`는 `경로:sha256` 행을 정렬해 LF로 연결하고 마지막 개행 없이 해시한 값입니다.
 
-The test suite exercises prediction and validation, idempotency conflicts, feature-copy isolation, TTL expiry, queue saturation, capacity, transient retry, breaker open/probe/recovery, invalid model results, draining/cancellation, explicitly ephemeral restart behavior and actual localhost HTTP calls.
+테스트 범위는 예측·입력 검증, 멱등성 충돌, 특성 복사 격리, TTL 만료, 대기열 포화·용량, 일시 오류 재시도, 회로 개방·탐침·복구, 잘못된 모델 결과, 정리·취소, 명시적으로 일시적인 재시작 동작과 실제 로컬 HTTP 호출입니다.
 
-Logical clocks make cache and breaker tests deterministic. Latches control worker failure and saturation. The HTTP integration test uses Java HttpClient against a real local server, not a mocked status response.
+논리 시계로 캐시·회로 테스트를 재현합니다. 래치로 작업자 실패와 포화를 제어합니다. HTTP 통합 테스트는 모의 응답이 아니라 실제 로컬 서버에 Java `HttpClient`로 요청합니다.
 
-This evidence covers source and tests, not remote Git publication or deployment. No production load benchmark, threat-model certification, actual AI model quality or applicant employment experience is inferred. Rerun after Java changes; documentation changes alone do not alter the Java source fingerprint.
+이 근거는 소스·테스트 범위이며 원격 Git 게시나 배포 증거는 아닙니다. 운영 부하 성능, 위협 모델 인증, 실제 AI 모델 품질, 지원자의 과거 업무를 추론하지 않습니다. Java 변경 후 다시 실행해야 하며 문서만 바뀌면 Java 소스 지문은 달라지지 않습니다.

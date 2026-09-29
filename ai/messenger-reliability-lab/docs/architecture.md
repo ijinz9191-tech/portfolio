@@ -1,13 +1,13 @@
-# Architecture
+# 설계
 
-`MessageLedger` owns the deterministic domain state. Commands cross one validation boundary, receive a content hash for idempotency, and append audit events only after a valid transition. `createMessengerServer` is a thin Node HTTP adapter; it does not own business state.
+`MessageLedger`는 결과가 재현되는 도메인 상태를 관리합니다. 명령은 하나의 검증 경계를 통과하고 내용 해시로 멱등성을 확인합니다. 유효한 상태 전이 뒤에만 감사 이벤트를 추가합니다. `createMessengerServer`는 얇은 Node HTTP 연결기로 업무 상태를 소유하지 않습니다.
 
 ```text
-HTTP/CLI → validation → idempotency + sequence gate → MessageLedger
-                                                   ├─ message state
-                                                   ├─ bounded retry / DLQ
-                                                   ├─ audit events
-                                                   └─ restart snapshot
+HTTP/명령행 → 검증 → 멱등성·순서 검사 → MessageLedger
+                                          ├─ 메시지 상태
+                                          ├─ 횟수 제한 재시도 / 실패 메시지 보관
+                                          ├─ 감사 이벤트
+                                          └─ 재시작 스냅샷
 ```
 
-The lab intentionally stays local and dependency-free. A production design would replace the in-memory maps with a transactional store, use an authenticated broker/outbox, define recipient-level acknowledgement semantics, encrypt retained payloads and add SLO-backed telemetry.
+이 실습은 의존 패키지 없이 로컬에서만 실행합니다. 운영 설계라면 메모리 맵을 트랜잭션 저장소로 교체하고, 인증된 메시지 브로커·발신함, 수신자별 확인 응답의 의미, 저장 내용 암호화와 SLO 관측을 추가해야 합니다.

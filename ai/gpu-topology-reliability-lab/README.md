@@ -1,29 +1,27 @@
-# GPU Topology Reliability Lab
+# GPU 연결 구조와 배치 신뢰성 실습
 
-A dependency-free Node.js 24 lab that models topology-aware placement, evidence-based performance diagnosis and approval-bound remediation for a synthetic GPU cluster.
+의존 패키지 없이 Node.js 24로 실행하는 가상 GPU 클러스터 실습입니다. 하드웨어 연결 관계를 고려한 배치, 근거 기반 성능 진단, 승인된 조치만 완료하는 절차를 모델링합니다. 하드웨어·지표·장애 자료는 모두 가상이며 실제 GPU·NPU·RDMA·데이터센터 또는 고용주 운영 경험을 주장하지 않습니다.
 
-The project uses synthetic hardware, metrics and incidents. It does not claim production GPU, NPU, RDMA, data-center or employer experience.
-
-## Run
+## 실행
 
 ```bash
 npm test
 npm run simulate
 ```
 
-## Capabilities
+## 주요 기능
 
-- Validates node, GPU, NUMA, PCIe-root and NIC topology
-- Places GPU workloads with memory, network and same-NUMA constraints
-- Detects impossible or unsafe placements before mutation
-- Diagnoses NUMA remote access, PCIe pressure, NIC/RDMA saturation, CPU feed bottlenecks and GPU health signals
-- Requires an allow-listed plan, independent approval hash and post-change verification before remediation can complete
-- Preserves a hash-linked audit ledger and integrity-checked snapshots
+- 노드, GPU, NUMA, PCIe 루트, NIC의 연결 구조를 검증합니다.
+- 메모리·네트워크·동일 NUMA 조건에 따라 GPU 작업을 배치합니다.
+- 불가능하거나 안전하지 않은 배치를 상태 변경 전에 거부합니다.
+- 원격 NUMA 접근, PCIe 압박, NIC·RDMA 포화, CPU 데이터 공급 병목, GPU 상태 신호를 진단합니다.
+- 허용 목록에 있는 계획, 독립 승인 해시, 변경 후 확인이 있어야 조치를 완료합니다.
+- 해시로 이어진 감사 원장과 무결성 검사 스냅샷을 보존합니다.
 
-## Verification
+## 검증 범위
 
-The test suite covers normal placement, capacity constraints, topology corruption, duplicate allocation, maintenance mode, NUMA/PCIe/RDMA diagnosis, approval and stale-plan controls, audit tampering and snapshot corruption. See `docs/verification.md` and `docs/runbook.md`.
+테스트는 정상 배치, 용량 제약, 연결 구조 손상, 중복 할당, 점검 모드, NUMA·PCIe·RDMA 진단, 승인·오래된 계획, 감사 원장과 스냅샷 변조를 다룹니다. 자세한 내용은 [검증 기록](docs/verification.md)과 [실행 절차](docs/runbook.md)를 참고하세요.
 
-## Contribution boundary
+## 기여 및 사용 범위
 
-The applicant supplied the career objective, facts and review decisions. AI-assisted tooling implemented and tested the code and documentation. This CareerOps project is portfolio evidence and is separate from employment or production results.
+지원자는 경력 목표·사실·검토 판단을 제공했습니다. AI 보조 도구로 코드와 문서를 구현하고 테스트했습니다. 이 채용 준비 프로젝트는 공개 포트폴리오 근거이며 과거 재직 업무나 운영 성과와 구분합니다.

@@ -1,14 +1,14 @@
-# Incident Replay Lab
+# 장애 재현 실습
 
-8개 Service의 장애 전파를 관찰하고 Runbook의 복구 효과를 비교하는 **Backend/SRE 실습 앱**입니다. Node.js HTTP API, SQLite, 결정적 Simulation Engine과 Browser Console이 함께 동작합니다.
+8개 서비스의 장애 전파를 관찰하고 운영 절차의 복구 효과를 비교하는 **백엔드·사이트 신뢰성 실습 앱**입니다. Node.js HTTP API, SQLite, 결정적 시뮬레이션 엔진과 브라우저 화면이 함께 동작합니다.
 
-[Source](https://github.com/ijinz9191-tech/portfolio)
+[공개 소스](https://github.com/ijinz9191-tech/portfolio)
 
-모든 Fault, Metric, Incident와 Probe는 **Synthetic Data**입니다. 실제 고객 Traffic, 회사 운영 지표, 외부 Infrastructure를 수집하거나 변경하지 않습니다. 실제 부하 발생기나 대규모 분산 시스템의 성능 검증 도구가 아닙니다.
+모든 결함, 지표, 사고와 탐침은 **가상 자료**입니다. 실제 고객 트래픽, 회사 운영 지표, 외부 인프라를 수집하거나 변경하지 않습니다. 실제 부하 발생기나 대규모 분산 시스템의 성능 검증 도구가 아닙니다.
 
 ## 실행
 
-Node.js **24 이상**이 필요합니다. 외부 npm Dependency나 계정은 필요하지 않습니다. `node:sqlite`의 Experimental Warning은 현재 사용한 Node API에 따른 안내입니다.
+Node.js **24 이상**이 필요합니다. 외부 npm 의존성이나 계정은 필요하지 않습니다. `node:sqlite`의 실험 기능 경고는 현재 사용한 Node API에 따른 안내입니다.
 
 ```sh
 node --version
@@ -17,39 +17,39 @@ npm run build
 npm start
 ```
 
-Browser에서 **http://127.0.0.1:4173**을 엽니다. 기본 DB는 `data/lab.sqlite`이며 재시작 후에도 기록이 유지됩니다. `Ctrl+C`로 서버를 종료합니다. `PORT`로 Port를, `LAB_DB`로 SQLite File 경로를 지정할 수 있습니다.
+브라우저에서 **http://127.0.0.1:4173**을 엽니다. 기본 DB는 `data/lab.sqlite`이며 재시작 후에도 기록이 유지됩니다. `Ctrl+C`로 서버를 종료합니다. `PORT`로 포트를, `LAB_DB`로 SQLite 파일 경로를 지정할 수 있습니다.
 
-서버는 `127.0.0.1`에만 Bind합니다. `dist/`에는 Browser Asset만 있으므로 정적 Hosting만으로 API가 동작하지 않습니다. 외부 배포나 공개 다중 사용자 운영을 제공한다고 주장하지 않습니다.
+서버는 `127.0.0.1`에만 연결됩니다. `dist/`에는 브라우저 자산만 있으므로 정적 호스팅만으로 API가 동작하지 않습니다. 외부 배포나 공개 다중 사용자 운영을 제공한다고 주장하지 않습니다.
 
-## 3분 Guided Demo
+## 3분 실습 안내
 
-1. **0:00 — 기준 상태 만들기.** Replay archive에서 Seed `42`로 **New run**을 누릅니다. 이전 Run은 보존 한도 안에서 Archive에 남습니다. 기본 상태는 `PAUSED`이며 8개 Service와 초기 Metric을 확인할 수 있습니다.
-2. **0:30 — 장애 주입.** Fault injection에서 **Database Query Lock**, Intensity `2`를 선택하고 **Inject fault**를 누릅니다. `orders-db → orders-api → checkout-api → edge-gateway` 경로의 영향을 살펴봅니다. Topology의 화살표는 이와 반대로 호출자가 의존하는 대상을 가리킵니다.
-3. **1:00 — 시간과 Signal 관찰.** STEP을 `5 ticks`로 선택하고 **+ Tick**을 누릅니다. Orders Database와 Edge Gateway를 선택해 Latency·Error Rate·Throughput 그래프를 비교합니다. 한 Tick은 Simulation 시간 5초입니다.
-4. **1:30 — 원인에 맞는 조치.** Incident response에서 열린 Incident를 선택하고 **Release Query Lock**을 적용합니다. 상태가 `open → mitigating`으로 바뀌고 원인 Fault의 Pressure가 줄어듭니다. 다시 `5 ticks`를 진행하면 4 Tick의 Drain을 거쳐 `resolved`가 됩니다.
-5. **2:00 — 결과와 과거 비교.** Incident의 Postmortem JSON을 Export합니다. Replay archive에서 이전 Tick을 선택하고 **Load snapshot**을 눌러 Topology·Metric·Incident를 읽기 전용으로 확인합니다. **Live로 돌아가기**로 복귀합니다.
-6. **2:30 — 독립 장애 실험.** **Identity Token Expiry**와 **Database Query Lock**을 함께 주입해 봅니다. Query Lock만 복구하면 Identity 장애는 남습니다. **Run simulation**으로 Server Clock을 실행하고 **Pause**로 멈춥니다. 같은 Seed와 같은 Tick의 명령 순서로 다시 실행하면 같은 Metric을 비교할 수 있습니다.
+1. **0:00 — 기준 상태 만들기.** 화면의 `Replay archive`에서 시드 `42`로 `New run`을 누릅니다. 이전 실행은 보존 한도 안에서 기록 보관함에 남습니다. 기본 상태는 `PAUSED`이며 8개 서비스와 초기 지표를 확인할 수 있습니다.
+2. **0:30 — 장애 주입.** 화면의 `Fault injection`에서 `Database Query Lock`, 강도 `2`를 선택하고 `Inject fault`를 누릅니다. `orders-db → orders-api → checkout-api → edge-gateway` 경로의 영향을 살펴봅니다. 연결 구조의 화살표는 이와 반대로 호출자가 의존하는 대상을 가리킵니다.
+3. **1:00 — 시간과 신호 관찰.** `STEP`을 `5 ticks`로 선택하고 `+ Tick`을 누릅니다. 주문 DB와 진입 게이트웨이를 선택해 지연 시간·오류율·처리량 그래프를 비교합니다. 한 틱은 시뮬레이션 시간 5초입니다.
+4. **1:30 — 원인에 맞는 조치.** 화면의 `Incident response`에서 열린 사고를 선택하고 `Release Query Lock`을 적용합니다. 상태가 `open → mitigating`으로 바뀌고 원인 결함의 영향 강도가 줄어듭니다. 다시 `5 ticks`를 진행하면 4틱의 완화 과정을 거쳐 `resolved`가 됩니다.
+5. **2:00 — 결과와 과거 비교.** 사고의 사후 분석 JSON을 내보냅니다. `Replay archive`에서 이전 틱을 선택하고 `Load snapshot`을 눌러 연결 구조·지표·사고를 읽기 전용으로 확인합니다. `Live로 돌아가기`로 복귀합니다.
+6. **2:30 — 독립 장애 실험.** `Identity Token Expiry`와 `Database Query Lock`을 함께 주입해 봅니다. DB 잠금만 복구하면 인증 장애는 남습니다. `Run simulation`으로 서버 시계를 실행하고 `Pause`로 멈춥니다. 같은 시드와 틱, 같은 명령 순서로 다시 실행하면 같은 지표를 비교할 수 있습니다.
 
-UI는 Tab과 Keyboard로 Topology Service를 선택할 수 있습니다. 연결 실패 시 이전 상태라는 안내가 표시됩니다. Replay를 보는 동안 UI의 변경 동작은 비활성화됩니다.
+화면에서는 탭 키와 키보드로 연결 구조의 서비스를 선택할 수 있습니다. 연결 실패 시 이전 상태를 보여준다는 안내가 표시됩니다. 재현 화면을 보는 동안 변경 동작은 비활성화됩니다.
 
-## Architecture
+## 설계
 
 ```mermaid
 flowchart TD
-  UI[Browser Console] -->|GET state / recorded snapshot| HTTP[Node HTTP Server]
-  UI -->|POST control / faults / runbooks / reset| HTTP
-  UI -->|GET Postmortem JSON| HTTP
-  HTTP --> Guards[Input Validation · Loopback Host · Same-origin Writes]
-  Guards --> Engine[Simulation Engine]
-  Clock[Server Clock · default 1 second interval] --> Engine
-  Engine --> Model[Seed + Tick + Fault State + Weighted Dependency DAG]
-  Model --> State[Service Metrics · Incident State · Timeline]
-  State --> TX[SQLite Transaction]
-  TX --> Runs[Active and Archived Runs]
-  TX --> Snapshots[Per-tick Snapshots]
-  TX --> Commands[Command ID Ledger]
-  Guards --> Legacy[Legacy Event Ingestion Store]
-  Legacy --> DB[SQLite Event and Incident Tables]
+  UI[브라우저 화면] -->|상태·저장된 스냅샷 조회| HTTP[Node HTTP 서버]
+  UI -->|제어·장애·운영 절차·초기화 요청| HTTP
+  UI -->|사후 분석 JSON 조회| HTTP
+  HTTP --> Guards[입력 검증·로컬 접속·동일 출처 쓰기]
+  Guards --> Engine[시뮬레이션 엔진]
+  Clock[서버 시계·기본 1초 간격] --> Engine
+  Engine --> Model[시드·틱·장애 상태·가중 의존성 그래프]
+  Model --> State[서비스 지표·사고 상태·시간 순서]
+  State --> TX[SQLite 트랜잭션]
+  TX --> Runs[현재 실행·보관된 실행]
+  TX --> Snapshots[틱별 스냅샷]
+  TX --> Commands[명령 ID 원장]
+  Guards --> Legacy[기존 이벤트 입력 저장소]
+  Legacy --> DB[SQLite 이벤트·사고 테이블]
 ```
 
 - `src/server.mjs`: HTTP Routes, Public Asset Allowlist, Request 검증, Server Clock 수명 관리.
@@ -57,11 +57,11 @@ flowchart TD
 - `src/store.mjs`: SQLite 연결과 기존 Event Ingestion API. Simulation Table과 기존 Event Table은 같은 DB에 별도로 보존됩니다.
 - `app.js`: Server State Rendering, SVG Topology·Charts, Incident 필터, Runbook·Replay UI.
 
-## Model과 State
+## 모델과 상태
 
 Service는 Edge Gateway, Checkout API, Catalog API, Orders API, Payment API, Identity API, Redis Cache, Orders Database입니다. 11개 Dependency Edge를 가진 고정된 비순환 그래프를 사용합니다.
 
-| Scenario ID | Root Service | Runbook ID |
+| 장애 사례 ID | 최초 장애 서비스 | 운영 절차 ID |
 |---|---|---|
 | `query-lock` | `orders-db` | `unlock-query` |
 | `cache-eviction` | `redis-cache` | `warm-cache` |
@@ -74,7 +74,7 @@ Runbook은 연결된 Scenario의 열린 Incident에만 적용할 수 있습니�
 
 Simulation 시간은 `2026-01-01T00:00:00.000Z`에서 시작하며 Tick마다 5초 진행합니다. 기본 Server Clock은 실제 시간 약 1초마다 한 Tick을 진행하고 Browser Tab과 독립적으로 동작합니다. 실행 중 수동 Tick은 거부합니다. 같은 Seed와 같은 Tick의 명령 순서가 같은 Metric과 History를 재현하지만 Run·Incident UUID까지 같지는 않습니다. 실제 시간의 사용자 입력 지연은 자동 실행 시 명령이 적용되는 Tick을 바꿀 수 있습니다.
 
-## Persistence·Replay·Polling
+## 저장·재현·상태 조회
 
 - Command와 Timer Tick의 상태 변경은 SQLite Transaction 안에서 저장되며 실패 시 해당 변경을 Rollback합니다. WAL·Foreign Key·Busy Timeout을 사용합니다.
 - Run, Incident, Metric History와 Command ID가 재시작 후에도 남습니다. 자동 실행 중 종료했더라도 복구한 Server는 **Paused** 상태로 시작합니다.
@@ -83,14 +83,14 @@ Simulation 시간은 `2026-01-01T00:00:00.000Z`에서 시작하며 Tick마다 5�
 - UI는 표시 중인 Tab에서 `/api/sim/state`를 약 1초마다 Polling합니다. 숨겨진 Tab과 Replay 화면에서는 자동 Polling을 멈춥니다. **SSE·WebSocket은 사용하지 않습니다.**
 - UI는 실패한 변경 요청을 자동 재시도하지 않습니다. API Client는 선택적 `commandId`로 중복 실행을 방지할 수 있습니다. 같은 ID·같은 명령은 현재 State와 `duplicate: true`를 반환하고, 같은 ID의 다른 명령은 409입니다. 원래 응답을 그대로 재생하는 방식은 아닙니다.
 
-## Simulation API
+## 시뮬레이션 API
 
 POST는 `Content-Type: application/json`과 16 KiB 이하 Body를 사용합니다. 아래 POST는 선택적으로 `commandId`를 받습니다.
 
-| Method | Path | 입력 / 결과 |
+| 메서드 | 경로 | 입력 / 결과 |
 |---|---|---|
 | GET | `/api/health` | SQLite Readiness, 실제 Server Uptime, `synthetic: true` |
-| GET | `/api/sim/state` | `schemaVersion: 2`; Clock, 8 Services·History, Topology, Scenarios, Runbooks, Faults, Incidents, Audit, Summary, Runs |
+| GET | `/api/sim/state` | `schemaVersion: 2`; 시각, 서비스 8개·이력, 연결 구조, 장애 사례, 운영 절차, 결함, 사고, 감사, 요약, 실행 목록 |
 | POST | `/api/sim/control` | `{"action":"run"}` / `{"action":"pause"}` / `{"action":"tick","steps":5}`; Steps는 1–60, 기본 1 |
 | POST | `/api/sim/reset` | `{"seed":42}`; Seed 0–2147483647, 새 Paused Run 생성과 기존 Run Archive |
 | POST | `/api/sim/faults` | `{"scenarioId":"query-lock","intensity":2}` |

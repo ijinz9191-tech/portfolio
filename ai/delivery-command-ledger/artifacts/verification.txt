@@ -1,6 +1,7 @@
-verifiedAt=2026-09-20T18:39:44.8794411+09:00
-runtime=Java java version "21.0.10" 2026-01-20 LTS
+verifiedAt=2026-09-30T00:02:10.9432627+09:00
+runtime=Java 21.0.10
 command=.\verify.ps1
-result=PASS 18/18
-sourceHash=2365d0a15bc72d7782814b4ff48633d01cde3e6fab054f3d843a6fd3914ecb6f
+result=PASS 20/20
+sourceMainSha256=f7bdc1e8a34cc7858f98613e7531033eed06cd12c7b25912d18f8d8076177fe3
+sourceTestSha256=bf16a049dcc29387a03ea1bea68628acd4ee52bb65d9935070e7793d0678253b
 scope=normal,failure,idempotency,concurrency,capacity,compensation,snapshot,http

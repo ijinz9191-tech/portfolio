@@ -1,17 +1,17 @@
-# Architecture
+# 설계
 
-`validate_change` is a pure deterministic gate. It reads a synthetic inventory and change request, expands dependencies into a blast radius, emits named checks and hashes the complete evidence input. `EvidenceStore` persists one immutable decision per change ID in SQLite; an identical retry is idempotent and a changed payload is rejected. The HTTP layer is deliberately read-only.
+`validate_change`는 부작용 없는 결정적 검사기입니다. 가상 자산 목록과 변경 요청을 읽고 의존 관계로 영향 범위를 넓혀 이름이 있는 검사 결과를 출력하며 전체 입력을 해시합니다. `EvidenceStore`는 변경 ID마다 하나의 불변 결정을 SQLite에 저장합니다. 같은 입력의 재시도는 멱등적이고 내용이 바뀌면 거부합니다. HTTP 계층은 읽기 전용입니다.
 
 ```text
-inventory + change request
-        |
- deterministic validator
-        |
- checks + blast radius + SHA-256
-        |
- immutable SQLite evidence
-        |
- read-only HTTP / CLI
+자산 목록 + 변경 요청
+        ↓
+결정적 검사
+        ↓
+조건 결과 + 영향 범위 + SHA-256
+        ↓
+불변 SQLite 근거
+        ↓
+읽기 전용 HTTP / 명령행
 ```
 
-Fail-closed behavior is used for malformed windows, unknown risk, missing assets, insufficient approvals and incomplete rollback. Synthetic inputs avoid exposing corporate topology or personal data.
+잘못된 점검 시간, 모르는 위험도, 누락 자산, 부족한 승인, 미완성 롤백은 보수적으로 거부합니다. 가상 입력으로 기업 연결 구조나 개인정보 노출을 막습니다.

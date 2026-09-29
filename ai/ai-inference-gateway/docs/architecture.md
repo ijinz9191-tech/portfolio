@@ -1,19 +1,19 @@
-# Architecture
+# 설계
 
 ```text
-Loopback HttpServer -> validate -> idempotency/TTL lookup -> bounded worker queue
-                                                        -> retry/circuit -> synthetic model
-GET jobs/metrics <- synchronized in-memory state <- result/cache/counters
+로컬 HttpServer → 검증 → 멱등성·TTL 조회 → 제한된 작업 대기열
+                                              → 재시도·회로 차단 → 가상 모델
+GET 작업·지표 ← 동기화된 메모리 상태 ← 결과·캐시·계수
 ```
 
-Java HttpServer provides the small HTTP surface. The HTTP dispatcher is serialized; model execution runs on a separate single-worker ThreadPoolExecutor with ArrayBlockingQueue. This demonstrates asynchronous model admission, not a high-throughput HTTP server.
+Java `HttpServer`가 작은 HTTP 경계를 제공합니다. HTTP 요청 분배는 직렬화되고 모델 실행은 `ArrayBlockingQueue`가 연결된 별도 단일 작업자 `ThreadPoolExecutor`에서 이뤄집니다. 비동기 모델 요청 접수를 보여주는 것이며 높은 처리량의 HTTP 서버는 아닙니다.
 
-Synchronized state transitions serialize idempotency reservation and admission. A queue rejection rolls the reservation back. Input arrays are cloned before queueing and before invoking the model. Result objects are immutable snapshots.
+동기화된 상태 전이는 멱등 키 예약과 요청 접수를 순서대로 처리합니다. 대기열 거부 시 예약을 되돌립니다. 입력 배열은 대기열에 넣기 전과 모델 호출 전에 복제합니다. 결과 객체는 변경할 수 없는 스냅샷입니다.
 
-Model attempts receive no request headers, credentials or network client. Exceptions are translated into fixed public error codes. SHA-256 fingerprints bind canonical numeric arrays, not a proof of model correctness.
+모델 시도에는 요청 헤더·자격 증명·네트워크 클라이언트를 전달하지 않습니다. 예외는 고정된 공개 오류 코드로 바꿉니다. SHA-256 지문은 정규화된 숫자 배열을 연결하지만 모델의 정확성을 증명하지 않습니다.
 
-Circuit state uses a cooldown deadline and one half-open probe. TTL and cooldown use an injectable millisecond clock; production uses wall time, so clock adjustments can affect durations. This is explicitly not a distributed circuit breaker.
+회로 상태는 대기 마감 시각과 반개방 탐침 하나를 사용합니다. TTL과 대기 시간에는 주입 가능한 밀리초 시계를 사용합니다. 실제 실행은 벽시계를 쓰므로 시각 조정이 기간에 영향을 줄 수 있습니다. 분산 회로 차단기는 아닙니다.
 
-State and result-cache sizes are bounded by retained job admission and TTL pruning. No persistence, multi-instance coordination or durable queue exists. Local ownership is a deployment restriction, not authentication. HTTP request parsing remains susceptible to slow local clients; production hardening would need request deadlines, authenticated routing and a different server deployment.
+보관 작업 수와 TTL 정리로 상태·캐시 크기를 제한합니다. 지속 저장, 여러 인스턴스의 조정, 지속 대기열은 없습니다. 로컬 실행 제한이 인증을 대신하지 않습니다. 느린 로컬 클라이언트에는 HTTP 요청 분석이 영향을 받을 수 있습니다. 운영용이라면 요청 시간 제한, 인증된 경로와 다른 서버 배포 방식이 필요합니다.
 
-The implementation is a new inference-serving project, separate from metric-contract ingestion and incident simulation.
+기존 지표 계약 입력·장애 시뮬레이션과 구분되는 새 추론 호출 실습입니다.

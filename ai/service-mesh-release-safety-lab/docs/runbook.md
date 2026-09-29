@@ -1,9 +1,9 @@
-# Runbook
+# 실행 절차
 
-1. Run `npm test` and require all tests to pass.
-2. Run `npm run demo` and confirm `release.status` is `COMPLETED`, traffic is `100`, and `evidenceValid` is `true`.
-3. For a rollback rehearsal, change one demo metric beyond an SLO threshold and verify traffic returns to zero on all clusters.
-4. If a release is rejected, inspect the explicit gate reason. Do not lower thresholds merely to pass.
-5. Treat a failed evidence-chain verification as corruption. Preserve the artifact and start a new controlled run.
+1. `npm test`를 실행해 모든 테스트 통과를 확인합니다.
+2. `npm run demo`에서 `release.status`가 `COMPLETED`, 트래픽이 `100`, `evidenceValid`가 `true`인지 확인합니다.
+3. 롤백을 연습하려면 예제 지표 하나를 SLO 기준 밖으로 바꾸고 모든 클러스터의 트래픽이 0으로 돌아오는지 확인합니다.
+4. 배포가 거부되면 명시된 조건 위반 사유를 확인합니다. 통과만을 위해 기준을 낮추지 않습니다.
+5. 근거 연결 검증에 실패하면 변조·손상으로 취급하고 자료를 보존한 뒤 통제된 새 실행을 시작합니다.
 
-All data is synthetic. Never place credentials, production endpoints, customer data, or real incident logs in this project.
+자료는 모두 가상입니다. 자격 증명, 운영 주소, 고객 정보 또는 실제 장애 로그를 넣지 않습니다.

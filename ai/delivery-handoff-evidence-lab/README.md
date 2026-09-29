@@ -1,10 +1,10 @@
-# Delivery Handoff Evidence Lab
+# 배송 인계 근거 실습
 
-An offline audit of **synthetic** last-mile delivery event evidence. Unlike the Delivery Command Ledger, which accepts and persists commands, this tool reviews an exported event stream for missing handoffs and hypothetical deadline outcomes. A completion with a missing pickup is labelled `EVIDENCE_GAP`, never "on time" or "late." Events require actor evidence and ordered integer minute timestamps. Duplicate deliveries/stages, impossible timestamps and malformed input fail closed. A canonical SHA-256 digest binds the review to its input.
+가상의 최종 배송 이벤트를 오프라인에서 검토합니다. 명령을 받아 저장하는 배송 명령 원장과 달리, 이 도구는 이미 출력된 이벤트에서 인계 누락과 가상 마감 결과를 확인합니다. 수거 기록이 없는 완료 건은 정시·지연으로 판정하지 않고 `EVIDENCE_GAP`으로 표시합니다. 이벤트마다 담당자 근거와 순서가 맞는 정수 분 단위 시각이 필요합니다. 중복 배송·단계, 불가능한 시각, 잘못된 입력은 거부합니다. 정규화 입력의 SHA-256 해시가 결과와 입력을 연결합니다.
 
 ```powershell
 conda run -n base python -B -m unittest discover -s tests -v
 conda run -n base python -B audit.py samples/routes.json
 ```
 
-The fixture is local and invented. It does not connect to dispatch systems, maps, customers or the employer's data. An evidence gap may reflect incomplete logging rather than a failed physical handoff; deadlines are sample assumptions, not a measured SLA.
+예제는 로컬에서 만든 가상 자료입니다. 배차 시스템, 지도, 고객 또는 고용주 자료에 연결하지 않습니다. 근거 누락은 실제 인계 실패가 아니라 기록 미완성을 뜻할 수 있습니다. 마감 시각 역시 예제의 가정이며 측정된 SLA가 아닙니다.

@@ -1,11 +1,11 @@
-# Verification
+# 검증 기준
 
-Run python -B scripts/verify.py. It executes unittest in a subprocess and records actual UTC execution time, environment, exit code, test output and a SHA-256 manifest of Python files in artifacts/verification.json. This binds implementation, tests and scripts; it is neither a signature nor a hash of every document.
+`python -B scripts/verify.py`를 실행합니다. 별도 프로세스에서 `unittest`를 수행하고 실제 UTC 시각, 실행 환경, 종료 코드, 테스트 출력과 Python 파일의 SHA-256 목록을 `artifacts/verification.json`에 기록합니다. 이 해시는 구현·테스트·스크립트를 연결하지만 전자서명이나 모든 문서의 해시는 아닙니다.
 
-Run python -B scripts/run_demo.py for a deterministic synthetic before/late/rebuild demonstration. artifacts/demo-result.json captures its real output. The logical clock is fixture input, not execution time.
+`python -B scripts/run_demo.py`로 최초·지연 자료·재집계의 가상 사례를 재현합니다. `artifacts/demo-result.json`은 실제 출력을 담습니다. 예제의 논리 시각은 실행 시각이 아니라 입력값입니다.
 
-Tests use real temporary SQLite databases, an actual loopback HTTP server and subprocess CLI calls. Failure injection adds a temporary trigger only to an isolated test database, asserts transaction rollback, removes that injected trigger and checks recovery. It does not weaken production checks.
+테스트는 실제 임시 SQLite DB, 로컬 HTTP 서버와 별도 명령행 프로세스를 사용합니다. 실패 주입은 분리된 테스트 DB에만 임시 트리거를 만들고 트랜잭션 롤백을 확인한 뒤 그 트리거를 없애고 복구를 검사합니다. 운영 검사를 약화하지 않습니다.
 
-No remote application, cloud deployment or third-party API is mocked as successful. Success does not establish production scalability, high availability, authentication, comprehensive security, user employment experience or application acceptance. No performance improvement percentage is claimed.
+원격 애플리케이션·클라우드 배포·외부 API를 성공한 것처럼 모의하지 않습니다. 통과만으로 운영 확장성·고가용성·인증·포괄적 보안·사용자의 과거 업무·입사 지원 접수는 증명되지 않습니다. 성능 향상 비율도 주장하지 않습니다.
 
-Rerun after any Python source change. Git publication and remote version verification are separate steps; local artifacts do not assert either.
+Python 소스가 바뀌면 다시 실행합니다. Git 게시와 원격 버전 확인은 별도 단계이며 로컬 산출물이 이를 대신하지 않습니다.

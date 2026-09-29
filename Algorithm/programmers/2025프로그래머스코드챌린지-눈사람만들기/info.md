@@ -1,2 +1,2 @@
-url : https://school.programmers.co.kr/learn/courses/30/lessons/389631
-coding date : 2025.04.02
+문제 주소: https://school.programmers.co.kr/learn/courses/30/lessons/389631
+풀이 날짜: 2025-04-02

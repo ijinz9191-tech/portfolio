@@ -1,24 +1,24 @@
-# Runbook
+# 실행 절차
 
-## Validate a release
+## 배포 검증
 
-1. Load the current synthetic inventory and validate IDs, card memory and node state.
-2. Reserve cards with a unique lease ID and the release's memory, feature, firmware and node-count constraints.
-3. Collect required stage results for every component against the same source revision.
-4. Evaluate the release gate with current lease proof and SLO values.
-5. Stop on any `BLOCKED` decision. Do not remove a failing stage to make the candidate pass.
+1. 현재 가상 자산 목록을 읽고 ID·카드 메모리·노드 상태를 검증합니다.
+2. 고유 임대 ID와 배포의 메모리·기능·펌웨어·노드 수 조건으로 카드를 예약합니다.
+3. 모든 구성 요소의 필수 단계 결과를 같은 소스 버전에 대해 수집합니다.
+4. 현재 임대 근거와 SLO 값으로 배포 판단을 실행합니다.
+5. `BLOCKED`면 중단합니다. 실패한 단계를 제거해 후보를 통과시키지 않습니다.
 
-## Handle an incident
+## 장애 대응
 
-1. Hash the current release decision and observations.
-2. Build a bounded plan from the incident symptoms.
-3. Review the plan before producing an approval hash for any mutating step.
-4. Execute only allow-listed tools and append every result to the evidence ledger.
-5. Verify the complete hash chain before accepting the final state.
+1. 현재 배포 결정과 관측값을 해시합니다.
+2. 장애 증상에서 범위가 제한된 계획을 만듭니다.
+3. 상태 변경 단계에 승인 해시를 만들기 전에 계획을 검토합니다.
+4. 허용 목록에 있는 도구만 실행하고 모든 결과를 근거 원장에 추가합니다.
+5. 최종 상태를 수용하기 전에 전체 해시 연결을 검증합니다.
 
-## Recovery
+## 복구
 
-- Capacity failure: release stale leases only after ownership is verified; then schedule again.
-- Stale facts: rebuild the plan from a fresh evidence snapshot.
-- Pipeline or SLO failure: fix the cause and rerun the affected evidence against the unchanged candidate or a new revision.
-- Ledger verification failure: reject the run and rebuild evidence from trusted sources.
+- 용량 부족: 소유자를 확인한 뒤에만 오래된 임대를 해제하고 다시 배치합니다.
+- 오래된 사실: 최신 근거 스냅샷으로 계획을 다시 만듭니다.
+- 파이프라인 또는 SLO 실패: 원인을 고치고 동일 후보 또는 새 버전에 대해 관련 근거를 다시 실행합니다.
+- 원장 검증 실패: 해당 실행을 거부하고 신뢰할 수 있는 원본에서 근거를 재구성합니다.

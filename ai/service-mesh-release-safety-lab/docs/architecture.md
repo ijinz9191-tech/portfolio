@@ -1,7 +1,7 @@
-# Architecture
+# 설계
 
-`ReleaseController` owns release state and fail-closed gates. The caller supplies normalized synthetic metrics that correspond to Prometheus-style error rate, p99 latency, and resource saturation. Each healthy observation advances one configured mesh weight across all clusters. Any breach atomically returns traffic to zero and marks every cluster rolled back.
+`ReleaseController`는 배포 상태와 실패 시 차단하는 판단 조건을 관리합니다. 호출자는 Prometheus 형태의 오류율·p99 지연·자원 포화도에 대응하는 정규화된 가상 지표를 제공합니다. 정상 관측이 들어올 때마다 모든 클러스터의 메시 트래픽 비중을 다음 단계로 올립니다. 하나라도 기준을 위반하면 트래픽을 원자적으로 0으로 되돌리고 모든 클러스터를 롤백 상태로 표시합니다.
 
-`EvidenceLedger` records decisions in an append-only SHA-256 chain. The hash covers the sequence, event type, payload, and preceding hash so mutation or reordering fails verification.
+`EvidenceLedger`는 결정을 SHA-256으로 연결된 추가 전용 기록에 남깁니다. 해시는 순서·이벤트 종류·내용·이전 해시를 포함하므로 내용 수정이나 순서 변경을 검출합니다.
 
-Adapters are intentionally outside the lab. A production integration would authenticate to Kubernetes/Istio and Prometheus, bind observations to a deployment revision, and persist the evidence in durable storage.
+실제 시스템 연결기는 실습에 포함하지 않았습니다. 운영용 연결기를 만든다면 Kubernetes·Istio·Prometheus 인증, 배포 버전과 관측값 연결, 지속 저장소의 근거 보존이 필요합니다.

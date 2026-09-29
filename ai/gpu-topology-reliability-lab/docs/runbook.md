@@ -1,12 +1,12 @@
-# Runbook
+# 실행 절차
 
-1. Run `npm test` and stop if any invariant, negative-path or integrity test fails.
-2. Run `npm run simulate` to inspect the selected GPUs, diagnosis evidence and audit chain.
-3. For a `GPU_HEALTH` diagnosis, cordon the synthetic GPU and validate capacity before replacement.
-4. For `NUMA_REMOTE_ACCESS`, compare worker affinity with GPU and NIC NUMA domains before proposing a repin.
-5. For `PCIE_PATH_PRESSURE`, inspect link width/generation, replay counters and shared PCIe roots.
-6. For `NETWORK_SATURATION_OR_RDMA`, validate NIC affinity, utilization, errors and lossless-network configuration.
-7. Never execute a remediation whose approval hash differs from the current plan.
-8. Record the post-change signal and mark rollback required when health does not recover.
+1. `npm test`를 실행하고 불변 조건, 실패 경로 또는 무결성 테스트가 하나라도 실패하면 중단합니다.
+2. `npm run simulate`로 선택된 GPU, 진단 근거와 감사 연결을 확인합니다.
+3. `GPU_HEALTH` 진단이면 가상 GPU를 격리하고 교체 전에 남은 용량을 확인합니다.
+4. `NUMA_REMOTE_ACCESS`라면 재배치를 제안하기 전에 작업자 결합 위치와 GPU·NIC의 NUMA 영역을 대조합니다.
+5. `PCIE_PATH_PRESSURE`라면 링크 폭·세대, 재전송 계수와 공유 PCIe 루트를 확인합니다.
+6. `NETWORK_SATURATION_OR_RDMA`라면 NIC 결합 위치, 사용률, 오류와 무손실 네트워크 설정을 확인합니다.
+7. 승인 해시가 현재 계획과 다르면 조치를 실행하지 않습니다.
+8. 변경 후 신호를 기록하고 상태가 회복되지 않으면 롤백 필요로 표시합니다.
 
-All scenarios are synthetic and safe for local execution.
+모든 사례는 가상이며 로컬에서 안전하게 실행할 수 있습니다.

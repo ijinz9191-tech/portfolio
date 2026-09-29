@@ -1,23 +1,23 @@
-# Requirements
+# 요구사항
 
-## Input and result contract
+## 입력과 결과 계약
 
-POST /infer accepts only application/x-www-form-urlencoded with a single features field containing 1-16 comma-separated finite doubles within [-100,100]. The body is capped at 1024 bytes. Idempotency-Key must contain 1-64 ASCII letters, digits, underscore or hyphen.
+`POST /infer`는 `application/x-www-form-urlencoded`만 받고, `features` 필드 하나에 쉼표로 구분된 1~16개의 유한 실수를 허용합니다. 각 값은 -100~100입니다. 본문은 1024바이트 이하입니다. `Idempotency-Key`는 1~64자의 ASCII 영문·숫자·밑줄·하이픈입니다.
 
-The deterministic-v1 model returns sigmoid(mean(features)). This is a synthetic score with no risk, payment or business interpretation.
+`deterministic-v1` 모델은 `sigmoid(mean(features))`를 반환합니다. 이는 가상 점수이며 위험·결제·업무 의미를 갖지 않습니다.
 
-A successful admission returns 202 and a job ID. A completed cache hit returns 200. GET /jobs/id exposes QUEUED, RUNNING, SUCCEEDED, FAILED or CANCELLED. Failed results never enter the cache.
+요청 접수 성공은 `202`와 작업 ID를 반환합니다. 완료된 캐시 적중은 `200`입니다. `GET /jobs/id`는 `QUEUED`, `RUNNING`, `SUCCEEDED`, `FAILED`, `CANCELLED`를 표시합니다. 실패 결과는 캐시에 넣지 않습니다.
 
-## State and limits
+## 상태와 제한
 
-Same retained key and same canonical feature payload returns the existing job. Changed payload returns 409. Signed zero is normalized. Different keys may reuse a successful feature-cache entry. Concurrent different keys are not single-flight coalesced.
+보관 중인 같은 키와 같은 정규화 특성 입력은 기존 작업을 반환합니다. 내용이 다르면 `409`입니다. 부호 있는 0은 정규화합니다. 서로 다른 키가 성공한 특성 캐시를 재사용할 수 있지만 동시 요청의 단일 실행 합치기는 없습니다.
 
-Completed records expire after TTL; active work remains reserved. Expired keys may be used again. There is no durable deduplication. Record capacity and queue capacity separately return 429; rejected queue entries release their key reservation.
+완료 기록은 TTL 뒤 만료되며 진행 중 작업의 예약은 유지됩니다. 만료된 키는 다시 사용할 수 있습니다. 지속 중복 제거는 없습니다. 기록·대기열 용량 초과는 각각 `429`를 반환하고 대기열 거부 항목의 키 예약을 해제합니다.
 
-Default limits: one worker, queue 8, records 128, TTL 60 seconds, one retry (at most two calls), failure threshold 3, breaker cooldown 5 seconds. Tests inject smaller values and a logical clock.
+기본값은 작업자 1개, 대기열 8개, 기록 128개, TTL 60초, 재시도 1회(최대 호출 2회), 실패 기준 3회, 회로 대기 5초입니다. 테스트는 더 작은 값과 논리 시계를 주입합니다.
 
-## Failure and recovery
+## 실패와 복구
 
-Circuit failure counts track failed model attempts. Open circuits reject model execution without calling the model. After cooldown, one probe is allowed; success closes, failure reopens. Retries are immediate and bounded; no jitter/backoff scheduler is claimed. A previously successful cached value can still be served while the breaker is open.
+회로의 실패 수는 모델 호출 실패를 셉니다. 회로가 열리면 모델을 호출하지 않고 거부합니다. 대기 뒤 탐침 하나를 허용하며 성공하면 닫고 실패하면 다시 엽니다. 재시도는 즉시, 횟수를 제한해 실행합니다. 지터·백오프 스케줄러를 주장하지 않습니다. 회로가 열려도 이전의 성공 캐시 값은 제공할 수 있습니다.
 
-Shutdown rejects new admission, waits for accepted work and interrupts/cancels remaining jobs at the deadline. Cooperative model interruption is required. A Java thread cannot safely kill an uncooperative model. Restart starts an empty service; no old job is silently claimed as recovered.
+종료 시 신규 접수를 거부하고 이미 받은 작업을 기다립니다. 마감 시각에 남은 작업은 중단 요청·취소합니다. 모델이 협조적으로 중단을 처리해야 하며 Java 스레드로 비협조적 모델을 안전하게 강제 종료할 수는 없습니다. 재시작하면 빈 서비스로 시작하고 과거 작업을 복구했다고 주장하지 않습니다.

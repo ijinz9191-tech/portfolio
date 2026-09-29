@@ -1,5 +1,5 @@
-# Verification contract
+# 검증 계약
 
-The project is verified only when `npm run verify` exits 0 on the published source revision. Tests cover configuration, authorization, error budget, identity, duplicate rejection, progressive traffic, multi-cluster consistency, four independent rollback causes, malformed telemetry, terminal-state protection, manual rollback, missing releases, and evidence integrity/tamper detection.
+게시한 소스 버전에서 `npm run verify`가 종료 코드 0으로 끝나야 검증됐다고 기록합니다. 테스트 범위는 설정·승인·오류 예산·식별자·중복 거부·점진적 트래픽·다중 클러스터 일관성·독립적인 네 가지 롤백 원인·잘못된 지표·종료 상태 보호·수동 롤백·존재하지 않는 배포·근거 무결성과 변조 감지입니다.
 
-The generated `artifacts/verification.json` records the actual runtime, test count, command, source-manifest hash, and execution time. README claims must match that artifact and the published commit.
+생성되는 `artifacts/verification.json`에는 실제 실행 환경, 테스트 수, 명령, 소스 목록 해시와 실행 시각이 기록됩니다. README의 주장은 이 기록과 게시한 커밋에 맞아야 합니다.

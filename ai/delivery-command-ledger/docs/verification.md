@@ -1,12 +1,12 @@
-# Verification
+# 검증 기준
 
-`verify.ps1`은 캐시된 class를 삭제하고 Java 21로 전체 소스를 다시 컴파일합니다. 테스트는 다음 범주를 포함합니다.
+`verify.ps1`은 캐시된 클래스를 정리하고 Java 21로 전체 소스를 다시 컴파일합니다. 테스트 범위는 다음과 같습니다.
 
-- 정상: create, assign, pickup, complete, HTTP command/query
-- 중복·동시성: idempotent retry, payload conflict, duplicate order, version conflict
-- 정책: courier capacity, invalid transition, terminal state
-- 보상: cancel 이후 capacity release
-- 복구: snapshot round trip, restart 이후 command replay
-- API 실패: unknown entity, HTTP method guard
+- 정상 경로: 생성·배정·수거·완료·HTTP 명령과 조회
+- 중복·동시성: 멱등 재시도, 내용 충돌, 중복 주문, 버전 충돌
+- 정책: 배송 인원 수용량, 잘못된 상태 전이, 종료 상태
+- 보상: 취소 후 수용량 반환
+- 복구: 스냅샷 저장·복원, 재시작 후 명령 재실행
+- API 실패: 알 수 없는 개체와 HTTP 메서드 제한
 
-공개 전 최종 소스에서 실행한 결과와 source hash를 `artifacts/verification.txt`에 기록합니다.
+공개 전 최종 소스에서 실행한 결과와 소스 해시를 `artifacts/verification.txt`에 기록합니다.

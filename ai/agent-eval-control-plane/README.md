@@ -1,32 +1,32 @@
-# Agent Eval Control Plane
+# AI 에이전트 평가 제어 실습
 
-A dependency-free Python reference implementation for evaluating synthetic AI Agent traces before release. It turns an Agent run into inspectable quality, policy, latency and cost checks, persists immutable evidence in SQLite, and exposes a read-only report API.
+배포 전에 가상 AI 에이전트 실행을 평가하는, 외부 패키지가 필요 없는 Python 참고 구현입니다. 한 번의 실행을 검토 가능한 품질·정책·지연·비용 검사로 바꾸고, 변경할 수 없는 근거를 SQLite에 저장하며 읽기 전용 보고 API를 제공합니다.
 
-## Problem
+## 해결하려는 문제
 
-An AI Agent can return a plausible answer while using an unapproved tool, omitting evidence, exceeding operational budgets or hiding a failed step. A release gate needs to evaluate the answer and its execution path together.
+AI 에이전트는 승인되지 않은 도구를 사용하거나 근거를 빼먹고, 운영 예산을 초과하거나 실패 단계를 숨긴 채 그럴듯한 답을 낼 수 있습니다. 배포 판단에는 결과와 실행 경로를 함께 평가해야 합니다.
 
-## Implemented
+## 구현한 기능
 
-- Versioned evaluation cases with required facts, forbidden terms, approved tools and budgets
-- Strict ordered trace schema for retrieval, tool and model steps
-- Deterministic output, evidence, tool-policy, step-health, latency and cost checks
-- Fail-closed suite gate with explicit safety failures
-- SQLite evidence store with idempotent IDs and conflict detection
-- Read-only HTTP reports for health, run evidence and suite gates
-- CLI demo, evaluation and gate commands
-- Normal and failure-path tests using real temporary SQLite, loopback HTTP and subprocess CLI
+- 필수 사실·금지 문구·허용 도구·예산을 담은 버전별 평가 사례
+- 검색·도구·모델 단계의 엄격한 순서형 실행 추적 구조
+- 출력·근거·도구 정책·단계 상태·지연·비용의 결정적 검사
+- 명시적인 안전 실패를 포함한 실패 시 차단 방식의 평가 묶음 판단
+- 멱등 ID와 충돌 감지를 갖춘 SQLite 근거 저장소
+- 상태·실행 근거·평가 결과의 읽기 전용 HTTP 보고
+- 명령행 데모·평가·판단 명령
+- 실제 임시 SQLite, 로컬 HTTP, 별도 명령행 프로세스를 사용한 정상·실패 테스트
 
-## Quick verification
+## 빠른 검증
 
 ```powershell
 .\verify.ps1
 ```
 
-No package download is required. Python 3.11 or newer is sufficient.
+패키지를 내려받지 않습니다. Python 3.11 이상이면 실행할 수 있습니다.
 
-## Scope and provenance
+## 범위와 출처
 
-All prompts, traces, runbooks and results are synthetic. The project does not call a production model, cloud API or company system and does not claim production LLMOps experience. The user supplied the goal and career materials; AI-assisted tooling implemented and tested this public reference project.
+프롬프트·추적·운영 절차·결과는 모두 가상입니다. 운영 모델, 클라우드 API 또는 회사 시스템을 호출하거나 운영 LLMOps 경험을 주장하지 않습니다. 사용자가 목표와 경력 자료를 제공했고, AI 보조 도구로 공개 참고 구현을 만들고 테스트했습니다.
 
-See [architecture](docs/architecture.md) and [runbook](docs/runbook.md).
+[설계 설명](docs/architecture.md)과 [실행 절차](docs/runbook.md)를 참고하세요.
