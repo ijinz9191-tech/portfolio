@@ -1,0 +1,13 @@
+{
+  "change_id": "synthetic-change-7",
+  "before": [
+    {"route": "GET /orders", "auth": "authenticated", "fields": ["id", "state"]}
+  ],
+  "after": [
+    {"route": "GET /orders", "auth": "authenticated", "fields": ["id", "state", "updated_at"]}
+  ],
+  "consumers": [
+    {"id": "portal", "route": "GET /orders", "fields": ["id", "state"], "owner": "sample-owner", "acknowledged": false}
+  ],
+  "rollback_plan": "이전 API 버전을 다시 게시하고 이용 서비스 응답을 확인한다"
+}

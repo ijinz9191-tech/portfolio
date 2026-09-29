@@ -1,0 +1,12 @@
+{
+  "verified_at": "2026-09-30T00:33:41+09:00",
+  "python": "3.13.13",
+  "command": "conda run -p C:\\PRJ\\miniconda3 python -B -m unittest discover -s tests -v",
+  "result": "PASS 9/9",
+  "source_sha256": {
+    "audit.py": "4d14067c713b74e2ce42c5225c7b6e1ff6818d5e73cef23466f781c8e52037fb",
+    "samples/change.json": "99df733b9b5daee3cf4fc4a4c7bf9c366676641e9c3172f2cafb7f5188d2edb4",
+    "tests/test_audit.py": "e0cffedadf052cfa0137d15b26985fa288f47741c614d2143a55f1049aa3b5bf"
+  },
+  "scope": "가상 API 변경의 정상·실패·보안·이용자 영향·입력 검증·명령행"
+}

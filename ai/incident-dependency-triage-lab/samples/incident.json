@@ -1,9 +1,10 @@
 {
   "incident_id": "synthetic-incident-42",
+  "evaluated_at": "2026-09-30T00:10:00+09:00",
   "services": [
-    {"id": "api", "depends_on": ["auth", "database"], "healthy": false, "evidence": "5xx probe"},
-    {"id": "database", "depends_on": [], "healthy": false, "evidence": "connection probe"},
-    {"id": "auth", "depends_on": [], "healthy": true, "evidence": "login probe"},
-    {"id": "checkout", "depends_on": ["api"], "healthy": false, "evidence": "checkout probe"}
+    {"id": "api", "depends_on": ["auth", "database"], "healthy": false, "evidence": "5xx probe", "observed_at": "2026-09-30T00:09:00+09:00"},
+    {"id": "database", "depends_on": [], "healthy": false, "evidence": "connection probe", "observed_at": "2026-09-30T00:09:00+09:00"},
+    {"id": "auth", "depends_on": [], "healthy": true, "evidence": "login probe", "observed_at": "2026-09-30T00:09:00+09:00"},
+    {"id": "checkout", "depends_on": ["api"], "healthy": false, "evidence": "checkout probe", "observed_at": "2026-09-30T00:09:00+09:00"}
   ]
 }

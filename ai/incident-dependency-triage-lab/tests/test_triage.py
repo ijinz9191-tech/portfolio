@@ -54,6 +54,39 @@ class TriageTests(unittest.TestCase):
         self.assertEqual(analyze(changed)["decision"], "NO_OBSERVED_FAILURE")
         self.assertEqual(analyze(changed)["first_failed_candidates"], [])
 
+    def test_fresh_observations_are_checked(self):
+        current = snapshot()
+        current["evaluated_at"] = "2026-09-30T00:10:00+09:00"
+        for service in current["services"]:
+            service["observed_at"] = "2026-09-30T00:07:00+09:00"
+        result = analyze(current)
+        self.assertEqual(result["observation_freshness"], "CHECKED_5_MINUTES")
+        self.assertEqual(result["first_failed_candidates"], ["database"])
+
+    def test_stale_and_future_observations_reject(self):
+        current = snapshot()
+        current["evaluated_at"] = "2026-09-30T00:10:00+09:00"
+        for service in current["services"]:
+            service["observed_at"] = "2026-09-30T00:09:00+09:00"
+        current["services"][0]["observed_at"] = "2026-09-30T00:04:59+09:00"
+        with self.assertRaisesRegex(TriageError, "stale"):
+            analyze(current)
+        current["services"][0]["observed_at"] = "2026-09-30T00:10:01+09:00"
+        with self.assertRaisesRegex(TriageError, "future"):
+            analyze(current)
+
+    def test_missing_or_naive_observation_reject(self):
+        current = snapshot()
+        current["evaluated_at"] = "2026-09-30T00:10:00+09:00"
+        for service in current["services"]:
+            service["observed_at"] = "2026-09-30T00:09:00+09:00"
+        del current["services"][0]["observed_at"]
+        with self.assertRaises(TriageError):
+            analyze(current)
+        current["services"][0]["observed_at"] = "2026-09-30T00:09:00"
+        with self.assertRaisesRegex(TriageError, "timezone"):
+            analyze(current)
+
     def test_unknown_and_cycle_reject(self):
         unknown = snapshot()
         unknown["services"][0]["depends_on"].append("missing")
