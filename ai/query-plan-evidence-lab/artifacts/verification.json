@@ -1,0 +1,13 @@
+{
+  "project": "query-plan-evidence-lab",
+  "executed_at": "2026-09-29T05:42:00Z",
+  "runtime": "Conda base Python 3.13.13 / SQLite bundled with Python",
+  "command": "conda run -p C:\\PRJ\\miniconda3 -- python -B -m unittest discover -s tests -v",
+  "tests": 5,
+  "passed": 5,
+  "failed": 0,
+  "model_sha256": "43b025e06ec26afd3c4ebf43e72b92660551cabf867d926549db99d953550da7",
+  "cli_result": "INDEX_PLAN_VERIFIED; 4000 fixture rows; 20 result rows; equal results; tenant isolated",
+  "cli_evidence_sha256": "b99f6c547f4f50387d797dec3a6f662afdf9c815d3d5b66cac623fe1122f6347",
+  "data_scope": "synthetic-only; no latency measurement"
+}

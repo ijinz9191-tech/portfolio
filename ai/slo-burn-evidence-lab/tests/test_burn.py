@@ -6,7 +6,7 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from burnlab import BurnError, assess
+from burnlab import BurnError, assess, assess_segments
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -96,6 +96,31 @@ class BurnTests(unittest.TestCase):
         stale = subprocess.run(command[:-1] + ["2026-09-29T01:00:00Z"], cwd=ROOT, capture_output=True, text=True)
         self.assertEqual(stale.returncode, 2)
         self.assertIn("REJECTED", stale.stderr)
+
+    def test_segment_regression_pages_even_when_large_path_is_healthy(self):
+        healthy = fixture()["buckets"]
+        for bucket in healthy:
+            bucket["total"] = 100_000
+        failing = fixture()["buckets"]
+        for bucket in failing[-12:]:
+            bucket["failed"] = 20
+        result = assess_segments({"service": "checkout-synthetic", "objective": "0.999",
+                                  "segments": {"card": healthy, "bank-transfer": failing}}, now=NOW)
+        self.assertEqual(result["decision"], "PAGE")
+        self.assertEqual(result["paged_segments"], ["bank-transfer"])
+        self.assertEqual(result["segments"]["card"]["decision"], "NO_PAGE")
+
+    def test_segment_gap_rejects_entire_decision(self):
+        failing = fixture()["buckets"]
+        failing.pop()
+        with self.assertRaisesRegex(BurnError, "72 to 288"):
+            assess_segments({"service": "checkout-synthetic", "objective": "0.999",
+                             "segments": {"card": fixture()["buckets"], "bank-transfer": failing}}, now=NOW)
+
+    def test_segment_service_name_is_validated(self):
+        with self.assertRaisesRegex(BurnError, "service"):
+            assess_segments({"service": 42, "objective": "0.999",
+                             "segments": {"card": fixture()["buckets"], "transfer": fixture()["buckets"]}}, now=NOW)
 
 
 if __name__ == "__main__":

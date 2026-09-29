@@ -11,4 +11,6 @@ conda run -p <compatible-environment-prefix> python -B -m burnlab samples/sustai
 
 The `--now` value is a fixture clock. Omit it with fresh data. The CLI exits 0 for an assessed decision and 2 for rejected evidence. `NO_PAGE` with zero traffic means insufficient error observations, not proof of health. The SHA-256 ID binds the normalized latest six-hour bucket set to the output.
 
+For separate payment paths, provide `{"service": "checkout", "objective": "0.999", "segments": {"card": [...], "transfer": [...]}}`. Each path is evaluated independently, so healthy high-volume requests cannot mask a lower-volume path's burn. All configured paths need complete and fresh evidence; one invalid path rejects the whole decision. The aggregate result lists paged paths and includes an evidence hash derived from each path's hash. Segment names are bounded to 19 characters.
+
 This lab does not query Prometheus, page humans, prove an SLO is met, or represent any employer system. It is an AI-built, synthetic portfolio resource under the user's direction, not a claim of prior production implementation.

@@ -1,12 +1,12 @@
 {
   "project": "slo-burn-evidence-lab",
-  "executed_at": "2026-09-29T05:19:00Z",
+  "executed_at": "2026-09-29T05:42:00Z",
   "runtime": "Conda base Python 3.13.13",
   "command": "conda run -p C:\\PRJ\\miniconda3 -- python -B -m unittest discover -s tests -v",
-  "tests": 9,
-  "passed": 9,
+  "tests": 12,
+  "passed": 12,
   "failed": 0,
-  "model_sha256": "062a3cb0224bd22ecdb437b1d704e52cad182f05dbbf93e64ffc05e600331ad7",
+  "model_sha256": "16b1c957636842f3b398836d7c3164b617c10bb03b632d4f93aae67207459609",
   "cli_fixture_result": "PAGE / fast_burn=true / slow_burn=false",
   "data_scope": "synthetic-only"
 }

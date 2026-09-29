@@ -1,0 +1,63 @@
+"""Deterministic SQLite plan comparison, without timing claims."""
+
+import hashlib
+import json
+import sqlite3
+
+
+class EvidenceError(ValueError):
+    """The before/after comparison does not support the conclusion."""
+
+
+QUERY = ("SELECT order_id, tenant_id, created_at FROM synthetic_orders "
+         "WHERE tenant_id = ? AND status = ? AND created_at >= ? "
+         "ORDER BY created_at, order_id LIMIT 20")
+PARAMS = ("tenant-07", "PENDING", 200)
+INDEX = "idx_orders_tenant_status_created_order"
+
+
+def _rows(db):
+    return db.execute(QUERY, PARAMS).fetchall()
+
+
+def _plan(db):
+    return [row[3] for row in db.execute("EXPLAIN QUERY PLAN " + QUERY, PARAMS)]
+
+
+def verify(before, after, before_plan, after_plan):
+    """Reject changed results or unsupported scan/index interpretations."""
+    if before != after:
+        raise EvidenceError("result rows changed after indexing")
+    if any(row[1] != PARAMS[0] for row in after):
+        raise EvidenceError("cross-tenant row returned")
+    if not any("SCAN synthetic_orders" in line for line in before_plan):
+        raise EvidenceError("baseline table scan was not observed")
+    if not any("SEARCH synthetic_orders USING COVERING INDEX " + INDEX in line for line in after_plan):
+        raise EvidenceError("expected covering-index search was not observed")
+
+
+def reproduce():
+    """Build isolated synthetic rows and return a reproducible plan witness."""
+    db = sqlite3.connect(":memory:")
+    try:
+        db.execute("CREATE TABLE synthetic_orders (order_id INTEGER PRIMARY KEY, "
+                   "tenant_id TEXT NOT NULL, status TEXT NOT NULL, created_at INTEGER NOT NULL)")
+        rows = [(n, f"tenant-{n % 10:02d}", "PENDING" if n % 3 else "DONE", n // 10)
+                for n in range(1, 4001)]
+        db.executemany("INSERT INTO synthetic_orders VALUES (?, ?, ?, ?)", rows)
+        before, before_plan = _rows(db), _plan(db)
+        db.execute(f"CREATE INDEX {INDEX} ON synthetic_orders "
+                   "(tenant_id, status, created_at, order_id)")
+        after, after_plan = _rows(db), _plan(db)
+        verify(before, after, before_plan, after_plan)
+        witness = {"query": QUERY, "parameters": PARAMS, "rows": after,
+                   "before_plan": before_plan, "after_plan": after_plan}
+        digest = hashlib.sha256(json.dumps(witness, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        return {"decision": "INDEX_PLAN_VERIFIED", "fixture_rows": len(rows),
+                "result_rows": len(after), "before_plan": before_plan,
+                "after_plan": after_plan, "results_equal": before == after,
+                "tenant_isolated": all(row[1] == PARAMS[0] for row in after),
+                "evidence_sha256": digest,
+                "limits": "Synthetic SQLite plan evidence only; no wall-clock speedup, production database, or employer-system claim."}
+    finally:
+        db.close()

@@ -88,3 +88,27 @@ def assess(data: dict, *, now: datetime | None = None) -> dict:
             "decision": "PAGE" if fast or slow else "NO_PAGE", "fast_burn": fast, "slow_burn": slow,
             "windows": windows, "evidence_sha256": digest,
             "limits": "Synthetic, request-count-based error SLI; no live metrics or latency percentile."}
+
+
+def assess_segments(data: dict, *, now: datetime | None = None) -> dict:
+    """Fail closed when a low-volume payment path is hidden by aggregate health."""
+    if not isinstance(data, dict) or set(data) != {"service", "objective", "segments"}:
+        raise BurnError("service, objective and segments are required")
+    service = data["service"]
+    if not isinstance(service, str) or not service.strip() or len(service) > 60:
+        raise BurnError("service must be a nonempty bounded name")
+    segments = data["segments"]
+    if not isinstance(segments, dict) or not 2 <= len(segments) <= 20:
+        raise BurnError("2 to 20 named segments are required")
+    results = {}
+    for name, buckets in sorted(segments.items()):
+        if not isinstance(name, str) or not name.strip() or len(name) > 19:
+            raise BurnError("segment names must be nonempty and bounded")
+        results[name] = assess({"service": f"{service}/{name}", "objective": data["objective"],
+                                "buckets": buckets}, now=now)
+    paged = [name for name, result in results.items() if result["decision"] == "PAGE"]
+    evidence = hashlib.sha256(json.dumps({name: result["evidence_sha256"] for name, result in results.items()},
+                                      sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return {"service": service, "decision": "PAGE" if paged else "NO_PAGE",
+            "paged_segments": paged, "segments": results, "evidence_sha256": evidence,
+            "limits": "Each synthetic path is evaluated separately; no real payment or production metrics."}
