@@ -17,7 +17,7 @@
 - delivery version 기반 optimistic concurrency control
 - courier별 active delivery capacity 검사와 cancel compensation
 - append-only audit event sequence
-- temp file + atomic move 기반 snapshot
+- temp file + atomic move 기반 snapshot, SHA-256 무결성 검사 후 복원
 - JDK `HttpServer` 기반 read/write API
 
 ## 실행
@@ -28,7 +28,7 @@
 .\verify.ps1
 ```
 
-검증 스크립트는 main/test 소스를 새로 컴파일하고 정상·실패·복구·HTTP 경로 18개를 실행합니다.
+검증 스크립트는 main/test 소스를 새로 컴파일하고 정상·실패·복구·HTTP 경로 20개를 실행합니다. Snapshot 본문 변조와 체크섬 누락을 거부하는 경로를 포함합니다.
 
 ## 범위와 한계
 

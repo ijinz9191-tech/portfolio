@@ -1,0 +1,14 @@
+{
+  "scenario": "synthetic-last-mile-handoffs",
+  "now_min": 120,
+  "deliveries": [
+    {"id": "route-a", "deadline_min": 90, "events": [
+      {"stage": "created", "at_min": 1, "actor": "order-api"},
+      {"stage": "assigned", "at_min": 10, "actor": "dispatcher"},
+      {"stage": "picked_up", "at_min": 30, "actor": "courier"},
+      {"stage": "completed", "at_min": 80, "actor": "courier"}]},
+    {"id": "route-b", "deadline_min": 100, "events": [
+      {"stage": "created", "at_min": 2, "actor": "order-api"},
+      {"stage": "assigned", "at_min": 12, "actor": "dispatcher"}]}
+  ]
+}

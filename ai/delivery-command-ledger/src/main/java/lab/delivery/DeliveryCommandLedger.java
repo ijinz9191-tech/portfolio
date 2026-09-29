@@ -10,9 +10,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HexFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +109,7 @@ public final class DeliveryCommandLedger {
             for (Event e : events) {
                 lines.add("EVENT|" + e.sequence() + "|" + enc(e.deliveryId()) + "|" + enc(e.type()) + "|" + e.version() + "|" + e.occurredAt());
             }
+            lines.add("SHA256|" + digest(lines));
             Files.write(temp, lines, StandardCharsets.UTF_8);
             try {
                 Files.move(temp, target, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
@@ -116,7 +120,9 @@ public final class DeliveryCommandLedger {
 
         public static Service restore(Path source) throws IOException {
             List<String> lines = Files.readAllLines(source, StandardCharsets.UTF_8);
-            if (lines.isEmpty() || !lines.getFirst().startsWith("META|")) throw new IOException("invalid snapshot");
+            if (lines.size() < 2 || !lines.getFirst().startsWith("META|")) throw new IOException("invalid snapshot");
+            String seal = lines.removeLast();
+            if (!seal.equals("SHA256|" + digest(lines))) throw new IOException("snapshot checksum mismatch");
             String[] meta = lines.getFirst().split("\\|", -1);
             Service service = new Service(Integer.parseInt(meta[1]));
             service.sequence = Long.parseLong(meta[2]);
@@ -140,6 +146,16 @@ public final class DeliveryCommandLedger {
                 service.commands.put(entry.getKey(), new CommandResult(entry.getValue()[0], d));
             }
             return service;
+        }
+
+        private static String digest(List<String> lines) {
+            try {
+                byte[] value = MessageDigest.getInstance("SHA-256").digest(
+                        String.join("\n", lines).getBytes(StandardCharsets.UTF_8));
+                return HexFormat.of().formatHex(value);
+            } catch (NoSuchAlgorithmException impossible) {
+                throw new IllegalStateException(impossible);
+            }
         }
 
         private Delivery replay(String commandId, String fingerprint) {

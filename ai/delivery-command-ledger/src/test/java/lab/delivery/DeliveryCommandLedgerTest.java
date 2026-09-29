@@ -29,10 +29,12 @@ public final class DeliveryCommandLedgerTest {
         run("event sequence", DeliveryCommandLedgerTest::events);
         run("snapshot restore", DeliveryCommandLedgerTest::snapshot);
         run("restored idempotency", DeliveryCommandLedgerTest::restoredIdempotency);
+        run("tampered snapshot rejected", DeliveryCommandLedgerTest::tamperedSnapshot);
+        run("missing snapshot checksum rejected", DeliveryCommandLedgerTest::missingChecksum);
         run("http health", DeliveryCommandLedgerTest::httpHealth);
         run("http command and query", DeliveryCommandLedgerTest::httpCommand);
         run("http method guard", DeliveryCommandLedgerTest::httpMethod);
-        System.out.println("PASS " + passed.size() + "/18");
+        System.out.println("PASS " + passed.size() + "/20");
         passed.forEach(name -> System.out.println("  PASS " + name));
     }
 
@@ -104,6 +106,26 @@ public final class DeliveryCommandLedgerTest {
         var s = assigned(); var file = Files.createTempFile("delivery-ledger", ".snapshot");
         try { s.snapshot(file); var restored = DeliveryCommandLedger.Service.restore(file); check(restored.assign("c2", "d1", "r1", 1).equals(s.get("d1")), "command replay lost"); }
         finally { Files.deleteIfExists(file); }
+    }
+    private static void tamperedSnapshot() throws Exception {
+        var file = Files.createTempFile("delivery-ledger-tampered", ".snapshot");
+        try {
+            assigned().snapshot(file);
+            var lines = Files.readAllLines(file);
+            lines.set(1, lines.get(1).replace("ASSIGNED", "COMPLETED"));
+            Files.write(file, lines);
+            expect(java.io.IOException.class, () -> DeliveryCommandLedger.Service.restore(file));
+        } finally { Files.deleteIfExists(file); }
+    }
+    private static void missingChecksum() throws Exception {
+        var file = Files.createTempFile("delivery-ledger-no-checksum", ".snapshot");
+        try {
+            assigned().snapshot(file);
+            var lines = Files.readAllLines(file);
+            lines.removeLast();
+            Files.write(file, lines);
+            expect(java.io.IOException.class, () -> DeliveryCommandLedger.Service.restore(file));
+        } finally { Files.deleteIfExists(file); }
     }
     private static void httpHealth() throws Exception {
         try (var api = new DeliveryCommandLedger.Api(new DeliveryCommandLedger.Service(), 0)) {
