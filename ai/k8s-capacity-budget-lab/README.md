@@ -19,5 +19,6 @@ The fixed `--now` is for the synthetic fixture only. In operational use, omit it
 
 - Per-pod effective CPU is the greater of requested CPU and p95 observed CPU divided by the utilization target. Effective memory is the greater of requested memory and observed p95 memory plus headroom.
 - Per-node pod capacity is the smallest of CPU capacity after system reserve, memory capacity after reserve, and maximum pod count. At least one node is placed in each required zone; remaining nodes are distributed round-robin.
+- Set `workload.survive_single_zone_loss` to `true` to require steady-state replicas to fit after the fullest selected zone disappears. Rollout surge is still checked against normal total capacity. The result reports surviving pod capacity so the assumption is inspectable.
 - Cost assumes a 730-hour month and only node hourly price. It excludes storage, network, discounts, autoscaler behavior and live placement constraints. It picks one node shape; it does not optimize mixed pools.
 - This is a synthetic planning aid. It neither connects to Kubernetes nor claims production operation, real cost savings, or work performed for Toss.

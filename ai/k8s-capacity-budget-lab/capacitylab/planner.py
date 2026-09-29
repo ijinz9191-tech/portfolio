@@ -61,6 +61,9 @@ def plan(data: dict, *, now: datetime | None = None) -> dict:
     cpu_request = _integer(workload.get("cpu_request_m"), "cpu_request_m", 1)
     memory_request = _integer(workload.get("memory_request_mib"), "memory_request_mib", 1)
     min_zones = _integer(workload.get("min_zones"), "min_zones", 2)
+    survive_zone_loss = workload.get("survive_single_zone_loss", False)
+    if not isinstance(survive_zone_loss, bool):
+        raise PlanError("survive_single_zone_loss must be a boolean")
     target_cpu = _decimal(workload.get("target_cpu_utilization"), "target_cpu_utilization", "0.01", "1")
     memory_headroom = _decimal(workload.get("memory_headroom_fraction"), "memory_headroom_fraction", "0", "1")
     reserve = _decimal(data.get("system_reserve_fraction", "0.1"), "system_reserve_fraction", "0", "0.5")
@@ -102,6 +105,23 @@ def plan(data: dict, *, now: datetime | None = None) -> dict:
         if pods_per_node < 1:
             continue
         nodes = max(min_zones, ceil(required_pods / pods_per_node))
+        if survive_zone_loss:
+            # A single lost zone removes the fullest zone. Search for the
+            # smallest node count that still fits steady-state replicas.
+            def surviving_capacity(count: int) -> int:
+                return (count - ceil(count / min_zones)) * pods_per_node
+
+            low = nodes
+            high = nodes
+            while surviving_capacity(high) < replicas:
+                high *= 2
+            while low < high:
+                midpoint = (low + high) // 2
+                if surviving_capacity(midpoint) >= replicas:
+                    high = midpoint
+                else:
+                    low = midpoint + 1
+            nodes = low
         monthly = hourly * nodes * 730
         extra_each, extra_remainder = divmod(nodes - min_zones, min_zones)
         zone_nodes = {
@@ -114,10 +134,12 @@ def plan(data: dict, *, now: datetime | None = None) -> dict:
             "zone_nodes": zone_nodes,
             "pods_per_node": pods_per_node,
             "rollout_pods": required_pods,
+            "surviving_pods_after_zone_loss": (nodes - ceil(nodes / min_zones)) * pods_per_node,
+            "single_zone_loss_required": survive_zone_loss,
             "effective_cpu_m_per_pod": effective_cpu,
             "effective_memory_mib_per_pod": effective_memory,
             "monthly_cost_usd": str(monthly.quantize(Decimal("0.01"))),
-            "assumptions": ["uniform node shape", "730-hour month", "one node per required zone", "requests and p95 telemetry only"]
+            "assumptions": ["uniform node shape", "730-hour month", "one node per required zone", "requests and p95 telemetry only", "single-zone loss uses the fullest selected zone"]
         }))
     if not candidates:
         raise PlanError("no node offering can fit the workload and zone policy")

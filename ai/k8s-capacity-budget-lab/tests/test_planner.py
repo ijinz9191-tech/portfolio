@@ -40,6 +40,37 @@ class PlannerTests(unittest.TestCase):
         data["workload"]["max_surge"] = 0
         self.assertEqual(plan(data, now=NOW)["nodes"], 2)
 
+    def test_single_zone_loss_preserves_steady_state_replicas(self):
+        data = self.sample()
+        data["workload"]["survive_single_zone_loss"] = True
+        data["monthly_cost_ceiling_usd"] = 1000
+        result = plan(data, now=NOW)
+        self.assertEqual(result["nodes"], 6)
+        self.assertEqual(result["zone_nodes"], {"a": 3, "b": 3})
+        self.assertGreaterEqual(result["surviving_pods_after_zone_loss"], data["workload"]["replicas"])
+        self.assertEqual(result["single_zone_loss_required"], True)
+
+    def test_zone_loss_can_make_cost_ceiling_infeasible(self):
+        data = self.sample()
+        data["workload"]["survive_single_zone_loss"] = True
+        with self.assertRaisesRegex(PlanError, "cost ceiling"):
+            plan(data, now=NOW)
+
+    def test_zone_loss_flag_rejects_non_boolean(self):
+        data = self.sample()
+        data["workload"]["survive_single_zone_loss"] = "yes"
+        with self.assertRaisesRegex(PlanError, "boolean"):
+            plan(data, now=NOW)
+
+    def test_large_zone_loss_plan_uses_bounded_search(self):
+        data = self.sample()
+        data["workload"]["replicas"] = 1_000_000
+        data["workload"]["survive_single_zone_loss"] = True
+        data["monthly_cost_ceiling_usd"] = 100_000_000
+        result = plan(data, now=NOW)
+        self.assertGreaterEqual(result["surviving_pods_after_zone_loss"], 1_000_000)
+        self.assertLess(result["nodes"], 1_000_001)
+
     def test_large_rollout_distributes_nodes_without_per_node_iteration(self):
         data = self.sample()
         data["workload"]["replicas"] = 1_000_000

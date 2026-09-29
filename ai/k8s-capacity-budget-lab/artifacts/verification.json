@@ -1,12 +1,13 @@
 {
   "project": "k8s-capacity-budget-lab",
-  "executed_at": "2026-09-29T02:05:55Z",
-  "runtime": "Conda heo-ai-coding Python 3.11.15",
-  "command": "conda run -p C:\\Users\\ijinz\\miniconda3\\envs\\heo-ai-coding -- python -m unittest discover -s tests -v",
-  "tests": 9,
-  "passed": 9,
+  "executed_at": "2026-09-29T05:18:00Z",
+  "runtime": "Conda base Python 3.13.13",
+  "command": "conda run -p C:\\PRJ\\miniconda3 -- python -B -m unittest discover -s tests -v",
+  "tests": 13,
+  "passed": 13,
   "failed": 0,
-  "planner_sha256": "4355cd7762cc459aa4e9a13a8cf7db57d02c2f6917934dd2473f5b1287bcfb23",
+  "planner_sha256": "a4bb4b2ccbd308f36a56b17d07b0b18980376388fdc70a53e1823d621780ed43",
   "cli_normal_and_rejection_paths": "passed",
-  "data_scope": "synthetic-only"
+  "data_scope": "synthetic-only",
+  "new_scope": "opt-in single-zone-loss steady-state capacity gate"
 }
