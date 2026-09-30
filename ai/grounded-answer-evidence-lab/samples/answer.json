@@ -1,0 +1,30 @@
+{
+  "documents": [
+    {
+      "id": "가상-운영규칙-v1",
+      "text": "가상 예약 서비스는 30초 뒤 요청을 중단한다. 재시도는 같은 요청 키로 한 번만 처리한다."
+    }
+  ],
+  "claims": [
+    {
+      "statement": "요청 제한 시간은 30초입니다.",
+      "citations": [
+        {
+          "source_id": "가상-운영규칙-v1",
+          "quote": "가상 예약 서비스는 30초 뒤 요청을 중단한다.",
+          "source_sha256": "797dcdf052f7be376e12d54c2207c346d16c7a64c7f7fcba30bfee0cdb4f8193"
+        }
+      ]
+    },
+    {
+      "statement": "재시도는 같은 요청 키를 사용합니다.",
+      "citations": [
+        {
+          "source_id": "가상-운영규칙-v1",
+          "quote": "재시도는 같은 요청 키로 한 번만 처리한다.",
+          "source_sha256": "797dcdf052f7be376e12d54c2207c346d16c7a64c7f7fcba30bfee0cdb4f8193"
+        }
+      ]
+    }
+  ]
+}

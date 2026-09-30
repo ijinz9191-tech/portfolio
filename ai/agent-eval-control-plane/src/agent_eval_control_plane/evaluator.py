@@ -32,6 +32,12 @@ def evaluate_run(case: EvaluationCase, run: RunTrace) -> EvaluationResult:
     lower_output = run.output.casefold()
     used_tools = [step.name for step in run.steps if step.kind == "tool"]
     required_found = all(fact.casefold() in lower_output for fact in case.required_facts)
+    fact_refs = {fact.casefold(): ref for fact, ref in run.fact_evidence}
+    evidence_refs = set(run.evidence_refs)
+    grounding_complete = all(
+        fact.casefold() in fact_refs and fact_refs[fact.casefold()] in evidence_refs
+        for fact in case.required_facts
+    ) if case.grounding_required else True
     forbidden_absent = all(term.casefold() not in lower_output for term in case.forbidden_terms)
     allowed_tools = set(case.allowed_tools)
     tools_allowed = all(tool in allowed_tools for tool in used_tools)
@@ -39,6 +45,7 @@ def evaluate_run(case: EvaluationCase, run: RunTrace) -> EvaluationResult:
         "required_facts": required_found,
         "forbidden_terms": forbidden_absent,
         "evidence_present": bool(run.evidence_refs) if case.required_facts else True,
+        "grounding_complete": grounding_complete,
         "tools_allowed": tools_allowed,
         "tool_budget": len(used_tools) <= case.max_tool_calls,
         "steps_succeeded": all(step.status == "ok" for step in run.steps),

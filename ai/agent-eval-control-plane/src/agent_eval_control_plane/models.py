@@ -27,6 +27,7 @@ class EvaluationCase:
     max_tool_calls: int
     latency_budget_ms: int
     cost_budget_units: float
+    grounding_required: bool = False
 
     @classmethod
     def from_dict(cls, raw: dict[str, Any]) -> "EvaluationCase":
@@ -40,12 +41,15 @@ class EvaluationCase:
         max_calls = raw.get("max_tool_calls", 8)
         latency = raw.get("latency_budget_ms", 5000)
         cost = raw.get("cost_budget_units", 1.0)
+        grounding_required = raw.get("grounding_required", False)
         if not isinstance(max_calls, int) or max_calls < 0:
             raise ValidationError("max_tool_calls must be a non-negative integer")
         if not isinstance(latency, int) or latency <= 0:
             raise ValidationError("latency_budget_ms must be a positive integer")
         if not isinstance(cost, (int, float)) or cost < 0:
             raise ValidationError("cost_budget_units must be non-negative")
+        if not isinstance(grounding_required, bool):
+            raise ValidationError("grounding_required must be a boolean")
         return cls(
             case_id=case_id,
             suite=suite,
@@ -56,6 +60,7 @@ class EvaluationCase:
             max_tool_calls=max_calls,
             latency_budget_ms=latency,
             cost_budget_units=float(cost),
+            grounding_required=grounding_required,
         )
 
     def as_dict(self) -> dict[str, Any]:
@@ -69,6 +74,7 @@ class EvaluationCase:
             "max_tool_calls": self.max_tool_calls,
             "latency_budget_ms": self.latency_budget_ms,
             "cost_budget_units": self.cost_budget_units,
+            "grounding_required": self.grounding_required,
         }
 
 
@@ -112,6 +118,7 @@ class RunTrace:
     cost_units: float
     evidence_refs: tuple[str, ...]
     steps: tuple[Step, ...]
+    fact_evidence: tuple[tuple[str, str], ...] = ()
 
     @classmethod
     def from_dict(cls, raw: dict[str, Any]) -> "RunTrace":
@@ -134,6 +141,13 @@ class RunTrace:
         steps = tuple(Step.from_dict(item) for item in raw_steps)
         if [step.seq for step in steps] != list(range(1, len(steps) + 1)):
             raise ValidationError("step sequence must be contiguous and start at 1")
+        raw_mapping = raw.get("fact_evidence", {})
+        if not isinstance(raw_mapping, dict) or any(
+            not isinstance(fact, str) or not fact.strip()
+            or not isinstance(ref, str) or not ref.strip()
+            for fact, ref in raw_mapping.items()
+        ):
+            raise ValidationError("fact_evidence must map non-empty facts to non-empty references")
         return cls(
             run_id=run_id,
             case_id=case_id,
@@ -142,6 +156,7 @@ class RunTrace:
             cost_units=float(cost),
             evidence_refs=_strings(raw.get("evidence_refs"), "evidence_refs"),
             steps=steps,
+            fact_evidence=tuple((fact.strip(), ref.strip()) for fact, ref in raw_mapping.items()),
         )
 
     def as_dict(self) -> dict[str, Any]:
@@ -153,4 +168,5 @@ class RunTrace:
             "cost_units": self.cost_units,
             "evidence_refs": list(self.evidence_refs),
             "steps": [step.as_dict() for step in self.steps],
+            "fact_evidence": dict(self.fact_evidence),
         }

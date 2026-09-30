@@ -116,6 +116,23 @@ class EvaluationTests(unittest.TestCase):
     def test_missing_evidence_is_reported(self):
         self.assertIn("evidence_present", evaluate_run(self.case, RunTrace.from_dict(run_raw(evidence_refs=[]))).violations)
 
+    def test_grounding_requires_each_fact_to_name_a_recorded_reference(self):
+        case = EvaluationCase.from_dict(case_raw(grounding_required=True))
+        missing = evaluate_run(case, RunTrace.from_dict(run_raw()))
+        self.assertIn("grounding_complete", missing.violations)
+        linked = RunTrace.from_dict(run_raw(fact_evidence={
+            "timeout": "fixture://trace/1", "retry": "fixture://trace/1",
+        }))
+        self.assertTrue(evaluate_run(case, linked).passed)
+        wrong_ref = RunTrace.from_dict(run_raw(fact_evidence={
+            "timeout": "fixture://trace/1", "retry": "fixture://unknown",
+        }))
+        self.assertIn("grounding_complete", evaluate_run(case, wrong_ref).violations)
+
+    def test_invalid_fact_evidence_mapping_is_rejected(self):
+        with self.assertRaises(ValidationError):
+            RunTrace.from_dict(run_raw(fact_evidence={"timeout": ""}))
+
     def test_gate_requires_every_case(self):
         good = evaluate_run(self.case, RunTrace.from_dict(run_raw()))
         bad = evaluate_run(self.case, RunTrace.from_dict(run_raw(run_id="run-2", latency_ms=5000)))
