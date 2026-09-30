@@ -24,12 +24,14 @@ class AuditTests(unittest.TestCase):
         self.assertEqual(result["decision"], "PASS")
         self.assertEqual(result["results"][0]["attempts"], 2)
         self.assertEqual(result["results"][0]["status"], "CAPTURED")
+        self.assertEqual(result["results"][0]["entitlement_gate"], "ELIGIBLE")
 
     def test_ack_without_provider_evidence_remains_unknown(self):
         data = deepcopy(GOOD)
         data["provider_events"] = []
         result = audit(data)
         self.assertEqual(result["results"][0]["status"], "UNKNOWN")
+        self.assertEqual(result["results"][0]["entitlement_gate"], "REVIEW")
         self.assertIn("PROVIDER_OUTCOME_UNKNOWN", [x["issue"] for x in result["issues"]])
 
     def test_key_payload_conflict(self):
@@ -42,6 +44,22 @@ class AuditTests(unittest.TestCase):
         data["provider_events"].append({"event_id": "e2", "key": "k1", "status": "DECLINED", "amount_won": 99})
         self.assertEqual({x["issue"] for x in audit(data)["issues"]},
                          {"PROVIDER_AMOUNT_MISMATCH", "CONFLICTING_PROVIDER_OUTCOME"})
+        self.assertEqual(audit(data)["results"][0]["entitlement_gate"], "REVIEW")
+
+    def test_clean_decline_does_not_grant_access(self):
+        data = deepcopy(GOOD)
+        data["attempts"] = [dict(data["attempts"][0], response="DECLINED")]
+        data["provider_events"] = [dict(data["provider_events"][0], status="DECLINED")]
+        result = audit(data)
+        self.assertEqual(result["decision"], "PASS")
+        self.assertEqual(result["results"][0]["entitlement_gate"], "NOT_ELIGIBLE")
+
+    def test_capture_with_amount_mismatch_needs_review_before_access(self):
+        data = deepcopy(GOOD)
+        data["provider_events"][0]["amount_won"] = 101
+        result = audit(data)
+        self.assertEqual(result["results"][0]["status"], "CAPTURED")
+        self.assertEqual(result["results"][0]["entitlement_gate"], "REVIEW")
 
     def test_orphan_provider_event_and_sequence_gap(self):
         data = deepcopy(GOOD)

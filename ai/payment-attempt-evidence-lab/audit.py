@@ -80,6 +80,7 @@ def audit(payload: object) -> dict:
     issues: list[dict] = []
     results: list[dict] = []
     for key in sorted(set(by_key) | set(by_event)):
+        issue_start = len(issues)
         rows = sorted(by_key.get(key, []), key=lambda r: r["attempt_no"])
         observed = sorted(by_event.get(key, []), key=lambda r: r["event_id"])
         if not rows:
@@ -103,8 +104,13 @@ def audit(payload: object) -> dict:
             issues.append({"key": key, "issue": "PROVIDER_OUTCOME_UNKNOWN"})
         status = "CAPTURED" if len(captures) == 1 and not declines else (
             "DECLINED" if declines and not captures else "UNKNOWN")
+        # 접근 권한은 이 정적 판정을 근거로 운영 시스템이 별도로 결정한다.
+        entitlement_gate = ("ELIGIBLE" if status == "CAPTURED" and len(issues) == issue_start
+                            else "NOT_ELIGIBLE" if status == "DECLINED" and len(issues) == issue_start
+                            else "REVIEW")
         results.append({"key": key, "status": status, "attempts": len(rows),
-                        "provider_event_ids": [e["event_id"] for e in observed]})
+                        "provider_event_ids": [e["event_id"] for e in observed],
+                        "entitlement_gate": entitlement_gate})
 
     canonical = {"attempts": [dict(key=k, **r) for k in sorted(by_key)
                               for r in sorted(by_key[k], key=lambda v: v["attempt_no"])],
@@ -114,7 +120,7 @@ def audit(payload: object) -> dict:
                                        separators=(",", ":")).encode()).hexdigest()
     return {"decision": "PASS" if not issues else "REVIEW_REQUIRED", "results": results,
             "issues": issues, "evidence_sha256": digest,
-            "limits": "가상 오프라인 근거 대조이며 실제 결제 확정이나 금전 이동을 증명하지 않습니다."}
+            "limits": "가상 오프라인 근거 대조입니다. 실제 결제 확정·금전 이동·구독 접근권 부여를 수행하거나 증명하지 않습니다."}
 
 
 def main() -> int:

@@ -37,5 +37,6 @@
 | 답변 근거 추적 실습 | 가상 문서에 대해 주장별 인용의 위치와 문서 SHA-256 버전을 검사합니다. 누락·중복·존재하지 않는 근거를 실패로 보고합니다. | Conda Python 3.13.13에서 정상·오류·명령행 7개 테스트가 통과했습니다. 의미적 사실성은 검사하지 않으며 실제 NHN 자료나 운영 AI 서비스를 사용하지 않습니다. | [설명과 실행 방법](grounded-answer-evidence-lab/README.md) / [가상 입력](grounded-answer-evidence-lab/samples/answer.json) / [테스트](grounded-answer-evidence-lab/tests/test_audit.py). |
 
 | 상품 변경 안전 검토 실습 | 가상 MD 상품의 버전, 할인 후 가격, 원가, 재고를 대조합니다. AI 제안도 동일한 정형 정책으로 검사하며 충돌·원가 이하·재고 있는 삭제를 차단하고 20% 초과 가격 하락은 검토로 구분합니다. | Conda Python 3.13.13에서 정상·버전 충돌·가격·재고·입력 거부·명령행 8개 테스트가 통과했습니다. 실제 GS리테일 자료나 운영 시스템을 사용하지 않았습니다. | [설명과 실행 방법](merchandising-change-safety-lab/README.md) / [가상 입력](merchandising-change-safety-lab/samples/safe-change.json) / [테스트](merchandising-change-safety-lab/tests/test_audit.py). |
+| 구독 접근권·제휴사 확인 대조 실습 | 합성 결제 확정·거절, 구독 접근권, 제휴사 응답을 구독 ID와 청구월별로 대조하고 누락·참조 차이·중복을 구분합니다. 기존 결제 재시도 실습에는 안전한 접근권 후보 판정을 추가했습니다. | Conda Python 3.13.13에서 기존 도구 11개·신규 도구 9개 정상·실패·입력 거부·명령행 테스트가 통과했습니다. 실제 결제·계정 권한·제휴 시스템과 연결하지 않았습니다. | [설명과 실행 방법](subscription-entitlement-reconciliation-lab/README.md) / [가상 입력](subscription-entitlement-reconciliation-lab/samples/confirmed.json) / [테스트](subscription-entitlement-reconciliation-lab/tests/test_reconcile.py). |
 
 소스 링크는 실행 중인 서비스 주소가 아닙니다. 모든 사례 자료는 가상입니다. 공개 사이트 소스는 [엔지니어링 포트폴리오](../site/README.md)를 참고하세요. 배포 주소는 확인 후 추가합니다.

@@ -1,0 +1,5 @@
+{
+  "payments": [{"payment_id": "pay-1", "subscription_id": "sub-1", "period": "2026-09", "status": "CAPTURED", "amount_won": 9900}],
+  "entitlements": [{"payment_id": "pay-1", "subscription_id": "sub-1", "period": "2026-09", "status": "ACTIVE"}],
+  "partner_acks": [{"payment_id": "pay-1", "subscription_id": "sub-1", "period": "2026-09", "status": "CONFIRMED"}]
+}
