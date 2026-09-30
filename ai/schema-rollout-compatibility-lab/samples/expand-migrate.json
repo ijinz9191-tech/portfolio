@@ -1,0 +1,16 @@
+{
+  "schemas": {
+    "v1": {"columns": ["id", "status"], "required_on_insert": ["id", "status"], "defaults": []},
+    "v2": {"columns": ["id", "status", "status_code"], "required_on_insert": ["id", "status", "status_code"], "defaults": ["status_code"]},
+    "v3": {"columns": ["id", "status", "status_code"], "required_on_insert": ["id", "status", "status_code"], "defaults": ["status_code"]}
+  },
+  "apps": {
+    "old": {"reads": ["id", "status"], "writes": ["id", "status"]},
+    "new": {"reads": ["id", "status", "status_code"], "writes": ["id", "status", "status_code"]}
+  },
+  "stages": [
+    {"name": "기존", "schema": "v1", "running_apps": ["old"], "rollback_app": "old"},
+    {"name": "확장과 혼합 운영", "schema": "v2", "running_apps": ["old", "new"], "rollback_app": "old"},
+    {"name": "신규 운영", "schema": "v3", "running_apps": ["new"], "rollback_app": "old"}
+  ]
+}

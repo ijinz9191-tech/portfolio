@@ -41,4 +41,6 @@
 
 | PG 인증 귀환·서버 확인 대조 실습 | 가상 브라우저 귀환과 서버 확인을 별도 증거로 대조해 일회성 값·주문·가맹점·금액 일치, 중복·누락·결과 상충을 검사합니다. 기존 결제 시도 도구에는 확인 뒤 취소 관측을 반영했습니다. | Conda Python에서 기존 도구 13개, 신규 도구 8개 테스트를 통과했습니다. 실제 결제 승인이나 운영 PG와 연결하지 않습니다. | [설명과 실행 방법](pg-auth-return-integrity-lab/README.md) / [가상 입력](pg-auth-return-integrity-lab/samples/authorized.json) / [테스트](pg-auth-return-integrity-lab/tests/test_audit.py). |
 
+| 관계형 스키마 순차 배포 호환성 실습 | 가상 Java 앱의 구버전·신버전 혼합 운영과 롤백 단계에서 읽기·쓰기 열, 기본값 없는 필수 열을 대조합니다. 기존 SQL 실행 계획 실습에는 전체 그룹 집계 대조를 추가했습니다. | Conda Python에서 기존 자료 10개, 신규 자료 7개 테스트가 통과했습니다. 정적 계약이며 실제 SQL·PL/SQL 실행이나 운영 배포를 검증하지 않습니다. | [설명과 실행 방법](schema-rollout-compatibility-lab/README.md) / [가상 입력](schema-rollout-compatibility-lab/samples/expand-migrate.json) / [테스트](schema-rollout-compatibility-lab/tests/test_audit.py). |
+
 소스 링크는 실행 중인 서비스 주소가 아닙니다. 모든 사례 자료는 가상입니다. 공개 사이트 소스는 [엔지니어링 포트폴리오](../site/README.md)를 참고하세요. 배포 주소는 확인 후 추가합니다.

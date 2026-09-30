@@ -4,7 +4,7 @@ import sys
 import unittest
 
 from planlab import EvidenceError, reproduce
-from planlab.model import verify, verify_cursor_pages
+from planlab.model import verify, verify_cursor_pages, verify_group_totals
 
 
 class QueryPlanTests(unittest.TestCase):
@@ -14,6 +14,8 @@ class QueryPlanTests(unittest.TestCase):
         self.assertEqual(result["fixture_rows"], 4000)
         self.assertTrue(result["results_equal"] and result["tenant_isolated"] and result["status_filtered"])
         self.assertTrue(result["cursor_pages_match"])
+        self.assertTrue(result["group_totals_match"])
+        self.assertGreater(result["group_count"], 0)
         self.assertGreater(result["result_rows"], 0)
 
     def test_result_change_rejects_evidence(self):
@@ -67,6 +69,13 @@ class QueryPlanTests(unittest.TestCase):
             verify_cursor_pages([a], [a], [a, b])
         with self.assertRaisesRegex(EvidenceError, "gap"):
             verify_cursor_pages([a], [c], [a, b])
+
+    def test_full_group_totals_reject_hidden_change(self):
+        with self.assertRaisesRegex(EvidenceError, "group totals changed"):
+            verify_group_totals([("tenant-07", "PENDING", 10)], [("tenant-07", "PENDING", 9)])
+        with self.assertRaisesRegex(EvidenceError, "duplicate group key"):
+            verify_group_totals([("tenant-07", "PENDING", 1), ("tenant-07", "PENDING", 2)],
+                                [("tenant-07", "PENDING", 1), ("tenant-07", "PENDING", 2)])
 
 
 if __name__ == "__main__":

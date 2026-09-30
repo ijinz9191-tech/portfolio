@@ -62,6 +62,16 @@ def verify_cursor_pages(first, second, expected):
         raise EvidenceError("cursor page gap or changed result")
 
 
+def verify_group_totals(before, after):
+    """인덱스 변경이 첫 페이지만 아니라 전체 그룹 집계를 보존하는지 검사한다."""
+    if before != after:
+        raise EvidenceError("group totals changed after indexing")
+    if not before or any(count <= 0 for _, _, count in before):
+        raise EvidenceError("group totals are empty or invalid")
+    if len({(tenant, status) for tenant, status, _ in before}) != len(before):
+        raise EvidenceError("duplicate group key")
+
+
 def reproduce():
     """격리된 합성 데이터를 만들고 다시 실행할 수 있는 계획 근거를 반환한다."""
     db = sqlite3.connect(":memory:")
@@ -72,15 +82,21 @@ def reproduce():
                 for n in range(1, 4001)]
         db.executemany("INSERT INTO synthetic_orders VALUES (?, ?, ?, ?)", rows)
         before, before_plan = _rows(db), _plan(db)
+        totals_query = ("SELECT tenant_id, status, COUNT(*) FROM synthetic_orders "
+                        "GROUP BY tenant_id, status ORDER BY tenant_id, status")
+        before_totals = db.execute(totals_query).fetchall()
         db.execute(f"CREATE INDEX {INDEX} ON synthetic_orders "
                    "(tenant_id, status, created_at, order_id)")
         after, after_plan = _rows(db), _plan(db)
+        after_totals = db.execute(totals_query).fetchall()
         verify(before, after, before_plan, after_plan)
+        verify_group_totals(before_totals, after_totals)
         last_time, last_id = after[-1][3], after[-1][0]
         next_page = db.execute(CURSOR_QUERY, PARAMS + (last_time, last_time, last_id)).fetchall()
         expected_pages = db.execute(QUERY.replace("LIMIT 20", "LIMIT 40"), PARAMS).fetchall()
         verify_cursor_pages(after, next_page, expected_pages)
         witness = {"query": QUERY, "parameters": PARAMS, "rows": after,
+                   "group_totals": after_totals,
                    "next_page": next_page, "before_plan": before_plan, "after_plan": after_plan}
         digest = hashlib.sha256(json.dumps(witness, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
         return {"decision": "INDEX_PLAN_VERIFIED", "fixture_rows": len(rows),
@@ -89,6 +105,8 @@ def reproduce():
                 "tenant_isolated": all(row[1] == PARAMS[0] for row in after),
                 "status_filtered": all(row[2] == PARAMS[1] for row in after),
                 "cursor_pages_match": after + next_page == expected_pages,
+                "group_totals_match": before_totals == after_totals,
+                "group_count": len(after_totals),
                 "evidence_sha256": digest,
                 "limits": "Synthetic SQLite plan evidence only; no wall-clock speedup, production database, or employer-system claim."}
     finally:
