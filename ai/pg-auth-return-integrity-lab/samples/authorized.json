@@ -1,0 +1,5 @@
+{
+  "sessions": [{"session_id": "s-1", "order_id": "o-1", "merchant": "demo", "amount_won": 1000, "nonce_sha256": "37c5ab2a983c5cd6fd5a1fd0b969476fb28fefcce02f54000904cf32ee60b9e7"}],
+  "returns": [{"return_id": "r-1", "session_id": "s-1", "order_id": "o-1", "nonce": "example-nonce", "result": "SUCCESS"}],
+  "confirmations": [{"transaction_id": "t-1", "session_id": "s-1", "order_id": "o-1", "merchant": "demo", "amount_won": 1000, "status": "AUTHORIZED"}]
+}

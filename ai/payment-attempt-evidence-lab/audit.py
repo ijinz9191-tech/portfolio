@@ -69,8 +69,8 @@ def audit(payload: object) -> dict:
         event_id = _text(row["event_id"], "event_id")
         key = _text(row["key"], "key")
         amount = _amount(row["amount_won"], "amount_won")
-        if not isinstance(row["status"], str) or row["status"] not in {"CAPTURED", "DECLINED"}:
-            raise EvidenceError("status는 CAPTURED 또는 DECLINED여야 합니다")
+        if not isinstance(row["status"], str) or row["status"] not in {"CAPTURED", "DECLINED", "REVERSED"}:
+            raise EvidenceError("status는 CAPTURED, DECLINED, REVERSED 중 하나여야 합니다")
         if event_id in seen_event_ids:
             raise EvidenceError("provider event_id가 중복됐습니다")
         seen_event_ids.add(event_id)
@@ -96,17 +96,21 @@ def audit(payload: object) -> dict:
             issues.append({"key": key, "issue": "PROVIDER_AMOUNT_MISMATCH"})
         captures = [e for e in observed if e["status"] == "CAPTURED"]
         declines = [e for e in observed if e["status"] == "DECLINED"]
+        reversals = [e for e in observed if e["status"] == "REVERSED"]
         if len(captures) > 1 or len(declines) > 1 or (captures and declines):
             issues.append({"key": key, "issue": "CONFLICTING_PROVIDER_OUTCOME"})
+        if reversals and (len(reversals) != 1 or len(captures) != 1 or declines):
+            issues.append({"key": key, "issue": "REVERSAL_EVIDENCE_CONFLICT"})
         if captures and any(r["response"] == "DECLINED" for r in rows):
             issues.append({"key": key, "issue": "RESPONSE_PROVIDER_CONFLICT"})
         if not observed:
             issues.append({"key": key, "issue": "PROVIDER_OUTCOME_UNKNOWN"})
-        status = "CAPTURED" if len(captures) == 1 and not declines else (
-            "DECLINED" if declines and not captures else "UNKNOWN")
+        status = ("REVERSED" if len(captures) == 1 and len(reversals) == 1 and not declines else
+                  "CAPTURED" if len(captures) == 1 and not declines and not reversals else
+                  "DECLINED" if len(declines) == 1 and not captures and not reversals else "UNKNOWN")
         # 접근 권한은 이 정적 판정을 근거로 운영 시스템이 별도로 결정한다.
         entitlement_gate = ("ELIGIBLE" if status == "CAPTURED" and len(issues) == issue_start
-                            else "NOT_ELIGIBLE" if status == "DECLINED" and len(issues) == issue_start
+                            else "NOT_ELIGIBLE" if status in {"DECLINED", "REVERSED"} and len(issues) == issue_start
                             else "REVIEW")
         results.append({"key": key, "status": status, "attempts": len(rows),
                         "provider_event_ids": [e["event_id"] for e in observed],

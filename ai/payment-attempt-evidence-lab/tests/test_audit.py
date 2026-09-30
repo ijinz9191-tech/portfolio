@@ -61,6 +61,21 @@ class AuditTests(unittest.TestCase):
         self.assertEqual(result["results"][0]["status"], "CAPTURED")
         self.assertEqual(result["results"][0]["entitlement_gate"], "REVIEW")
 
+    def test_confirmed_reversal_removes_access_candidate(self):
+        data = deepcopy(GOOD)
+        data["provider_events"].append({"event_id": "e2", "key": "k1", "status": "REVERSED", "amount_won": 100})
+        result = audit(data)
+        self.assertEqual(result["decision"], "PASS")
+        self.assertEqual(result["results"][0]["status"], "REVERSED")
+        self.assertEqual(result["results"][0]["entitlement_gate"], "NOT_ELIGIBLE")
+
+    def test_orphan_reversal_requires_review(self):
+        data = deepcopy(GOOD)
+        data["provider_events"][0]["status"] = "REVERSED"
+        result = audit(data)
+        self.assertEqual(result["results"][0]["entitlement_gate"], "REVIEW")
+        self.assertIn("REVERSAL_EVIDENCE_CONFLICT", {x["issue"] for x in result["issues"]})
+
     def test_orphan_provider_event_and_sequence_gap(self):
         data = deepcopy(GOOD)
         data["attempts"][1]["attempt_no"] = 3
