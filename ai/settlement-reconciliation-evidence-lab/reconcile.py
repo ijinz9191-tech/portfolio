@@ -46,6 +46,11 @@ def reconcile(payload: object) -> dict:
             target[txid] = (merchant, amount)
     issues = []
     matched = []
+    merchant_totals: dict[str, dict[str, int]] = {}
+    for source, records in (("posting_won", left), ("settlement_won", right)):
+        for merchant, amount in records.values():
+            totals = merchant_totals.setdefault(merchant, {"posting_won": 0, "settlement_won": 0})
+            totals[source] += amount
     for txid in sorted(set(left) | set(right)):
         if txid not in left:
             issues.append({"id": txid, "issue": "UNMATCHED_SETTLEMENT"})
@@ -62,8 +67,15 @@ def reconcile(payload: object) -> dict:
     }
     digest = hashlib.sha256(json.dumps(canonical, ensure_ascii=False, sort_keys=True,
                                      separators=(",", ":")).encode()).hexdigest()
+    # 건별 불일치가 합계에서 상쇄되더라도 건별 문제는 그대로 남긴다.
+    aggregates = [
+        {"merchant": merchant, **totals,
+         "delta_won": totals["posting_won"] - totals["settlement_won"]}
+        for merchant, totals in sorted(merchant_totals.items())
+    ]
     return {"decision": "MATCH" if not issues else "REVIEW_REQUIRED",
             "matched_ids": matched, "issues": issues, "evidence_sha256": digest,
+            "merchant_totals": aggregates,
             "limits": "Synthetic offline comparison only; no actual money movement or company settlement claim."}
 
 

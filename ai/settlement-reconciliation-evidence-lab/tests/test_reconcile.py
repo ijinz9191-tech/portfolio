@@ -21,6 +21,18 @@ class ReconcileTests(unittest.TestCase):
         self.assertEqual(result["decision"], "MATCH")
         self.assertEqual(result["matched_ids"], ["c-1", "r-1"])
         self.assertEqual(result["issues"], [])
+        self.assertEqual(result["merchant_totals"], [{"merchant": "m-1", "posting_won": 900,
+                                                      "settlement_won": 900, "delta_won": 0}])
+
+    def test_offsetting_mismatches_remain_visible(self):
+        data = {"postings": [{"id": "a", "merchant": "m", "amount_won": 100},
+                             {"id": "b", "merchant": "m", "amount_won": -100}],
+                "settlements": [{"id": "a", "merchant": "m", "amount_won": 90},
+                                {"id": "b", "merchant": "m", "amount_won": -90}]}
+        result = reconcile(data)
+        self.assertEqual(result["merchant_totals"][0]["delta_won"], 0)
+        self.assertEqual(result["decision"], "REVIEW_REQUIRED")
+        self.assertEqual(len(result["issues"]), 2)
 
     def test_missing_and_orphan_settlement(self):
         data = {"postings": GOOD["postings"], "settlements": [

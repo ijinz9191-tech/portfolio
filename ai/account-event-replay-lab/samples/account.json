@@ -1,0 +1,10 @@
+{
+  "account": "가상계좌-A",
+  "opening_won": 5000,
+  "expected_won": 5350,
+  "events": [
+    {"id": "입금-1", "version": 1, "delta_won": 700},
+    {"id": "출금-1", "version": 2, "delta_won": -350},
+    {"id": "입금-1", "version": 1, "delta_won": 700}
+  ]
+}
