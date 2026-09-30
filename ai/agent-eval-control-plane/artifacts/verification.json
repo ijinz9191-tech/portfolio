@@ -1,12 +1,13 @@
 {
-  "verified_at": "2026-09-20T14:00:05+09:00",
+  "verified_at": "2026-09-30T13:43:31+09:00",
   "runtime": "Python 3.13.13",
-  "command": ".\\\\verify.ps1",
-  "total": 22,
-  "passed": 22,
+  "command": "Conda Python 3.13.13: python -B -m unittest discover -s tests -v",
+  "total": 24,
+  "passed": 24,
   "failed": 0,
   "cli_demo_gate": "PASS",
-  "source_sha256": "8f28344a1cfdb0345a12b8ccaa80f300637d418953fb27e7075c3c5c3ad44395",
+  "source_sha256": "beeb5e578a1f0dbdc2862855cb1a381a5b55e3213ec15f018393dab17bba1bf4",
+  "source_hash_method": "src의 Python 파일을 상대 경로순으로 정렬한 뒤 경로 UTF-8, 0바이트, 파일 원문을 순서대로 SHA-256",
   "coverage": [
     "schema validation",
     "deterministic evaluation",
@@ -17,5 +18,5 @@
     "read-only API",
     "subprocess CLI"
   ],
-  "scope": "Synthetic local fixtures only; no external model, cloud or company data."
+  "scope": "가상 로컬 입력만 사용하며 외부 모델, 클라우드, 회사 자료는 사용하지 않았습니다."
 }

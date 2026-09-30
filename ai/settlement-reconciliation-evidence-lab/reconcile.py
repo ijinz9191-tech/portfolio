@@ -15,8 +15,10 @@ class EvidenceError(ValueError):
     pass
 
 
-def _record(row: object, label: str) -> tuple[str, str, int]:
-    if not isinstance(row, dict) or set(row) != {"id", "merchant", "amount_won"}:
+def _record(row: object, label: str) -> tuple[str, str, int, str | None]:
+    required = {"id", "merchant", "amount_won"}
+    allowed = required | ({"reversal_of"} if label == "posting" else set())
+    if not isinstance(row, dict) or not required <= set(row) or not set(row) <= allowed:
         raise EvidenceError(f"{label}: expected id, merchant, amount_won")
     txid, merchant, amount = row["id"], row["merchant"], row["amount_won"]
     if not isinstance(txid, str) or not txid.strip():
@@ -25,7 +27,10 @@ def _record(row: object, label: str) -> tuple[str, str, int]:
         raise EvidenceError(f"{label}: invalid merchant")
     if type(amount) is not int or amount == 0:
         raise EvidenceError(f"{label}: nonzero integer amount required")
-    return txid, merchant, amount
+    reversal_of = row.get("reversal_of")
+    if reversal_of is not None and (not isinstance(reversal_of, str) or not reversal_of.strip()):
+        raise EvidenceError(f"{label}: invalid reversal_of")
+    return txid, merchant, amount, reversal_of
 
 
 def reconcile(payload: object) -> dict:
@@ -40,15 +45,15 @@ def reconcile(payload: object) -> dict:
     left, right = {}, {}
     for name, rows, target in (("posting", postings, left), ("settlement", settlements, right)):
         for row in rows:
-            txid, merchant, amount = _record(row, name)
+            txid, merchant, amount, reversal_of = _record(row, name)
             if txid in target:
                 raise EvidenceError(f"duplicate {name} id: {txid}")
-            target[txid] = (merchant, amount)
+            target[txid] = (merchant, amount, reversal_of)
     issues = []
     matched = []
     merchant_totals: dict[str, dict[str, int]] = {}
     for source, records in (("posting_won", left), ("settlement_won", right)):
-        for merchant, amount in records.values():
+        for merchant, amount, _ in records.values():
             totals = merchant_totals.setdefault(merchant, {"posting_won": 0, "settlement_won": 0})
             totals[source] += amount
     for txid in sorted(set(left) | set(right)):
@@ -56,13 +61,26 @@ def reconcile(payload: object) -> dict:
             issues.append({"id": txid, "issue": "UNMATCHED_SETTLEMENT"})
         elif txid not in right:
             issues.append({"id": txid, "issue": "MISSING_SETTLEMENT"})
-        elif left[txid] != right[txid]:
+        elif left[txid][:2] != right[txid][:2]:
             issues.append({"id": txid, "issue": "MERCHANT_OR_AMOUNT_MISMATCH",
-                           "posting": left[txid], "settlement": right[txid]})
+                           "posting": left[txid][:2], "settlement": right[txid][:2]})
         else:
             matched.append(txid)
+    # 환불성 음수 거래가 실제 원거래 한 건과 연결되는지 별도로 확인한다.
+    reversals: dict[str, list[str]] = {}
+    for txid, (merchant, amount, original_id) in sorted(left.items()):
+        if original_id is None:
+            continue
+        reversals.setdefault(original_id, []).append(txid)
+        original = left.get(original_id)
+        if original is None or original[0] != merchant or original[1] != -amount or amount >= 0 or original[1] <= 0:
+            issues.append({"id": txid, "issue": "INVALID_REVERSAL_LINK", "reversal_of": original_id})
+    for original_id, linked_ids in sorted(reversals.items()):
+        if len(linked_ids) > 1:
+            issues.append({"id": original_id, "issue": "MULTIPLE_REVERSALS", "reversal_ids": sorted(linked_ids)})
     canonical = {
-        "postings": [{"id": k, "merchant": v[0], "amount_won": v[1]} for k, v in sorted(left.items())],
+        "postings": [{"id": k, "merchant": v[0], "amount_won": v[1],
+                      **({"reversal_of": v[2]} if v[2] is not None else {})} for k, v in sorted(left.items())],
         "settlements": [{"id": k, "merchant": v[0], "amount_won": v[1]} for k, v in sorted(right.items())],
     }
     digest = hashlib.sha256(json.dumps(canonical, ensure_ascii=False, sort_keys=True,

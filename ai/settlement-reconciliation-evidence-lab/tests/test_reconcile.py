@@ -61,6 +61,31 @@ class ReconcileTests(unittest.TestCase):
         reordered["postings"][0] = {**reordered["postings"][0], "amount_won": -301}
         self.assertNotEqual(first, reconcile(reordered)["evidence_sha256"])
 
+    def test_valid_reversal_link(self):
+        data = {"postings": [{"id": "sale", "merchant": "m", "amount_won": 100},
+                             {"id": "refund", "merchant": "m", "amount_won": -100,
+                              "reversal_of": "sale"}],
+                "settlements": [{"id": "sale", "merchant": "m", "amount_won": 100},
+                                {"id": "refund", "merchant": "m", "amount_won": -100}]}
+        self.assertEqual(reconcile(data)["decision"], "MATCH")
+
+    def test_wrong_and_duplicate_reversal_links(self):
+        data = {"postings": [{"id": "sale", "merchant": "m", "amount_won": 100},
+                             {"id": "refund1", "merchant": "m", "amount_won": -90,
+                              "reversal_of": "sale"},
+                             {"id": "refund2", "merchant": "m", "amount_won": -100,
+                              "reversal_of": "sale"}],
+                "settlements": [{"id": "sale", "merchant": "m", "amount_won": 100},
+                                {"id": "refund1", "merchant": "m", "amount_won": -90},
+                                {"id": "refund2", "merchant": "m", "amount_won": -100}]}
+        self.assertEqual({x["issue"] for x in reconcile(data)["issues"]},
+                         {"INVALID_REVERSAL_LINK", "MULTIPLE_REVERSALS"})
+
+    def test_reversal_reference_validation(self):
+        with self.assertRaisesRegex(EvidenceError, "reversal_of"):
+            reconcile({"postings": [{"id": "x", "merchant": "m", "amount_won": -1,
+                                     "reversal_of": 3}], "settlements": []})
+
     def test_cli_exit_status(self):
         cli = Path(__file__).resolve().parents[1] / "reconcile.py"
         with tempfile.TemporaryDirectory() as tmp:

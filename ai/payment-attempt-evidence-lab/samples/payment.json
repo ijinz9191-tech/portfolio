@@ -1,0 +1,9 @@
+{
+  "attempts": [
+    {"request_id": "r-01", "key": "merchant-a/order-1", "merchant": "merchant-a", "amount_won": 12000, "attempt_no": 1, "response": "TIMEOUT"},
+    {"request_id": "r-01", "key": "merchant-a/order-1", "merchant": "merchant-a", "amount_won": 12000, "attempt_no": 2, "response": "ACK"}
+  ],
+  "provider_events": [
+    {"event_id": "p-01", "key": "merchant-a/order-1", "status": "CAPTURED", "amount_won": 12000}
+  ]
+}
