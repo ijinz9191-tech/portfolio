@@ -1,0 +1,13 @@
+{
+  "accounts": [
+    {"id": "가상-A", "opening_won": 100000, "expected_won": 65000},
+    {"id": "가상-B", "opening_won": 20000, "expected_won": 55000}
+  ],
+  "transfers": [
+    {"id": "가상-이체-1", "sequence": 1, "from": "가상-A", "to": "가상-B", "amount_won": 35000}
+  ],
+  "postings": [
+    {"transfer_id": "가상-이체-1", "account": "가상-A", "delta_won": -35000},
+    {"transfer_id": "가상-이체-1", "account": "가상-B", "delta_won": 35000}
+  ]
+}

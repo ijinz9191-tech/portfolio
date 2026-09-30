@@ -48,6 +48,25 @@ class ReplayTests(unittest.TestCase):
         self.assertEqual(replay(payload)["issues"][0]["kind"], "EXPECTED_MISMATCH")
         self.assertNotEqual(replay(payload)["evidence_sha256"], replay(BASE)["evidence_sha256"])
 
+    def test_intermediate_checkpoint_and_backward_compatibility(self):
+        old = replay(BASE)
+        checked = replay({**BASE, "checkpoints": [{"version": 1, "balance_won": 140}]})
+        self.assertEqual((old["decision"], old["balance_won"]), ("CONSISTENT", 120))
+        self.assertEqual((checked["decision"], checked["balance_won"]), ("CONSISTENT", 120))
+        self.assertNotEqual(old["evidence_sha256"], checked["evidence_sha256"])
+
+    def test_checkpoint_mismatch_hides_final_balance(self):
+        result = replay({**BASE, "checkpoints": [{"version": 1, "balance_won": 141}]})
+        self.assertEqual(result["issues"][0]["kind"], "CHECKPOINT_MISMATCH")
+        self.assertIsNone(result["balance_won"])
+
+    def test_invalid_checkpoint_rejected(self):
+        for rows in ([{"version": 3, "balance_won": 120}],
+                     [{"version": 1, "balance_won": 140}, {"version": 1, "balance_won": 140}],
+                     [{"version": True, "balance_won": 140}]):
+            with self.assertRaises(ReplayError):
+                replay({**BASE, "checkpoints": rows})
+
     def test_bool_float_and_empty_event_rejected(self):
         for payload in ({**BASE, "opening_won": True}, {**BASE, "expected_won": 120.0},
                         {**BASE, "events": []}):

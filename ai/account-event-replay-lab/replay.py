@@ -20,7 +20,8 @@ def _integer(value: object, label: str) -> int:
 
 def replay(payload: object) -> dict:
     """버전 순서로 이벤트를 재생하고 중복 전송·누락·예상 잔액을 검사한다."""
-    if not isinstance(payload, dict) or set(payload) != {"account", "opening_won", "expected_won", "events"}:
+    required = {"account", "opening_won", "expected_won", "events"}
+    if not isinstance(payload, dict) or not required <= set(payload) or set(payload) - required - {"checkpoints"}:
         raise ReplayError("account, opening_won, expected_won, events가 필요합니다")
     account = payload["account"]
     if not isinstance(account, str) or not account.strip():
@@ -59,6 +60,21 @@ def replay(payload: object) -> dict:
             raise ReplayError(f"서로 다른 id의 버전 충돌: {version}")
         by_version[version] = (event_id, delta)
 
+    # 중간 스냅샷을 별도 근거로 대조하되, 예전 입력 형식도 그대로 허용한다.
+    checkpoints: dict[int, int] = {}
+    if "checkpoints" in payload:
+        rows = payload["checkpoints"]
+        if not isinstance(rows, list):
+            raise ReplayError("checkpoints는 목록이어야 합니다")
+        for row in rows:
+            if not isinstance(row, dict) or set(row) != {"version", "balance_won"}:
+                raise ReplayError("체크포인트에는 version, balance_won이 필요합니다")
+            version = _integer(row["version"], "checkpoint.version")
+            amount = _integer(row["balance_won"], "checkpoint.balance_won")
+            if version < 1 or amount < 0 or version in checkpoints or version not in by_version:
+                raise ReplayError("체크포인트 버전·잔액이 잘못됐습니다")
+            checkpoints[version] = amount
+
     balance = opening
     issues: list[dict] = []
     trace: list[dict] = []
@@ -74,12 +90,18 @@ def replay(payload: object) -> dict:
                 break
             balance = next_balance
             trace.append({"version": version, "id": event_id, "balance_won": balance})
+            if version in checkpoints and checkpoints[version] != balance:
+                issues.append({"kind": "CHECKPOINT_MISMATCH", "version": version,
+                               "expected_won": checkpoints[version], "actual_won": balance})
         if not issues and balance != expected:
             issues.append({"kind": "EXPECTED_MISMATCH", "expected_won": expected, "actual_won": balance})
 
     canonical = {"account": account, "opening_won": opening, "expected_won": expected,
                  "events": [{"id": event_id, "version": version, "delta_won": delta}
                             for version, (event_id, delta) in sorted(by_version.items())]}
+    if "checkpoints" in payload:
+        canonical["checkpoints"] = [{"version": version, "balance_won": amount}
+                                     for version, amount in sorted(checkpoints.items())]
     digest = hashlib.sha256(json.dumps(canonical, ensure_ascii=False, sort_keys=True,
                                        separators=(",", ":")).encode("utf-8")).hexdigest()
     return {"decision": "CONSISTENT" if not issues else "REVIEW_REQUIRED",
