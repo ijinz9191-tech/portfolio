@@ -8,11 +8,15 @@ API 변경 자체가 성공해도 기존 이용 서비스가 필수 필드를 �
 
 ## 실행
 
+### 이용자 인증 대응 확인
+
+공개 API에 인증을 새로 요구할 때 기존 이용자가 이를 처리할 수 있는지도 대조합니다. 입력의 이용자 행에 선택 항목 `auth_capable: true`를 넣은 경우만 대응 준비가 확인된 것으로 간주합니다. 항목이 없거나 `false`이면 영향받은 이용자로 보고, 확인·복구 계획이 없을 때 `BLOCK`, 있어도 `REVIEW`로 판단합니다. 등록 이용자가 없는 경로의 인증 강화도 미등록 이용자 가능성 때문에 `REVIEW`입니다. 기존 입력 형식은 그대로 사용할 수 있습니다.
+
 Python 3.11 이상에서 외부 패키지 없이 실행합니다.
 
 ```powershell
-conda run -p C:\PRJ\miniconda3 python -B -m unittest discover -s tests -v
-conda run -p C:\PRJ\miniconda3 python -B audit.py samples/change.json
+conda run -p C:\Users\ijinz\miniconda3 -- python -B -m unittest discover -s tests -v
+conda run -p C:\Users\ijinz\miniconda3 -- python -B audit.py samples/change.json
 ```
 
 입력 파일은 `change_id`, 변경 전·후 `route/auth/fields`, 이용 서비스의 `route/fields/owner/acknowledged`, `rollback_plan`을 담습니다. 정상 사례는 필드 추가만 있으므로 `PASS`를 반환합니다. `evidence_sha256`은 입력 순서를 정규화한 자료의 식별값이며 전자 서명이 아닙니다.

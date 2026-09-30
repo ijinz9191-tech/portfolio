@@ -1,0 +1,10 @@
+{
+  "change_id": "가상-상품-변경-001",
+  "current": [
+    {"sku": "ITEM-01", "version": 3, "cost": 6000, "price": 10000, "discount": 500, "stock": 20}
+  ],
+  "proposed": [
+    {"sku": "ITEM-01", "version": 3, "cost": 6000, "price": 10000, "discount": 1000, "stock": 20}
+  ],
+  "removed": []
+}

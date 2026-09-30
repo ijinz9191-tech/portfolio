@@ -51,6 +51,24 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(result["decision"], "BLOCK")
         self.assertEqual(result["security_downgrades"], ["GET /orders"])
 
+    def test_new_auth_requirement_blocks_unprepared_consumer(self):
+        item = fixture()
+        item["before"][0]["auth"] = "public"
+        result = analyze(item)
+        self.assertEqual(result["decision"], "BLOCK")
+        self.assertTrue(result["consumer_impacts"][0]["auth_required"])
+        item["consumers"][0]["acknowledged"] = True
+        self.assertEqual(analyze(item)["decision"], "REVIEW")
+
+    def test_auth_capable_consumer_does_not_block(self):
+        item = fixture()
+        item["before"][0]["auth"] = "public"
+        item["consumers"][0]["auth_capable"] = True
+        self.assertEqual(analyze(item)["decision"], "PASS")
+        item["consumers"][0]["auth_capable"] = "yes"
+        with self.assertRaises(ContractError):
+            analyze(item)
+
     def test_uncovered_removed_route_needs_review(self):
         item = fixture()
         item["before"].append({"route": "GET /legacy", "auth": "authenticated", "fields": ["id"]})

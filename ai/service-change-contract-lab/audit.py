@@ -58,7 +58,8 @@ def analyze(document: dict) -> dict:
         raise ContractError("1 to 100 consumers are required")
     consumers: dict[str, dict] = {}
     for row in rows:
-        if not isinstance(row, dict) or set(row) != {"id", "route", "fields", "owner", "acknowledged"}:
+        required = {"id", "route", "fields", "owner", "acknowledged"}
+        if not isinstance(row, dict) or not required <= set(row) or set(row) - required - {"auth_capable"}:
             raise ContractError("consumer needs id, route, fields, owner and acknowledged")
         ident = _label(row["id"], "consumer id")
         route = _label(row["route"], "consumer route", 120)
@@ -67,9 +68,13 @@ def analyze(document: dict) -> dict:
             raise ContractError("duplicate consumer or invalid baseline dependency")
         if not isinstance(row["acknowledged"], bool):
             raise ContractError("acknowledged must be boolean")
+        if "auth_capable" in row and not isinstance(row["auth_capable"], bool):
+            raise ContractError("auth_capable must be boolean")
         consumers[ident] = {"id": ident, "route": route, "fields": fields,
                             "owner": _label(row["owner"], "owner"),
                             "acknowledged": row["acknowledged"]}
+        if "auth_capable" in row:
+            consumers[ident]["auth_capable"] = row["auth_capable"]
 
     security_downgrades = sorted(route for route in before if route in after and
                                  before[route]["auth"] == "authenticated" and after[route]["auth"] == "public")
@@ -78,13 +83,18 @@ def analyze(document: dict) -> dict:
         consumer = consumers[ident]
         target = after.get(consumer["route"])
         missing = consumer["fields"] if target is None else sorted(set(consumer["fields"]) - set(target["fields"]))
-        if target is None or missing:
+        auth_required = (target is not None and before[consumer["route"]]["auth"] == "public"
+                         and target["auth"] == "authenticated"
+                         and not consumer.get("auth_capable", False))
+        if target is None or missing or auth_required:
             impacts.append({"consumer": ident, "owner": consumer["owner"],
                             "route": consumer["route"], "missing_fields": missing,
                             "route_removed": target is None,
+                            "auth_required": auth_required,
                             "acknowledged": consumer["acknowledged"]})
     uncovered_breaking = sorted(route for route, old in before.items()
-                                if (route not in after or set(old["fields"]) - set(after[route]["fields"]))
+                                if (route not in after or set(old["fields"]) - set(after[route]["fields"])
+                                    or old["auth"] == "public" and after[route]["auth"] == "authenticated")
                                 and not any(item["route"] == route for item in consumers.values()))
     if security_downgrades or (impacts and (not rollback.strip() or any(not item["acknowledged"] for item in impacts))):
         decision = "BLOCK"
