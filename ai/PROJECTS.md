@@ -43,4 +43,6 @@
 
 | 관계형 스키마 순차 배포 호환성 실습 | 가상 Java 앱의 구버전·신버전 혼합 운영과 롤백 단계에서 읽기·쓰기 열, 기본값 없는 필수 열을 대조합니다. 기존 SQL 실행 계획 실습에는 전체 그룹 집계 대조를 추가했습니다. | Conda Python에서 기존 자료 10개, 신규 자료 7개 테스트가 통과했습니다. 정적 계약이며 실제 SQL·PL/SQL 실행이나 운영 배포를 검증하지 않습니다. | [설명과 실행 방법](schema-rollout-compatibility-lab/README.md) / [가상 입력](schema-rollout-compatibility-lab/samples/expand-migrate.json) / [테스트](schema-rollout-compatibility-lab/tests/test_audit.py). |
 
+| 가상 이체 트랜잭션·발행 대기 복구 실습 | SQLite에서 출금·입금·기장·outbox를 함께 기록하고, 소비자 inbox로 ACK 손실 후 재전달의 중복 반영을 막습니다. 기존 이체 검사에는 실패 뒤 후속 재생 차단을 추가했습니다. | Conda Python 기존 10개·신규 10개 검사 통과. 실제 로컬 DB 트랜잭션을 검사하며 은행 계좌·분산 브로커·대규모 동시성을 검증하지 않습니다. | [설명](transactional-outbox-recovery-lab/README.md) / [구현](transactional-outbox-recovery-lab/ledger.py) / [테스트](transactional-outbox-recovery-lab/tests/test_ledger.py). |
+
 소스 링크는 실행 중인 서비스 주소가 아닙니다. 모든 사례 자료는 가상입니다. 공개 사이트 소스는 [엔지니어링 포트폴리오](../site/README.md)를 참고하세요. 배포 주소는 확인 후 추가합니다.

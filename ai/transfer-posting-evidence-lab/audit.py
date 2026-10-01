@@ -86,7 +86,12 @@ def audit(payload: object) -> dict:
     balances = {name: values["opening_won"] for name, values in accounts.items()}
     issues: list[dict] = []
     trace: list[dict] = []
+    blocked_by: str | None = None
     for key, (sequence, source, target, amount) in sorted(transfers.items(), key=lambda item: item[1][0]):
+        if blocked_by is not None:
+            issues.append({"kind": "REPLAY_BLOCKED", "transfer_id": key,
+                           "blocked_by": blocked_by})
+            continue
         expected = {(source, -amount), (target, amount)}
         observed = postings[key]
         if observed != expected:
@@ -95,9 +100,11 @@ def audit(payload: object) -> dict:
                                              key=lambda item: item["account"]),
                            "unexpected": sorted([{"account": a, "delta_won": d} for a, d in observed - expected],
                                                 key=lambda item: item["account"])})
+            blocked_by = key
             continue
         if balances[source] < amount:
             issues.append({"kind": "OVERDRAFT", "transfer_id": key, "account": source})
+            blocked_by = key
             continue
         balances[source] -= amount
         balances[target] += amount

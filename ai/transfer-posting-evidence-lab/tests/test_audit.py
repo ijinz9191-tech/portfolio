@@ -95,6 +95,29 @@ class AuditTests(unittest.TestCase):
                                       capture_output=True, text=True)
                 self.assertEqual(done.returncode, code, done.stderr)
 
+    def test_failed_earlier_transfer_blocks_later_replay(self):
+        data = copy.deepcopy(BASE)
+        data["transfers"].append({"id": "T2", "sequence": 2, "from": "B", "to": "A", "amount_won": 5})
+        data["postings"] = [BASE["postings"][0],
+                            {"transfer_id": "T2", "account": "B", "delta_won": -5},
+                            {"transfer_id": "T2", "account": "A", "delta_won": 5}]
+        result = audit(data)
+        self.assertEqual(result["trace"], [])
+        self.assertEqual(result["issues"][1], {"kind": "REPLAY_BLOCKED", "transfer_id": "T2", "blocked_by": "T1"})
+        self.assertIsNone(result["balances_won"])
+
+    def test_verified_prefix_is_retained_without_hypothetical_suffix(self):
+        data = copy.deepcopy(BASE)
+        data["transfers"] += [{"id": "T2", "sequence": 2, "from": "B", "to": "A", "amount_won": 50},
+                              {"id": "T3", "sequence": 3, "from": "A", "to": "B", "amount_won": 1}]
+        data["postings"] += [{"transfer_id": "T2", "account": "B", "delta_won": -50},
+                             {"transfer_id": "T2", "account": "A", "delta_won": 50},
+                             {"transfer_id": "T3", "account": "A", "delta_won": -1},
+                             {"transfer_id": "T3", "account": "B", "delta_won": 1}]
+        result = audit(data)
+        self.assertEqual([row["transfer_id"] for row in result["trace"]], ["T1"])
+        self.assertEqual([row["kind"] for row in result["issues"]], ["OVERDRAFT", "REPLAY_BLOCKED"])
+
 
 if __name__ == "__main__":
     unittest.main()
