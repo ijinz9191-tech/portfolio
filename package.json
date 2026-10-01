@@ -1,0 +1,14 @@
+{
+  "name": "engineering-portfolio-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-isolation=none site/test.mjs",
+    "preview": "node site/serve.mjs",
+    "format": "prettier --write site/index.html site/styles.css site/serve.mjs site/test.mjs package.json package-lock.json .github/workflows/pages.yml",
+    "format:check": "prettier --check site/index.html site/styles.css site/serve.mjs site/test.mjs package.json package-lock.json .github/workflows/pages.yml"
+  },
+  "devDependencies": {
+    "prettier": "3.9.9"
+  }
+}

@@ -1,3 +1,4 @@
 .codex-remote-attachments/
 __pycache__/
 *.pyc
+node_modules/
