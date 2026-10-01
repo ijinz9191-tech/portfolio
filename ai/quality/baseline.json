@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "revision": "3ec02b77e736dba0bc61e24adbf97308bfb0ee2c",
+  "checked_at": "2026-10-01T16:01:05.936515+00:00",
+  "status": "PASS",
+  "project_count": 32,
+  "tests": 420,
+  "python_version": "3.11.15",
+  "projects": [
+    {
+      "id": "sre",
+      "runtime": "node",
+      "tests": 30,
+      "status": "PASS",
+      "source_hash": "307512d813dcfc4bda12ea563eb0b7fbb80c503fdbb5f0a509a1cb433741b477"
+    },
+    {
+      "id": "metric-contract-lab",
+      "runtime": "python",
+      "tests": 18,
+      "status": "PASS",
+      "source_hash": "3e537efaa61720d28049832c95bb3adc54242256b138c479709ec3910584134a"
+    },
+    {
+      "id": "ai-inference-gateway",
+      "runtime": "java",
+      "tests": 12,
+      "status": "PASS",
+      "source_hash": "4dc6f22941515da61a080faa7ff0f914d83208895c2d457bd072e69171dddb89"
+    },
+    {
+      "id": "agent-eval-control-plane",
+      "runtime": "python",
+      "tests": 24,
+      "status": "PASS",
+      "source_hash": "f613890b766fb27c141bad05df0a158b7b3bd449cd5379846ff0614ddade049a"
+    },
+    {
+      "id": "infra-change-evidence-lab",
+      "runtime": "python",
+      "tests": 23,
+      "status": "PASS",
+      "source_hash": "9b2113bc47484d563c5a65be3ec0fdd8b58f0121864fb0ea0e4347ed41ed53c7"
+    },
+    {
+      "id": "delivery-command-ledger",
+      "runtime": "java",
+      "tests": 20,
+      "status": "PASS",
+      "source_hash": "3c744e9e807e7923684d0f4fe85d2bce9ecacd018015c3f70a4a3b003a74fb9c"
+    },
+    {
+      "id": "messenger-reliability-lab",
+      "runtime": "node",
+      "tests": 19,
+      "status": "PASS",
+      "source_hash": "98fe325a3242a232cbbc7493aa33c6cc4eac4a0c84e118b5175012d666752ac7"
+    },
+    {
+      "id": "gpu-topology-reliability-lab",
+      "runtime": "node",
+      "tests": 23,
+      "status": "PASS",
+      "source_hash": "f9f953eab059fd6cf3b4f281fddc2a303176f3307cf3c6e78c96b9635c706a89"
+    },
+    {
+      "id": "agentic-sdlc-control-plane",
+      "runtime": "node",
+      "tests": 20,
+      "status": "PASS",
+      "source_hash": "35657bb5b00933259bbb27d84ae47def6634ccf43fdf831eb653eba12dfcd9da"
+    },
+    {
+      "id": "service-mesh-release-safety-lab",
+      "runtime": "node",
+      "tests": 25,
+      "status": "PASS",
+      "source_hash": "5f1105e12f9a307c62eebcecef259a700f9041d6dcd62d5488810630de64cd4b"
+    },
+    {
+      "id": "k8s-capacity-budget-lab",
+      "runtime": "python",
+      "tests": 13,
+      "status": "PASS",
+      "source_hash": "dff0c59cea322d100a629e4ffcd4db93926af72aa16e9629f0342d07598f76e7"
+    },
+    {
+      "id": "network-path-triage-lab",
+      "runtime": "python",
+      "tests": 8,
+      "status": "PASS",
+      "source_hash": "964d2226b9e0e09afe883895561e9ca6716b59d6e53f3c7bbc7a03f475b25aa4"
+    },
+    {
+      "id": "slo-burn-evidence-lab",
+      "runtime": "python",
+      "tests": 13,
+      "status": "PASS",
+      "source_hash": "9cc226e05970ce5b0051dc518c0007d64456640c9eba0132a203012455bed176"
+    },
+    {
+      "id": "query-plan-evidence-lab",
+      "runtime": "python",
+      "tests": 10,
+      "status": "PASS",
+      "source_hash": "78a7da1b126d86e0baf83b2faa78266162101c632d77e4a546ab4c4fa4c03193"
+    },
+    {
+      "id": "incident-dependency-triage-lab",
+      "runtime": "python",
+      "tests": 11,
+      "status": "PASS",
+      "source_hash": "6d7296e5f8f4b02d6961d8ecb4b428fadf7611cb7f5778b9b87bbfe89d06a52f"
+    },
+    {
+      "id": "tail-latency-attribution-lab",
+      "runtime": "python",
+      "tests": 7,
+      "status": "PASS",
+      "source_hash": "902a1efee8ccfd959dc7ee5cf15527111d31b5f10cea3a27e68524885ac01253"
+    },
+    {
+      "id": "delivery-handoff-evidence-lab",
+      "runtime": "python",
+      "tests": 6,
+      "status": "PASS",
+      "source_hash": "656e2d29ef76f9c1649c0da8001541df5d6b83db3f90a800adc334623abf7ce0"
+    },
+    {
+      "id": "spatial-network-evidence-lab",
+      "runtime": "python",
+      "tests": 10,
+      "status": "PASS",
+      "source_hash": "bd7bbe41109126f36ba811f2dc1d256441b0eb9472b8d99d4e47ed013b63b6e4"
+    },
+    {
+      "id": "factory-event-evidence-lab",
+      "runtime": "python",
+      "tests": 7,
+      "status": "PASS",
+      "source_hash": "6618bcfb48bc56f30a7ba36788f8010985ef01af48ea74cb51c6403412c094d0"
+    },
+    {
+      "id": "robot-command-evidence-lab",
+      "runtime": "python",
+      "tests": 8,
+      "status": "PASS",
+      "source_hash": "a195e2e28b628cc1c74d53e6375014e64196172d6e23aa3a35abe0b2f67c3a59"
+    },
+    {
+      "id": "settlement-reconciliation-evidence-lab",
+      "runtime": "python",
+      "tests": 10,
+      "status": "PASS",
+      "source_hash": "7f852b6b4357e855d0dfcc628e331c6616ac0267f8600ec3759a597cca444b4c"
+    },
+    {
+      "id": "service-change-contract-lab",
+      "runtime": "python",
+      "tests": 11,
+      "status": "PASS",
+      "source_hash": "a9d3607189d2efe112956319f9ba7768b3ed9c0e9affa7ee1cef813e214a6039"
+    },
+    {
+      "id": "spatial-release-impact-lab",
+      "runtime": "python",
+      "tests": 10,
+      "status": "PASS",
+      "source_hash": "64cff5b8dc75c5986a79cc84a3eaa417584bb3909ef548c6bf2cd3879acb7edd"
+    },
+    {
+      "id": "account-event-replay-lab",
+      "runtime": "python",
+      "tests": 10,
+      "status": "PASS",
+      "source_hash": "4d0d06dbcc8d1346ba0be8ff52d090fa377ae4bf60665ce94a0187943aeff74e"
+    },
+    {
+      "id": "transfer-posting-evidence-lab",
+      "runtime": "python",
+      "tests": 10,
+      "status": "PASS",
+      "source_hash": "6c13ade201665114937a26db9ab02c8c7a13275425767edb236acc267bab4078"
+    },
+    {
+      "id": "grounded-answer-evidence-lab",
+      "runtime": "python",
+      "tests": 7,
+      "status": "PASS",
+      "source_hash": "e54696bc17a51e0a53c57341d9010bb2290701c57d767f13c90c0fd445522f14"
+    },
+    {
+      "id": "payment-attempt-evidence-lab",
+      "runtime": "python",
+      "tests": 13,
+      "status": "PASS",
+      "source_hash": "db8037a76fdd97fd9ecd96fb7873df480148a6bb5141d7dfbe283b66c0504a50"
+    },
+    {
+      "id": "merchandising-change-safety-lab",
+      "runtime": "python",
+      "tests": 8,
+      "status": "PASS",
+      "source_hash": "a3ba27c2aa108d56a0d50cb0208a03072b20d671971abf9c1d42ee73fcdd4bdd"
+    },
+    {
+      "id": "subscription-entitlement-reconciliation-lab",
+      "runtime": "python",
+      "tests": 9,
+      "status": "PASS",
+      "source_hash": "041a88880305c274935414f0d581f825b7573a8abbeee8e44c6a550cdbd69b19"
+    },
+    {
+      "id": "pg-auth-return-integrity-lab",
+      "runtime": "python",
+      "tests": 8,
+      "status": "PASS",
+      "source_hash": "da791c9de19e07be8a361f4ec6c8eab86d8754c6cecb2d1ff4bf0d2e5b0b093b"
+    },
+    {
+      "id": "schema-rollout-compatibility-lab",
+      "runtime": "python",
+      "tests": 7,
+      "status": "PASS",
+      "source_hash": "49b551e6f10aeceee6793eb7c04b22b25ffd2bef3db76e1a11f1bbd42fbc3142"
+    },
+    {
+      "id": "transactional-outbox-recovery-lab",
+      "runtime": "python",
+      "tests": 10,
+      "status": "PASS",
+      "source_hash": "37e469900d701a19785e3af72ccc6a5b4f9f70130b682c0c31ecd61d8989004c"
+    }
+  ],
+  "scope": "합성 자료·독립 로컬 프로세스 검사. 운영 성과·공인 코딩테스트 등급 검증이 아닙니다."
+}

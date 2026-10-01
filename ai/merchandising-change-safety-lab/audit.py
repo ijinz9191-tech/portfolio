@@ -13,7 +13,11 @@ class ChangeError(ValueError):
 
 
 def _text(value: object, name: str) -> str:
-    if not isinstance(value, str) or not 1 <= len(value) <= 80 or value != value.strip():
+    if (
+        not isinstance(value, str)
+        or not 1 <= len(value) <= 80
+        or value != value.strip()
+    ):
         raise ChangeError(f"{name}: 비어 있거나 너무 긴 문자열")
     return value
 
@@ -27,7 +31,9 @@ def _number(value: object, name: str, minimum: int = 0) -> int:
 def _product(row: object, *, baseline: bool) -> dict:
     required = {"sku", "version", "cost", "price", "discount", "stock"}
     if not isinstance(row, dict) or set(row) != required:
-        raise ChangeError("상품에는 sku, version, cost, price, discount, stock이 필요합니다")
+        raise ChangeError(
+            "상품에는 sku, version, cost, price, discount, stock이 필요합니다"
+        )
     product = {
         "sku": _text(row["sku"], "sku"),
         "version": _number(row["version"], "version", 1 if baseline else 0),
@@ -53,7 +59,12 @@ def _unique(rows: object, name: str) -> dict[str, dict]:
 
 def analyze(document: object) -> dict:
     """안전 위반은 차단하고 운영 검토가 필요한 변경을 분리합니다."""
-    if not isinstance(document, dict) or set(document) != {"change_id", "current", "proposed", "removed"}:
+    if not isinstance(document, dict) or set(document) != {
+        "change_id",
+        "current",
+        "proposed",
+        "removed",
+    }:
         raise ChangeError("change_id, current, proposed, removed가 필요합니다")
     change_id = _text(document["change_id"], "change_id")
     current = _unique(document["current"], "현재 상품")
@@ -75,6 +86,8 @@ def analyze(document: object) -> dict:
     blocking = []
     review = []
     impacts = []
+    inventory_delta_won = 0
+    stock_delta = 0
     for sku, new in sorted(proposed.items()):
         old = current.get(sku)
         if old is None and new["version"] != 0:
@@ -91,11 +104,20 @@ def analyze(document: object) -> dict:
                 review.append({"sku": sku, "reason": "판매가 20% 초과 하락"})
         else:
             old_effective = None
-        impacts.append({"sku": sku, "action": "update" if old else "create",
-                        "before_effective_price": old_effective,
-                        "after_effective_price": effective,
-                        "before_stock": old["stock"] if old else None,
-                        "after_stock": new["stock"]})
+        inventory_delta_won += effective * new["stock"] - (
+            old_effective * old["stock"] if old else 0
+        )
+        stock_delta += new["stock"] - (old["stock"] if old else 0)
+        impacts.append(
+            {
+                "sku": sku,
+                "action": "update" if old else "create",
+                "before_effective_price": old_effective,
+                "after_effective_price": effective,
+                "before_stock": old["stock"] if old else None,
+                "after_stock": new["stock"],
+            }
+        )
     for sku, expected_version in sorted(removed.items()):
         old = current.get(sku)
         if old is None or old["version"] != expected_version:
@@ -103,20 +125,44 @@ def analyze(document: object) -> dict:
             continue
         if old["stock"] > 0:
             blocking.append({"sku": sku, "reason": "잔여 재고가 있는 상품 삭제"})
-        impacts.append({"sku": sku, "action": "remove",
-                        "before_effective_price": old["price"] - old["discount"],
-                        "after_effective_price": None,
-                        "before_stock": old["stock"], "after_stock": None})
-    canonical = {"change_id": change_id,
-                 "current": [current[key] for key in sorted(current)],
-                 "proposed": [proposed[key] for key in sorted(proposed)],
-                 "removed": [{"sku": key, "expected_version": removed[key]} for key in sorted(removed)]}
-    digest = hashlib.sha256(json.dumps(canonical, ensure_ascii=False, sort_keys=True,
-                                     separators=(",", ":")).encode()).hexdigest()
+        inventory_delta_won -= (old["price"] - old["discount"]) * old["stock"]
+        stock_delta -= old["stock"]
+        impacts.append(
+            {
+                "sku": sku,
+                "action": "remove",
+                "before_effective_price": old["price"] - old["discount"],
+                "after_effective_price": None,
+                "before_stock": old["stock"],
+                "after_stock": None,
+            }
+        )
+    canonical = {
+        "change_id": change_id,
+        "current": [current[key] for key in sorted(current)],
+        "proposed": [proposed[key] for key in sorted(proposed)],
+        "removed": [
+            {"sku": key, "expected_version": removed[key]} for key in sorted(removed)
+        ],
+    }
+    digest = hashlib.sha256(
+        json.dumps(
+            canonical, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode()
+    ).hexdigest()
     decision = "BLOCK" if blocking else "REVIEW" if review else "PASS"
-    return {"change_id": change_id, "decision": decision, "blocking": blocking,
-            "review": review, "impacts": impacts, "evidence_sha256": digest,
-            "limits": "가상 상품 자료의 정적 점검입니다. PASS는 실제 배포·판매 승인이나 수요 예측을 뜻하지 않습니다."}
+    return {
+        "change_id": change_id,
+        "decision": decision,
+        "blocking": blocking,
+        "review": review,
+        "impacts": impacts,
+        "inventory_delta_won": inventory_delta_won,
+        "stock_delta": stock_delta,
+        "applicable": not blocking,
+        "evidence_sha256": digest,
+        "limits": "가상 상품 자료의 정적 점검입니다. PASS는 실제 배포·판매 승인이나 수요 예측을 뜻하지 않습니다.",
+    }
 
 
 def main() -> int:

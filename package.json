@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "test": "node --test --test-isolation=none site/test.mjs",
+    "test:quality": "python -X utf8 -m unittest discover -s scripts/tests -v",
+    "verify:projects": "python -X utf8 scripts/verify_portfolio.py --report ai/quality/current.json",
     "preview": "node site/serve.mjs",
     "format": "prettier --write site/index.html site/styles.css site/serve.mjs site/test.mjs package.json package-lock.json .github/workflows/pages.yml",
     "format:check": "prettier --check site/index.html site/styles.css site/serve.mjs site/test.mjs package.json package-lock.json .github/workflows/pages.yml"

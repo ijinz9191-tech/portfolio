@@ -16,9 +16,17 @@ STAGES = ("created", "assigned", "picked_up", "completed")
 
 
 def audit(document: dict) -> dict:
-    if not isinstance(document, dict) or set(document) != {"scenario", "now_min", "deliveries"}:
+    if not isinstance(document, dict) or set(document) != {
+        "scenario",
+        "now_min",
+        "deliveries",
+    }:
         raise AuditError("scenario, now_min and deliveries are required")
-    scenario, now, deliveries = document["scenario"], document["now_min"], document["deliveries"]
+    scenario, now, deliveries = (
+        document["scenario"],
+        document["now_min"],
+        document["deliveries"],
+    )
     if not isinstance(scenario, str) or not scenario.strip() or len(scenario) > 80:
         raise AuditError("scenario must be a bounded string")
     if type(now) is not int or not 0 <= now <= 1_000_000:
@@ -26,13 +34,19 @@ def audit(document: dict) -> dict:
     if not isinstance(deliveries, list) or not 1 <= len(deliveries) <= 500:
         raise AuditError("1 to 500 deliveries are required")
     results = []
+    diagnostics = []
     seen = set()
     canonical = []
     for item in deliveries:
         if not isinstance(item, dict) or set(item) != {"id", "deadline_min", "events"}:
             raise AuditError("delivery fields are incomplete")
         delivery_id, deadline, events = item["id"], item["deadline_min"], item["events"]
-        if not isinstance(delivery_id, str) or not delivery_id.strip() or len(delivery_id) > 80 or delivery_id in seen:
+        if (
+            not isinstance(delivery_id, str)
+            or not delivery_id.strip()
+            or len(delivery_id) > 80
+            or delivery_id in seen
+        ):
             raise AuditError("delivery ids must be unique bounded strings")
         seen.add(delivery_id)
         if type(deadline) is not int or not 0 <= deadline <= 1_000_000:
@@ -42,7 +56,11 @@ def audit(document: dict) -> dict:
         observed = {}
         previous_time = -1
         for event in events:
-            if not isinstance(event, dict) or set(event) != {"stage", "at_min", "actor"}:
+            if not isinstance(event, dict) or set(event) != {
+                "stage",
+                "at_min",
+                "actor",
+            }:
                 raise AuditError("event fields are incomplete")
             stage, at, actor = event["stage"], event["at_min"], event["actor"]
             if stage not in STAGES or stage in observed:
@@ -58,24 +76,63 @@ def audit(document: dict) -> dict:
             raise AuditError("stage order must follow the delivery flow")
         if events[0]["stage"] != "created":
             raise AuditError("first event must be created")
-        missing = [stage for stage in STAGES[:STAGES.index(events[-1]["stage"])+1] if stage not in observed]
+        missing = [
+            stage
+            for stage in STAGES[: STAGES.index(events[-1]["stage"]) + 1]
+            if stage not in observed
+        ]
         if missing:
             decision = "EVIDENCE_GAP"
         elif "completed" in observed:
-            decision = "ON_TIME" if observed["completed"] <= deadline else "LATE_COMPLETION"
+            decision = (
+                "ON_TIME" if observed["completed"] <= deadline else "LATE_COMPLETION"
+            )
         elif now > deadline:
             decision = "OVERDUE_OPEN"
         else:
             decision = "PENDING"
-        results.append({"id": delivery_id, "decision": decision, "last_stage": events[-1]["stage"],
-                        "missing_handoffs": missing, "deadline_min": deadline})
+        diagnostics.append(
+            {
+                "id": delivery_id,
+                "slack_min": deadline - observed.get("completed", now),
+                "age_min": now - observed["created"],
+                "observed_transitions": [
+                    {
+                        "from": left["stage"],
+                        "to": right["stage"],
+                        "elapsed_min": right["at_min"] - left["at_min"],
+                    }
+                    for left, right in zip(events, events[1:])
+                ],
+            }
+        )
+        results.append(
+            {
+                "id": delivery_id,
+                "decision": decision,
+                "last_stage": events[-1]["stage"],
+                "missing_handoffs": missing,
+                "deadline_min": deadline,
+            }
+        )
         canonical.append(item)
-    payload = {"scenario": scenario, "now_min": now, "deliveries": sorted(canonical, key=lambda row: row["id"])}
-    digest = hashlib.sha256(json.dumps(payload, ensure_ascii=False, sort_keys=True,
-                                      separators=(",", ":")).encode("utf-8")).hexdigest()
-    return {"scenario": scenario, "deliveries": sorted(results, key=lambda row: row["id"]),
-            "evidence_sha256": digest,
-            "limits": "Synthetic event evidence only. A gap cannot be inferred as an actual failed handoff; deadlines are hypothetical."}
+    payload = {
+        "scenario": scenario,
+        "now_min": now,
+        "deliveries": sorted(canonical, key=lambda row: row["id"]),
+    }
+    digest = hashlib.sha256(
+        json.dumps(
+            payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+    ).hexdigest()
+    return {
+        "scenario": scenario,
+        "deliveries": sorted(results, key=lambda row: row["id"]),
+        "evidence_sha256": digest,
+        "diagnostics": sorted(diagnostics, key=lambda row: row["id"]),
+        "limits": "Synthetic event evidence only. A gap cannot be inferred as an actual failed handoff; deadlines are hypothetical.",
+    }
 
 
 def main() -> int:

@@ -13,7 +13,7 @@ class ReplayError(ValueError):
 
 
 def _integer(value: object, label: str) -> int:
-    if type(value) is not int:
+    if type(value) is not int or not -(2**63) <= value <= 2**63 - 1:
         raise ReplayError(f"{label}: 정수가 필요합니다")
     return value
 
@@ -21,7 +21,11 @@ def _integer(value: object, label: str) -> int:
 def replay(payload: object) -> dict:
     """버전 순서로 이벤트를 재생하고 중복 전송·누락·예상 잔액을 검사한다."""
     required = {"account", "opening_won", "expected_won", "events"}
-    if not isinstance(payload, dict) or not required <= set(payload) or set(payload) - required - {"checkpoints"}:
+    if (
+        not isinstance(payload, dict)
+        or not required <= set(payload)
+        or set(payload) - required - {"checkpoints"}
+    ):
         raise ReplayError("account, opening_won, expected_won, events가 필요합니다")
     account = payload["account"]
     if not isinstance(account, str) or not account.strip():
@@ -71,7 +75,12 @@ def replay(payload: object) -> dict:
                 raise ReplayError("체크포인트에는 version, balance_won이 필요합니다")
             version = _integer(row["version"], "checkpoint.version")
             amount = _integer(row["balance_won"], "checkpoint.balance_won")
-            if version < 1 or amount < 0 or version in checkpoints or version not in by_version:
+            if (
+                version < 1
+                or amount < 0
+                or version in checkpoints
+                or version not in by_version
+            ):
                 raise ReplayError("체크포인트 버전·잔액이 잘못됐습니다")
             checkpoints[version] = amount
 
@@ -79,35 +88,70 @@ def replay(payload: object) -> dict:
     issues: list[dict] = []
     trace: list[dict] = []
     versions = sorted(by_version)
-    if versions != list(range(1, len(versions) + 1)):
+    if any(version != index for index, version in enumerate(versions, 1)):
         issues.append({"kind": "VERSION_GAP", "observed": versions})
     else:
         for version in versions:
             event_id, delta = by_version[version]
             next_balance = balance + delta
+            if next_balance > 2**63 - 1:
+                issues.append(
+                    {"kind": "BALANCE_OVERFLOW", "version": version, "id": event_id}
+                )
+                break
             if next_balance < 0:
-                issues.append({"kind": "NEGATIVE_BALANCE", "version": version, "id": event_id})
+                issues.append(
+                    {"kind": "NEGATIVE_BALANCE", "version": version, "id": event_id}
+                )
                 break
             balance = next_balance
             trace.append({"version": version, "id": event_id, "balance_won": balance})
             if version in checkpoints and checkpoints[version] != balance:
-                issues.append({"kind": "CHECKPOINT_MISMATCH", "version": version,
-                               "expected_won": checkpoints[version], "actual_won": balance})
+                issues.append(
+                    {
+                        "kind": "CHECKPOINT_MISMATCH",
+                        "version": version,
+                        "expected_won": checkpoints[version],
+                        "actual_won": balance,
+                    }
+                )
         if not issues and balance != expected:
-            issues.append({"kind": "EXPECTED_MISMATCH", "expected_won": expected, "actual_won": balance})
+            issues.append(
+                {
+                    "kind": "EXPECTED_MISMATCH",
+                    "expected_won": expected,
+                    "actual_won": balance,
+                }
+            )
 
-    canonical = {"account": account, "opening_won": opening, "expected_won": expected,
-                 "events": [{"id": event_id, "version": version, "delta_won": delta}
-                            for version, (event_id, delta) in sorted(by_version.items())]}
+    canonical = {
+        "account": account,
+        "opening_won": opening,
+        "expected_won": expected,
+        "events": [
+            {"id": event_id, "version": version, "delta_won": delta}
+            for version, (event_id, delta) in sorted(by_version.items())
+        ],
+    }
     if "checkpoints" in payload:
-        canonical["checkpoints"] = [{"version": version, "balance_won": amount}
-                                     for version, amount in sorted(checkpoints.items())]
-    digest = hashlib.sha256(json.dumps(canonical, ensure_ascii=False, sort_keys=True,
-                                       separators=(",", ":")).encode("utf-8")).hexdigest()
-    return {"decision": "CONSISTENT" if not issues else "REVIEW_REQUIRED",
-            "balance_won": balance if not issues else None, "idempotent_duplicates": duplicates,
-            "trace": trace, "issues": issues, "evidence_sha256": digest,
-            "limits": "가상 계좌 이벤트의 오프라인 검사이며 실제 증권 거래나 고객 계좌를 다루지 않습니다."}
+        canonical["checkpoints"] = [
+            {"version": version, "balance_won": amount}
+            for version, amount in sorted(checkpoints.items())
+        ]
+    digest = hashlib.sha256(
+        json.dumps(
+            canonical, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+    ).hexdigest()
+    return {
+        "decision": "CONSISTENT" if not issues else "REVIEW_REQUIRED",
+        "balance_won": balance if not issues else None,
+        "idempotent_duplicates": duplicates,
+        "trace": trace,
+        "issues": issues,
+        "evidence_sha256": digest,
+        "limits": "가상 계좌 이벤트의 오프라인 검사이며 실제 증권 거래나 고객 계좌를 다루지 않습니다.",
+    }
 
 
 def main() -> int:

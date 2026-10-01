@@ -1,0 +1,1715 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-01T17:25:57.908Z",
+  "python_version": "3.11.15",
+  "node_version": "24.13.1",
+  "java_version": "21.0.10",
+  "status": "PASS",
+  "project_count": 32,
+  "tests": 511,
+  "source_manifests_match_current": true,
+  "verification_mode": "현재 소스 지문을 재확인한 24개 통과 실행과 검증기 수정 후 8개 재실행을 통합",
+  "runs": [
+    {
+      "checked_at": "2026-10-01T17:19:47.972653+00:00",
+      "verified_projects": [
+        "sre",
+        "ai-inference-gateway",
+        "agent-eval-control-plane",
+        "infra-change-evidence-lab",
+        "messenger-reliability-lab",
+        "gpu-topology-reliability-lab",
+        "agentic-sdlc-control-plane",
+        "service-mesh-release-safety-lab",
+        "k8s-capacity-budget-lab",
+        "network-path-triage-lab",
+        "slo-burn-evidence-lab",
+        "query-plan-evidence-lab",
+        "tail-latency-attribution-lab",
+        "delivery-handoff-evidence-lab",
+        "spatial-network-evidence-lab",
+        "factory-event-evidence-lab",
+        "robot-command-evidence-lab",
+        "settlement-reconciliation-evidence-lab",
+        "spatial-release-impact-lab",
+        "account-event-replay-lab",
+        "transfer-posting-evidence-lab",
+        "merchandising-change-safety-lab",
+        "subscription-entitlement-reconciliation-lab",
+        "transactional-outbox-recovery-lab"
+      ]
+    },
+    {
+      "checked_at": "2026-10-01T17:24:32.402447+00:00",
+      "verified_projects": [
+        "metric-contract-lab",
+        "delivery-command-ledger",
+        "incident-dependency-triage-lab",
+        "service-change-contract-lab",
+        "grounded-answer-evidence-lab",
+        "payment-attempt-evidence-lab",
+        "pg-auth-return-integrity-lab",
+        "schema-rollout-compatibility-lab"
+      ]
+    }
+  ],
+  "runner": {
+    "path": "scripts/verify_portfolio.py",
+    "sha256": "eacdba024322ea4655057e3f2d7be8a25677406477d165ab968c3085de3ba94e"
+  },
+  "projects": [
+    {
+      "id": "sre",
+      "title": "Incident Replay Lab",
+      "runtime": "node",
+      "status": "PASS",
+      "tests": 31,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "node-test",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "7e993f2ea090c07b79378b53300b984228f4f06eb3a6b8936042dc6958951cd3",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "app.js",
+          "sha256": "3fba483afcb590ebc3545921b129fbad6283d0d03c80e221139c4f4dd5c91a57"
+        },
+        {
+          "path": "APP.md",
+          "sha256": "76f106c54d3012cbec36f9563bd94e02d8c7f26aadf7f25c08678ea09b7dbaa0"
+        },
+        {
+          "path": "CAREEROPS.md",
+          "sha256": "dbc046a23477ab7201b00835c18e218c806d908f4c2a1e90c256a1578e323fc1"
+        },
+        {
+          "path": "package.json",
+          "sha256": "2be5cb1e9af48aa75404e2e1e41842e4addfc0ff9294fac9d95296fb98712b15"
+        },
+        {
+          "path": "public.data.json",
+          "sha256": "2b7ceae0cd653bc98781a0a748ff9cc3a520554b1e493df36c60e959831bfc38"
+        },
+        {
+          "path": "README.md",
+          "sha256": "2a0ccc8960c52f14cc5e252a82beac798ffc073b99adf215d28b5a09c9e255bc"
+        },
+        {
+          "path": "scripts/build.mjs",
+          "sha256": "cc1414eaf0f1a0c01758ec495f9190aeb9a8ea977ca2a3001fc47ed4c4e1648e"
+        },
+        {
+          "path": "scripts/public-contract.mjs",
+          "sha256": "26e53369349895cf57a86d8b514603915755a29491c46aaacec99fbf44e75db9"
+        },
+        {
+          "path": "scripts/serve.mjs",
+          "sha256": "ed31719227e9c1329f9998e44c692eccc69558f92760d7be6490d13d3ba20312"
+        },
+        {
+          "path": "scripts/update-public.mjs",
+          "sha256": "56715b578c0311fc88cb338213c685778318d695cdd6de9dbbfc47dde6556a50"
+        },
+        {
+          "path": "src/server.mjs",
+          "sha256": "b0c21bb14699eb33c59d07ffbff7d7b0a2ccfead58904c1024a15d7d40751483"
+        },
+        {
+          "path": "src/simulation.mjs",
+          "sha256": "e36290b2ddad7b305d3e3c067ad74d09c4c0bcd71ed214f968f941c18b816631"
+        },
+        {
+          "path": "src/store.mjs",
+          "sha256": "650f90e9ec1d5e58ba02c64cdbda0adca331aeeb144e8d54d0a504ab4ed1bc06"
+        },
+        {
+          "path": "tests/http.test.mjs",
+          "sha256": "cbd516bb41a6af63cf57fd939848a56f957daa58b6ba378e439e463daadc1e5a"
+        },
+        {
+          "path": "tests/portfolio.test.mjs",
+          "sha256": "0bf52740b11e7badd042f42a58de526416b3b42993f0647c187c93eacdefaeb0"
+        },
+        {
+          "path": "tests/simulation.test.mjs",
+          "sha256": "23232f19d36a1d0d2eb00e33b73589504bdb35f78a02fe71e0f5223d192f4b24"
+        },
+        {
+          "path": "tests/store.test.mjs",
+          "sha256": "a96e6a98ba0e8dd4019388d24f383a340a1404cb67958ea77e6eaeed1388b7b2"
+        }
+      ],
+      "elapsed_seconds": 76.937,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "metric-contract-lab",
+      "title": "Metric Contract Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 35,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "19b3e8d86ed4191009b55ee51ab7a499de167e49cf33c8f2b90dc000d8b4e679",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "docs/architecture.md",
+          "sha256": "bc3dda68e5b53ddb4f0038ef1e181825f949e2a4a4c5e2fd8e4dce134953c014"
+        },
+        {
+          "path": "docs/requirements.md",
+          "sha256": "551b6a14eedaff23b1dab6e91b7dbdf234e7c8669766ac104220d488a1c0e103"
+        },
+        {
+          "path": "docs/runbook.md",
+          "sha256": "f7887e6672305ff1128d9b7777131455e53efe2cd246e8e5b53de40718eda2fe"
+        },
+        {
+          "path": "docs/verification.md",
+          "sha256": "baab957f72490012af3e911591016962c53a3fa2d9d211d0b7cedb410631534f"
+        },
+        {
+          "path": "metriclab/__init__.py",
+          "sha256": "3b1b76f8b2bc323d555cddd5636cc780da8b316629824439a5a9c780d8481d84"
+        },
+        {
+          "path": "metriclab/__main__.py",
+          "sha256": "288be55952e0ed110eaae3b4772f00f8537ba119fd1f8a1d3da3a6633bb035e1"
+        },
+        {
+          "path": "metriclab/api.py",
+          "sha256": "b58aaca1948be3b59c3fcb27fde6221829ade6579400bc76df2eae55e6af31ef"
+        },
+        {
+          "path": "metriclab/store.py",
+          "sha256": "fc54b48fe0beafe53f8dcdee5adc28aabf95072fe56602e6544bcecbe530de6a"
+        },
+        {
+          "path": "project.json",
+          "sha256": "2c64d516f098cd7870b77ced4814781b3c80b73f1debcbb4c30b0081710418f7"
+        },
+        {
+          "path": "README.md",
+          "sha256": "fed87983f8b5209551f8e30ea95e489a86e81e347bcd4d23fb576911b7bb4419"
+        },
+        {
+          "path": "samples/contracts/daily_readers.json",
+          "sha256": "ccb52b9f5b02661572d259ddcf99a5fea8e49a24fb4f8626d4c6a907f78f8f3a"
+        },
+        {
+          "path": "samples/contracts/daily_reads.json",
+          "sha256": "2ed12e3d3c1fd638269319fd99d6d7a33a300eeb0c4a0fc073c89e9312b66d5c"
+        },
+        {
+          "path": "samples/contracts/daily_revenue_cents.json",
+          "sha256": "0ac1b57a498cee84d966b27ca30391368d74178472f052210b63e8e7fc03dace"
+        },
+        {
+          "path": "samples/events.json",
+          "sha256": "94e69ad5eb8b4e4e78508cc0cd86145fdeb1961d57920fbe1b3b2dab39562382"
+        },
+        {
+          "path": "samples/late-events.json",
+          "sha256": "9c96878314fcf6ce3c2d88eb8fc8739367af94863fad8200f64ed0c226504b76"
+        },
+        {
+          "path": "scripts/run_demo.py",
+          "sha256": "e4ff54a78a033437e54b15e475e6ed38c3f2b2cef3f842cb24eeff3b098757c6"
+        },
+        {
+          "path": "scripts/verify.py",
+          "sha256": "5c5f7825cdeee83c544daf4314922c224057e1c56f7de7b9e240cb732023afee"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "c8b3f2fdc950f7f325544e3af8518b3899b075e18eddabc7cefe579a4952f12e"
+        },
+        {
+          "path": "tests/test_store.py",
+          "sha256": "4a482de2cecf867df774ea5d04f57bea94c46038213a005929fdfb9e8fa7efdf"
+        }
+      ],
+      "elapsed_seconds": 11.047,
+      "checked_at": "2026-10-01T17:24:09.263822+00:00"
+    },
+    {
+      "id": "ai-inference-gateway",
+      "title": "AI Inference Gateway",
+      "runtime": "java",
+      "status": "PASS",
+      "tests": 14,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "javac-release-21",
+          "exit_code": 0
+        },
+        {
+          "stage": "java-assertions",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "45889a94930d46d6d66b1c0069e66c5f6d8d79d6258ef210aa1ba1114f1d7176",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "docs/architecture.md",
+          "sha256": "c11cf445915821972272a652767ff280c8f0e6ef485f2c9f851851b2bac1306d"
+        },
+        {
+          "path": "docs/requirements.md",
+          "sha256": "d4c36628ccc1ff1e555dca1935c96afd2c05e9687264374b772980c153e54265"
+        },
+        {
+          "path": "docs/runbook.md",
+          "sha256": "e437ced1ce929e1dd4d127060d92059e88784099a2fbaa70d086d1a86283cbb1"
+        },
+        {
+          "path": "docs/verification.md",
+          "sha256": "38d5fbb8d507e299f170c93c6e4e2881a669a81c106db726a743d66d02b0a841"
+        },
+        {
+          "path": "project.json",
+          "sha256": "b80f7006f70263dbe4d78562111425d2201866960bba56f5bd019b370e7950a7"
+        },
+        {
+          "path": "README.md",
+          "sha256": "7ac18c533147dc5bed7cb647fd371d1f78179f974dcd34a2829ecf68020db4d0"
+        },
+        {
+          "path": "src/lab/Gateway.java",
+          "sha256": "6a878386b37af0a55b3ca84d3d1474e76db69bb435dbbe411635f1e87ed7ccc8"
+        },
+        {
+          "path": "tests/lab/GatewayTest.java",
+          "sha256": "a5f45391fb2ec23296bd8a564b1ecb312e816cb3d5430e662a84459697a2fa21"
+        }
+      ],
+      "elapsed_seconds": 18.921,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "agent-eval-control-plane",
+      "title": "Agent Eval Control Plane",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 27,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "44b2df8f2ce828024e3c8c7cf3ae0390424d61b28ccb47522071e5c3349127f0",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "docs/architecture.md",
+          "sha256": "94081bc4d06ed3df3102800b6f0946d04991a2cd8a79f0908e9f0c54974d5ea1"
+        },
+        {
+          "path": "docs/runbook.md",
+          "sha256": "79496abfa9dd2ecc2a300d76c9f36875031a2f5d747b53c7ad20bba6a4f70406"
+        },
+        {
+          "path": "project.json",
+          "sha256": "d6411faf1bf5c22d4cc9b879ed43b6a5ada46d30df587f5bc20b07de8630504e"
+        },
+        {
+          "path": "pyproject.toml",
+          "sha256": "64f4e08ff34358af128fc3ddea5b47bbeec6d2f1bc1da0836bf48c53c7a93295"
+        },
+        {
+          "path": "README.md",
+          "sha256": "6a4618aba3319cd9db186ccbde2a2689d0cfd7afec6db252da0d96ec0594e55a"
+        },
+        {
+          "path": "src/agent_eval_control_plane/__init__.py",
+          "sha256": "744b50898d68f2977668464d8dabf2606dbe8fea8b7e65ac122e3047234c9ce3"
+        },
+        {
+          "path": "src/agent_eval_control_plane/cli.py",
+          "sha256": "d7ccf3e472e896d8006155174faea596c2137f9030dd895762511c93ba53490f"
+        },
+        {
+          "path": "src/agent_eval_control_plane/evaluator.py",
+          "sha256": "4b38bbd5747bdc42271501d5c409b9e81964644bdfd6f13944b78d6f27257c16"
+        },
+        {
+          "path": "src/agent_eval_control_plane/models.py",
+          "sha256": "22bc342a54c6cff5db4bff704bd0a9a9eedce2f916eee0c0302bb1454a559509"
+        },
+        {
+          "path": "src/agent_eval_control_plane/service.py",
+          "sha256": "6518436f1e838b7e534d87f0da7c1639029487dc90edf6942a5cf02a1366565e"
+        },
+        {
+          "path": "src/agent_eval_control_plane/storage.py",
+          "sha256": "2b05ea15d6b8b0815b5f467a9a2fa6a013eac175236f3a081a102a036c3029af"
+        },
+        {
+          "path": "tests/test_control_plane.py",
+          "sha256": "7139df873a2053bcabc6a220ae95d560d7ceea1a7e98e6193c987a1eff4e8b88"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "efb6ecff9beffebe313c4a7c64fb97c68495e1594b64ffaa4f980a0533bc2f1d"
+        }
+      ],
+      "elapsed_seconds": 11.735,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "infra-change-evidence-lab",
+      "title": "Infrastructure Change Evidence Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 27,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "b34c5a9f7657cf818428e90d63af70377f9a4b8baa9ffc3a08000e4751156e17",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "docs/architecture.md",
+          "sha256": "9169a00e3baa56e4c102ddd50645d5c28aafd1650cf49c23e8464c2aad060927"
+        },
+        {
+          "path": "docs/runbook.md",
+          "sha256": "c913b1cf17d05680f91d4c33c5dcd33cc0edf7ec47b7d92428113dfcc188946a"
+        },
+        {
+          "path": "project.json",
+          "sha256": "c50ad347530791fab4d8fac5303fe41195656e44286a704a194459c59666b194"
+        },
+        {
+          "path": "pyproject.toml",
+          "sha256": "0224c064521359354409f7e06939e03b4696c8cc4a502fb234b410f753b6ff92"
+        },
+        {
+          "path": "README.md",
+          "sha256": "27b3e04e9c2512535bac5a5fb37f9066d3562d8177455f3d9af5c61084924ec7"
+        },
+        {
+          "path": "src/infra_change_evidence/__init__.py",
+          "sha256": "09f6ac511dd39f40e211420fda8f6cebccc785c3dcdd1a8ff757c7656082ab5c"
+        },
+        {
+          "path": "src/infra_change_evidence/cli.py",
+          "sha256": "a95b7ac5641c7708f424d3106f8ac1f44c6fef5f90ef2458ddc34af52cc4cbff"
+        },
+        {
+          "path": "src/infra_change_evidence/service.py",
+          "sha256": "175da479567964e22a72cb497e304c030ebdc033770f39c06cd40bcc18a19742"
+        },
+        {
+          "path": "src/infra_change_evidence/storage.py",
+          "sha256": "4a2a0d7076d23dad2dc1a664d6895322703c04910d08a0fd26d4ea212649876f"
+        },
+        {
+          "path": "src/infra_change_evidence/validator.py",
+          "sha256": "d49b564d9ca5f67386a3d23070f6ae459130aef24a2ec323e72ab347ab45c6ea"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "5cc68945ab5da966ab78543de21c0c917d4fdf504647e917d67ccf5f2ff06fca"
+        },
+        {
+          "path": "tests/test_infra_change.py",
+          "sha256": "fad6c7d44a998bfbe535bc035b8fbdfb8de8cf9796706480a9ce7301930ab65c"
+        }
+      ],
+      "elapsed_seconds": 13.937,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "delivery-command-ledger",
+      "title": "Delivery Command Ledger",
+      "runtime": "java",
+      "status": "PASS",
+      "tests": 22,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "javac-release-21",
+          "exit_code": 0
+        },
+        {
+          "stage": "java-assertions",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "5e7045f9a6404e625fab6dddce91610a0823836b5063502713b74d81da989e1c",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "docs/architecture.md",
+          "sha256": "f5bff7863b1cd221cd10039c45404c2e303f412ed1ebab44f22c926f68f3fec6"
+        },
+        {
+          "path": "docs/runbook.md",
+          "sha256": "cf5774ad96b83da3e468b26826a187c7f8d13257564d9ddd1be9d7a4269f63f1"
+        },
+        {
+          "path": "docs/verification.md",
+          "sha256": "1b6070854d84d0ebfc030df6b730877fbc447be8b6fb171b915fff41b72ae592"
+        },
+        {
+          "path": "project.json",
+          "sha256": "b2f5f81dda3472fed4438667bd785d178c136b6239d2be43bb86e36c82fb9481"
+        },
+        {
+          "path": "README.md",
+          "sha256": "850e5d00d398de7e70f3b15446a5f68744f63a4f691677e982a201d231adf838"
+        },
+        {
+          "path": "src/main/java/lab/delivery/DeliveryCommandLedger.java",
+          "sha256": "68801350a526e8bf90f5d4fa69969751ec3a2bb5c7872a749e74aa11440fee1f"
+        },
+        {
+          "path": "src/test/java/lab/delivery/DeliveryCommandLedgerTest.java",
+          "sha256": "08de325c5b4e838eb6df7af37b75e6c081700f9873e3c589ced4f302e0f65567"
+        }
+      ],
+      "elapsed_seconds": 9.156,
+      "checked_at": "2026-10-01T17:24:18.417751+00:00"
+    },
+    {
+      "id": "messenger-reliability-lab",
+      "title": "Messenger Reliability Lab",
+      "runtime": "node",
+      "status": "PASS",
+      "tests": 23,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "node-test",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "fc0df7b63889acb2f4cc31fd64badc9ce3eed008c4d48eaa6b4b9c16676db4c1",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "docs/architecture.md",
+          "sha256": "485e8d10922194692586d31ec8f1007915823b6a2eb5cad9ed97ace8dcc8b9cd"
+        },
+        {
+          "path": "docs/runbook.md",
+          "sha256": "072a264407c54b6072b363b990ceca40f9e54ae28de0bea1b1e9b918b8adebe4"
+        },
+        {
+          "path": "docs/verification.md",
+          "sha256": "1af23a8357cd46a33bc948e458132006b77e5c630bbc95bc0ba6d01595348488"
+        },
+        {
+          "path": "package.json",
+          "sha256": "b8cfde80bb1056dbdd3da7cb65b4d040136a0920b5c743291f474475cb844ec6"
+        },
+        {
+          "path": "README.md",
+          "sha256": "0d381ebbcb3c9645bd344a96fb65108b2d48e56951d88f9394f082fde67b6aba"
+        },
+        {
+          "path": "src/cli.js",
+          "sha256": "eea50ae97e8a035e41f7e12bea8b381cee963bc337c7380147931c1f008e27b6"
+        },
+        {
+          "path": "src/http.js",
+          "sha256": "ae2022b95b69cda517e85e80e89a7e84df989f077fb660ce0bd16c991d14fc0d"
+        },
+        {
+          "path": "src/ledger.js",
+          "sha256": "175a84a42bb75bef5ad9ff6cd6bae12eb88153418396b247be4473f5f088102c"
+        },
+        {
+          "path": "src/server.js",
+          "sha256": "b45f9b1b863aa0de2e18857751edaef7166e67eae68c6c6d564f7b38deefe51e"
+        },
+        {
+          "path": "tests/http.test.js",
+          "sha256": "4c65cb878ca7851f850a7d083a533383b704fa83a717e1f93e9c35c70206ae3f"
+        },
+        {
+          "path": "tests/ledger.test.js",
+          "sha256": "f0d7eaa5b0de05643ddce7d54692d392b9dee55708e10c3d2a706de428688f94"
+        }
+      ],
+      "elapsed_seconds": 2.797,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "gpu-topology-reliability-lab",
+      "title": "GPU Topology Reliability Lab",
+      "runtime": "node",
+      "status": "PASS",
+      "tests": 25,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "node-test",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "8e08451a04c764afbe1eb4a9a0255b6c0344da232ac9a97ade825841db1c2ee8",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "docs/architecture.md",
+          "sha256": "448762847f8b7ecc6d98bcfa588cd2de6e501fcf3831f7bafe987a88ed5d12f9"
+        },
+        {
+          "path": "docs/runbook.md",
+          "sha256": "bd5306366af1db9278c6e9e19d4a8c0aa18dee79c2728446f2498fb91630f422"
+        },
+        {
+          "path": "docs/verification.md",
+          "sha256": "18eb3866756e86eab80dfc6da1bcae53185c1f475a68b0fc7d8aee7fb9b88d93"
+        },
+        {
+          "path": "package.json",
+          "sha256": "f04f0397a51340f51eedc50a9a04568224f524b01ed3b70bb980936d0cd2addc"
+        },
+        {
+          "path": "README.md",
+          "sha256": "5678ecbe62b67c8f055197daddf285c27a815da99d95b95eef69dcd6bdd5a533"
+        },
+        {
+          "path": "src/cli.js",
+          "sha256": "3e5c8109f5dbd2fc79b721faffb313ff083a4106fa2c31d77eaadbb71876a676"
+        },
+        {
+          "path": "src/diagnostics.js",
+          "sha256": "593c63edccff2a72803aa440c9e15df858764359553b2a8b77e42757574ae1ef"
+        },
+        {
+          "path": "src/errors.js",
+          "sha256": "abf9d9aee5448dd3afd62946de81a4f927bae8dfd0a11a42f4c3b64a0e6528d9"
+        },
+        {
+          "path": "src/fixtures.js",
+          "sha256": "4e7f6dfa7595ce38def1096902442e8b1380293e427f0d82e82689ea83a87b44"
+        },
+        {
+          "path": "src/remediation.js",
+          "sha256": "9af2be50d80487c3309093707ac95f94651443e1690362719301275e13d9897e"
+        },
+        {
+          "path": "src/scheduler.js",
+          "sha256": "bf90f260d7089fc23136121709f50e4543f2f6b0893209b6a798826fc71ce2f5"
+        },
+        {
+          "path": "src/snapshot.js",
+          "sha256": "ebe27f4e4d2f3114bdce82a8cbf999ec005a1ce99e28c76badca3d808fc47dea"
+        },
+        {
+          "path": "src/topology.js",
+          "sha256": "6e536b61ce5b9ae88eb79ebc8097bc4257753d9610918980e704322fc4a8cf63"
+        },
+        {
+          "path": "tests/lab.test.js",
+          "sha256": "dae20224a1311913108145da9c700d9eb4ea5bf47a258f54c3272a1e30b02483"
+        }
+      ],
+      "elapsed_seconds": 1.61,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "agentic-sdlc-control-plane",
+      "title": "Agentic SDLC Control Plane",
+      "runtime": "node",
+      "status": "PASS",
+      "tests": 23,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "node-test",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "17768ad7359c37583d776bdacc003fc608a4f871c0cb8832e0e95035d62d188c",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "docs/architecture.md",
+          "sha256": "53cf72b4038e70dafacd8ad56c0319774d7bae4a561db85489ea9fbd75763f97"
+        },
+        {
+          "path": "docs/runbook.md",
+          "sha256": "feec08354f0b987aca43aca87cd5476d12888e2af230c7e6fac0d4b8f136acac"
+        },
+        {
+          "path": "docs/verification.md",
+          "sha256": "f13d8251ef35402e14ded78f4ee7524b2194c6ecdee2a25d1751bc0c65748234"
+        },
+        {
+          "path": "package.json",
+          "sha256": "bbaa25d7ed393a7c2224cabd1ae1f070745c157362c34824589af32cf4798d6f"
+        },
+        {
+          "path": "README.md",
+          "sha256": "4e3cb1a6054b379566e19c7ecb0ebb9adb36bc832c67445aad7355888be35705"
+        },
+        {
+          "path": "src/agentic-runner.js",
+          "sha256": "1673d3b55bb1f8dd71850efdc5f61103973d06aec2fffba499a494e26c5e01f6"
+        },
+        {
+          "path": "src/cli.js",
+          "sha256": "9551e3a0b08b331c689171693ca68e9f8f853cd57e25896af33303e9bfb6b001"
+        },
+        {
+          "path": "src/errors.js",
+          "sha256": "289c736a7143a3460d185aee2903550fb22b4aff376067d090bc4715012b9d11"
+        },
+        {
+          "path": "src/evidence-ledger.js",
+          "sha256": "69212d008f6d0fefd2f19b9c6c18c8853f33d69218a1af816ca50beff90d6206"
+        },
+        {
+          "path": "src/fixtures.js",
+          "sha256": "357b764e404af2ebe335aa4d5925e24d09a6a5048a77b8df5bfa79715b43b07d"
+        },
+        {
+          "path": "src/hash.js",
+          "sha256": "670e9a09037b790793cc7843b66a5ef464d3c7c67fe2d179035348a9ba965844"
+        },
+        {
+          "path": "src/inventory.js",
+          "sha256": "5dcc001d0649377096d4654219e2fecba3cb0cf66eee6b4be97fba099e66feb3"
+        },
+        {
+          "path": "src/pipeline-gate.js",
+          "sha256": "11a89da8c54d4dc53dfd16788ccdd360df13789354a051fcd3c28114679c0bc1"
+        },
+        {
+          "path": "tests/agent.test.js",
+          "sha256": "1f066422a8b67c1cbad2aa76632cd9de951109d3b4145508606a9bd4f14fe395"
+        },
+        {
+          "path": "tests/inventory.test.js",
+          "sha256": "c140cdaaccf259135eb847b3df4f8e1bfbc35b88cc314bb7809a09891946cf63"
+        },
+        {
+          "path": "tests/pipeline.test.js",
+          "sha256": "ef7c5faa25c9ddf893bcd10026ecf528625a30a000915ff1da227a949573dea8"
+        }
+      ],
+      "elapsed_seconds": 2.437,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "service-mesh-release-safety-lab",
+      "title": "Service Mesh Release Safety Lab",
+      "runtime": "node",
+      "status": "PASS",
+      "tests": 27,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "node-test",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "0064057114c9da1f98d126f1bfd0b322f08f0f1175009d986463cae4e16dbd88",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "docs/architecture.md",
+          "sha256": "9a596072ce091b8f14b7c76bc19cdd9aff947eb1ac2c743e78f184d58dd81b8b"
+        },
+        {
+          "path": "docs/runbook.md",
+          "sha256": "2714fe889d7e770b68d3b1caeb9d2093cfe74234c435416be59b1e48ccf22b3c"
+        },
+        {
+          "path": "docs/verification.md",
+          "sha256": "6aef6c04a38839706d457f1e0ce8b8b3207cf2acb9cb66e1cc289009fd7216b7"
+        },
+        {
+          "path": "package.json",
+          "sha256": "45e59f54a69428251645f9b8714565fc5c1598a6cef04a7a1d7930971ba8eb5d"
+        },
+        {
+          "path": "README.md",
+          "sha256": "a8e08214a329edda16f61e6ba816b1f4eac143668a1efb5ab177e8980fc043af"
+        },
+        {
+          "path": "src/cli.js",
+          "sha256": "540c7c0403008e5c94ad07a888dacf7ad0152754c7b37139172b9d11b29b4b98"
+        },
+        {
+          "path": "src/controller.js",
+          "sha256": "438d5fbf23fe16e50688c0e730b3aafbce0c56d0566db63236f6d12c8d6809c4"
+        },
+        {
+          "path": "src/hash.js",
+          "sha256": "f5ead0561ab7169c94f0d8deeb3b75813c7f85f2b3da287b99985783cdc318cd"
+        },
+        {
+          "path": "src/ledger.js",
+          "sha256": "92353bb2255d37ff1328367e0a67078a01b45410a41c17f31a9de0844896d16a"
+        },
+        {
+          "path": "tests/controller.test.js",
+          "sha256": "35c8faad27fb3fabca169c9b4188c4cdf15d7a72d7462e6728c79dff0984680c"
+        }
+      ],
+      "elapsed_seconds": 1.125,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "k8s-capacity-budget-lab",
+      "title": "Kubernetes Capacity Budget Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 15,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "4a819fb0cf7547a4d8072bf43614157cd49e1be76acd10737c0d91c6f717aec6",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "capacitylab/__init__.py",
+          "sha256": "073da3021fe5d4290aa0beaeeb24aa08ff8a1167f57e7cbbf8759b382fa87a9d"
+        },
+        {
+          "path": "capacitylab/__main__.py",
+          "sha256": "e42ee058bdb7c868392a54b84e7e4c5e99acbad5d69db86b76d58577068729c4"
+        },
+        {
+          "path": "capacitylab/planner.py",
+          "sha256": "a232afa2f920c3ee1f71bf6a917fed8b9cb005924e557f16156068c494a3365b"
+        },
+        {
+          "path": "pyproject.toml",
+          "sha256": "7efc20a0548c7dfb722607f291daad7fe4da1ff1c822a00f8fc740561ecf3a89"
+        },
+        {
+          "path": "README.md",
+          "sha256": "85259e9afc44ff277297d449d971f6788c8fd769a998b779e9a0cdccaf81ee3d"
+        },
+        {
+          "path": "samples/rollout.json",
+          "sha256": "50797bdcd4b5fdb04ce6e415877500bd62409795cef29a7d9a7e57371c615975"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "4e15806e028ec60353f7c9f3d6be97108f72a29962be31e2540f2f3f9bfcef0a"
+        },
+        {
+          "path": "tests/test_planner.py",
+          "sha256": "a56ba374b181031d796e790997b05ab546eac3218b28bdc15302ee84b1606cad"
+        }
+      ],
+      "elapsed_seconds": 3.344,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "network-path-triage-lab",
+      "title": "Network Path Triage Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 11,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "4161e2dffc544d14d4bf4ab4af6fecd8386f600fcb928e1720d9ea6bcc2d105b",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "README.md",
+          "sha256": "7208924253fa259b85e28a177638fe3752ebf1ccb64d49d03b5dc60476485e64"
+        },
+        {
+          "path": "samples/network-policy.json",
+          "sha256": "8335b42bed3231d4c065dcef2119ec93a4fa28f7ef912e4615e0e18f806e9421"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "470c240ad3df767f02a876ea1f17b3e2ffa7d61620d5f03adc9baf8338726caf"
+        },
+        {
+          "path": "tests/test_triage.py",
+          "sha256": "3e773050f0b0a8ad01a679ad9713ca8d0f885e74469db4e59bb35b1786c6adaf"
+        },
+        {
+          "path": "triage.py",
+          "sha256": "57506121d7c8971cfadad84c4a02d6896e75daf455681d16d0ffae439e475d10"
+        }
+      ],
+      "elapsed_seconds": 1.187,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "slo-burn-evidence-lab",
+      "title": "SLO Burn Evidence Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 15,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "88176fbf655b70be30910e7288011782c42f3471e48aa25f3f38d3746f15b089",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "burnlab/__init__.py",
+          "sha256": "967ff719b118d0d8b197e071600af9930f10796b6479c9f95aeb812b6d04b16d"
+        },
+        {
+          "path": "burnlab/__main__.py",
+          "sha256": "526130a615f853041355fb5e9e1ae4a33dd1b1ccc5385a88badf52e1c762dd4d"
+        },
+        {
+          "path": "burnlab/model.py",
+          "sha256": "844c6cda0673c24fc957e656fc572417132f8db38004586e4bfdd49f7626b9e0"
+        },
+        {
+          "path": "pyproject.toml",
+          "sha256": "5990a078bdc77a73bc79b8bea63c2a6b32bc9572241cf64ffaf50b398c0e0b7f"
+        },
+        {
+          "path": "README.md",
+          "sha256": "2dbd168e07de05ba17eff5eb9455fd18eadf17b58e0d4fad2979a00a70a68615"
+        },
+        {
+          "path": "samples/sustained.json",
+          "sha256": "6999446aa8c48fea61d4aafbafa196d3f967e4233f67fbd9c7091fae10bdbfed"
+        },
+        {
+          "path": "tests/test_burn.py",
+          "sha256": "5ebd9e680b78c3555e77b6cfbe935676f0051f890edc83b76f988b5b3651b967"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "9bc77d94eec32373be114939ad1f282179ff513f21d1769e4971b52299d2a2f7"
+        }
+      ],
+      "elapsed_seconds": 3.454,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "query-plan-evidence-lab",
+      "title": "Query Plan Evidence Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 13,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "8a95c6f1e23130efc4e9c79123c7cae85f2f4c92e93f61187e995d3d1f23e780",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "planlab/__init__.py",
+          "sha256": "76a9e4c65df6791876e6a521b9fba3a62428772e5349b354235229cc803a2546"
+        },
+        {
+          "path": "planlab/__main__.py",
+          "sha256": "24d24d523cf1aa54056995aa5bea8dafc72a6476c2ecc0925a429b7b54bf7b23"
+        },
+        {
+          "path": "planlab/model.py",
+          "sha256": "3f09e8ae4ee4bfda893dc31a230f3ac6adfc311cce311474999ba6b725252d63"
+        },
+        {
+          "path": "README.md",
+          "sha256": "af687b08ab1573fc7cc810f27540d2c9269f18c3a452a327d957368ecbc02c90"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "bc04c1bf0f6942dfe1a415161a95d1724ff2a521505afbc41915988d6b84899d"
+        },
+        {
+          "path": "tests/test_plan.py",
+          "sha256": "1658ae57059cd41389d8b7ce21d020be9563b5ddce87fdd0be4a554dcd93b69a"
+        }
+      ],
+      "elapsed_seconds": 2.812,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "incident-dependency-triage-lab",
+      "title": "Incident Dependency Triage Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 13,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "d6044017f6caaffe6c6adc8a7f17cd4f2d444990f1508c41c2e188475e9b308c",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "README.md",
+          "sha256": "2f6873655fa1e81f440d71f5582d885b4f6b5bf369675406536d941065685a8e"
+        },
+        {
+          "path": "samples/incident.json",
+          "sha256": "3e974ba45dc5fb5a982c613d20b20653d2ba26d3c46120c80e8fbe2c42fc59a2"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "2f52794383108ffaaaca28de9d914f96135b2bac2f6cf8e231831d5ce5f4c58a"
+        },
+        {
+          "path": "tests/test_triage.py",
+          "sha256": "92d9822e296b94e91d96d3e8727a6ff29171e77ee3fe6c26402b3f176742b8cb"
+        },
+        {
+          "path": "triage.py",
+          "sha256": "4651ed45920a568b01a0c0df8187e3caba7beb2ba61f70dea26ce4ca31e42c32"
+        }
+      ],
+      "elapsed_seconds": 2.203,
+      "checked_at": "2026-10-01T17:24:20.623682+00:00"
+    },
+    {
+      "id": "tail-latency-attribution-lab",
+      "title": "Tail Latency Attribution Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 9,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "b3e8b08e9bea35600645f0caa26087b25f11e8741c6880ca70d3340e7103ce53",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "latency.py",
+          "sha256": "2cfb937a50679cbfabaf3b91305b8979d23065edd25044dcbceac51370df8989"
+        },
+        {
+          "path": "README.md",
+          "sha256": "2e87966aa32296375c98c97a81c8ce9b40ec4be265b5b2f3fb91bedda8dcf889"
+        },
+        {
+          "path": "samples/shopping.json",
+          "sha256": "4b3e453b87492a118eaee41097e23c54155889a7ddb1959d9aa8abe6f9f6b73a"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "7d8882d1266ab10be6bccdd89b0e9762e1bed3d763c6b24c365fcbbe0712d8f7"
+        },
+        {
+          "path": "tests/test_latency.py",
+          "sha256": "7bc80e05c6d0fbf860693e830ce5c0a02253d4d8329085c1f175b9e65e8e45e9"
+        }
+      ],
+      "elapsed_seconds": 2.563,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "delivery-handoff-evidence-lab",
+      "title": "Delivery Handoff Evidence Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 8,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "cebd30537c1a10e3058e48d0f61b5c2fa497270c91e81680599b385717bb6cc6",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "audit.py",
+          "sha256": "5a8f32dc16e318eaa703b96024d64fecdf345be0438377d73decd5c41d4e2dc4"
+        },
+        {
+          "path": "README.md",
+          "sha256": "a32e05883353a086045af13edd8fd73fb64fcf7636158a4e1e40175d7fdce877"
+        },
+        {
+          "path": "samples/routes.json",
+          "sha256": "b76a7b26fbba6ca7ee758ff7118e9a30d275258b2d0d3f56c383987a17f4818f"
+        },
+        {
+          "path": "tests/test_audit.py",
+          "sha256": "4a2352f03c8d18e0bc03d7a321ce8bf4a291e542595c7939ae4d422941512515"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "774f3829d84e2c03f0203fbdeb93b7241cdfac209dde2d4e01634b79be5ac27e"
+        }
+      ],
+      "elapsed_seconds": 1.875,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "spatial-network-evidence-lab",
+      "title": "Spatial Network Evidence Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 12,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "b6b0b82c8bc3a36076fa8d7ee0897f5f2f44480c4579ec4c3b13dd5642e71274",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "audit.py",
+          "sha256": "50ae80b99a9b716b430e93bc3ab9570097cf053fe7e14a4196e96192fffa4b5e"
+        },
+        {
+          "path": "README.md",
+          "sha256": "f113dbeafafcb0eb618fdfbbcab3b703da3fcce556e9bebd8f4d2bff6f894b3f"
+        },
+        {
+          "path": "samples/network.json",
+          "sha256": "e7db170f4f67a011506b4f72e5b33bc26a518fefff9c94cbe48e9c9787c6522b"
+        },
+        {
+          "path": "tests/test_audit.py",
+          "sha256": "3b81831142fd5809de163df335e3e8c87f6e211245498fb83d07aecaa4d7bf00"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "dc0911e3e555b2a7a8bd3c89854ff426ecf0065f86eb5be017fbf551b49ae35d"
+        }
+      ],
+      "elapsed_seconds": 2.734,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "factory-event-evidence-lab",
+      "title": "Factory Event Evidence Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 10,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "75066dac8d30dd1e0a95982675d7f858bea796d7036c36d619011449b621a99e",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "audit.py",
+          "sha256": "99bc31825e11da95a79ebcdea26b195ad9b2c27c67fb86ef02e632e4eb06e522"
+        },
+        {
+          "path": "README.md",
+          "sha256": "be7195901da9b56c73f9b07569ea4939bd09cc62ff1e0e0aa33b58b4f1ccfffd"
+        },
+        {
+          "path": "samples/events.json",
+          "sha256": "f11b7600b32c4490884b02a637e20b6de04d6d15d752a2a7bb7f32afc76ad462"
+        },
+        {
+          "path": "tests/test_audit.py",
+          "sha256": "8032ce4fa07579356811b8aa09411bfffad23f6f369dfa017363db70465c4719"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "75b1ee6d85f18d414fe99a8b82160ff2a416f6ec3f0955541620c3fe3ed17727"
+        }
+      ],
+      "elapsed_seconds": 1.516,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "robot-command-evidence-lab",
+      "title": "Robot Command Evidence Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 10,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "54d8fb93cf7dd96ec8e5a9f37a795f346a0324860b51b7f19b4d4aaa8f0f126f",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "audit.py",
+          "sha256": "97ecc824508310ff9005420a60d68def7b89c778da61078781240129770ef71f"
+        },
+        {
+          "path": "README.md",
+          "sha256": "5dd0d1e6aaab70f2c4b8cf8fb60be7f89e260250e461d362c29f8f2228ce4645"
+        },
+        {
+          "path": "samples/commands.json",
+          "sha256": "87bb1b95b11b5a494d6034d3eb5775d3a0fe6d20046600e464c123c2276a3689"
+        },
+        {
+          "path": "tests/test_audit.py",
+          "sha256": "5e085c78478b129174acf81265fec3c7954e64dded52adc3b2518b51624206f3"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "769c6787ed890e57ccb51798eb0abc79c353986402eb7157bc9378efec5e938e"
+        }
+      ],
+      "elapsed_seconds": 2.047,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "settlement-reconciliation-evidence-lab",
+      "title": "Settlement Reconciliation Evidence Lab",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 13,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "dc43b28d7e07c81f5fdc5f74d140cf07796af2404dcaca4a4dc121c67676378f",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "README.md",
+          "sha256": "1498df46f2a2b390c9a9455fb72adb219386ffa4509c7464394febada785f415"
+        },
+        {
+          "path": "reconcile.py",
+          "sha256": "c6c3e2a356dee711b7c4c6e58fd0928d0021242a6af9e2dfb110c843ee91990e"
+        },
+        {
+          "path": "samples/match.json",
+          "sha256": "cc084dca922f56156f79e184af49fd7c0037bf6492cb08eaeb778415d3245b5b"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "57bde5fab5b1739892b29ade26722d41d4fa31528822adf352f3cfb8dda3025e"
+        },
+        {
+          "path": "tests/test_reconcile.py",
+          "sha256": "a637cf47671ac33c3dfa954384ec79c136443b571646a7073f7438f0fd424e3d"
+        }
+      ],
+      "elapsed_seconds": 3.203,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "service-change-contract-lab",
+      "title": "서비스 변경 계약 영향 실습",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 14,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "6d59a2bc9fc1441d21f1a52a035572ccf8fad2c8a83ff93ea73e864d32897381",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "audit.py",
+          "sha256": "4ee14e03010fd97e58d0cd6bd89274c0007372ec51006a2066c55e8b17cda0df"
+        },
+        {
+          "path": "README.md",
+          "sha256": "4730105b1a563f91045b0c418d39829989322413a8a66e165e8125dc26fe0b1b"
+        },
+        {
+          "path": "samples/change.json",
+          "sha256": "99df733b9b5daee3cf4fc4a4c7bf9c366676641e9c3172f2cafb7f5188d2edb4"
+        },
+        {
+          "path": "tests/test_audit.py",
+          "sha256": "1bfa2045af9f85a96e72146afe001a5a1d957541e663ab29c821ea926bdd0259"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "16353bd88986ac0eb0142e17c7667d30894f9d2fafdda1f3b6c3f3a5183113fb"
+        }
+      ],
+      "elapsed_seconds": 2.203,
+      "checked_at": "2026-10-01T17:24:22.831351+00:00"
+    },
+    {
+      "id": "spatial-release-impact-lab",
+      "title": "공간 데이터 배포 영향 실습",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 11,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "7f5203e9db6145759296de1f9fe613e8a7cebd498e9e7b6ba11c6a31a196dbd1",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "audit.py",
+          "sha256": "3dd00edf681f62c8dc207fa653673110f2f3d0f29abeac07cbc8888aa134df29"
+        },
+        {
+          "path": "README.md",
+          "sha256": "1a690b62c9d887726241cc03e7c0240d8cb79df0465f7c90fa2cf68848665d49"
+        },
+        {
+          "path": "samples/change.json",
+          "sha256": "3762e80e9513560054db578b520e4a8d83c30c81272478f0d4c8cfc9f90f67d5"
+        },
+        {
+          "path": "tests/test_audit.py",
+          "sha256": "7dd710004a0be2d977d736cc2eb21535de6512ee346fa3e2a52bc4a37891b997"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "5264632e21e52b186e3d076805e365c44a84068da5923fd3e3083570c61f9527"
+        }
+      ],
+      "elapsed_seconds": 6.453,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "account-event-replay-lab",
+      "title": "계좌 이벤트 순서·멱등 재생 실습",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 13,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "bdb9d09c5fa4501eae38a24f6da7f1d7342c9c9786f4d28af8ee2688107952fc",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "README.md",
+          "sha256": "10832f85fef5dc46e54cb9c9431ed64637dbec7e75eb7da32ec3d480c7f2c0bf"
+        },
+        {
+          "path": "replay.py",
+          "sha256": "25d4a7343e355132f77247fc9432bfc8df204fe24c14a878d912a115daa3f2c6"
+        },
+        {
+          "path": "samples/account.json",
+          "sha256": "3fdb75915a8072365c58cc72491abd3a19137667187be2af27e7f1b0e13a56c8"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "aa933b61f954edb3d49ff80d69be26d3b938937d9fdeec2871f1411044f4d30b"
+        },
+        {
+          "path": "tests/test_replay.py",
+          "sha256": "a5826e0092c9822cda70075674ab81056328b90907a051d083fb038e94304ddb"
+        }
+      ],
+      "elapsed_seconds": 6.86,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "transfer-posting-evidence-lab",
+      "title": "가상 이체 기장 완결성 검사",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 12,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "8f626706293b6e6ba75a3deeb07e35658517acc62381377e333bce1af250b7aa",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "audit.py",
+          "sha256": "1c84e209745fd25337bdc6293132a2c1ce5f3ad2730055efd70d741aef2ce9bd"
+        },
+        {
+          "path": "README.md",
+          "sha256": "bbeb52c865fe85145944d57bdc58ae89b6973cba811855f5656817fc9614dd19"
+        },
+        {
+          "path": "samples/transfer.json",
+          "sha256": "5a3c209e901fe19a961cd602848cafc18dc2e22b72f7bf86e80c8ec483de067d"
+        },
+        {
+          "path": "tests/test_audit.py",
+          "sha256": "0b0fcad62891b0aca67660ea9f50efd236e47ace059466cc68e1df2d588f5c0c"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "aba29120b3ea16874b4f4fc07ee603e70b33b31d43bdf3f7f45f4bb35f8d986f"
+        }
+      ],
+      "elapsed_seconds": 3.625,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "grounded-answer-evidence-lab",
+      "title": "답변 근거 추적 실습",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 9,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "037f8981727051a3ba31f7417d8e00e26bae15068f3b02e46ffc14bf01d15f9a",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "audit.py",
+          "sha256": "8ed4a4ed02d8d5cd3db871c49e7cdbb741d5f5d6d86be0c7f9f2f16443b68f21"
+        },
+        {
+          "path": "README.md",
+          "sha256": "f1b6ac7dbf9de17437dd931114c094e930cc0ed7a40f1181ec75e0ec52580266"
+        },
+        {
+          "path": "samples/answer.json",
+          "sha256": "2be7f06686d9ee8004b66b019af0001c55b5f1806980ef9e4f4135d50168e669"
+        },
+        {
+          "path": "tests/test_audit.py",
+          "sha256": "845b4f3281f951e696b4f4889ef52bf15f1262048a545d486a16e215313caf6c"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "58473675185de17dcb2dc5a2abc34fd1cec5eeff5e2264fc02adb0f14742393e"
+        }
+      ],
+      "elapsed_seconds": 2.328,
+      "checked_at": "2026-10-01T17:24:25.156580+00:00"
+    },
+    {
+      "id": "payment-attempt-evidence-lab",
+      "title": "결제 시도·제공자 응답 근거 실습",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 16,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "668f961380560db28498780c39b93195f6292cabc3a06df2efa284067927d119",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "audit.py",
+          "sha256": "f7e7ae14ba85f38e255612c54a556641d40fd19185eac3b3c521ba8d6d354bb7"
+        },
+        {
+          "path": "README.md",
+          "sha256": "35ac0b43970f312de6be85a9b4dda021f45fa8e7a6ffa14d21074236ac071f96"
+        },
+        {
+          "path": "samples/payment.json",
+          "sha256": "f94526f2896526b1c0f4ff7df552c3a0408ccd734a99120b65022599bd874b03"
+        },
+        {
+          "path": "tests/test_audit.py",
+          "sha256": "29594f6b3d166fcfeb6294cffef0b1768b661d8403e65ee51cc55614302f53c8"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "a7750baed271dcf391ffcd3b62ead013f5c6d5fea74c85acd3183f61408eb3dc"
+        }
+      ],
+      "elapsed_seconds": 2.172,
+      "checked_at": "2026-10-01T17:24:27.324539+00:00"
+    },
+    {
+      "id": "merchandising-change-safety-lab",
+      "title": "상품 변경 안전 검토 실습",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 10,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "81242e36571dc72036c8f0a4a0d1275510cefc3c4193e114290024c49efa287f",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "audit.py",
+          "sha256": "59bcde5d18cc78538bb8af3ac97897284433c1ba03d9de2fb8630785336c0035"
+        },
+        {
+          "path": "README.md",
+          "sha256": "5ddd3f757761a75b8a7b9a8205af2a70d43c6b4d9705b9cb820f41ffb2efe344"
+        },
+        {
+          "path": "samples/safe-change.json",
+          "sha256": "552314ad9161acd908ba263647b4e4077b9223a20025ca9d6fef78f643c39f24"
+        },
+        {
+          "path": "tests/test_audit.py",
+          "sha256": "cd086f4fa4192b7c2b13b413242688c5d45a6c6e9cad964928dd4784aaececa4"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "69467d92e9f9c79c65f588618c62df0b8cc1c179c7224733320c7d8b497d8d7d"
+        }
+      ],
+      "elapsed_seconds": 2.203,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "subscription-entitlement-reconciliation-lab",
+      "title": "구독 접근권·제휴사 확인 대조 실습",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 11,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "3f27585c80508c2e5fcf6eabc9c537db3210f5d50ef05324b7aaf052c5890fa3",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "README.md",
+          "sha256": "39becc9cdde42300564fba926966929593c9eaa38bad21479c76c5b3e82e40e5"
+        },
+        {
+          "path": "reconcile.py",
+          "sha256": "28d0dc768386470a1cfe3ad8f967d27c8ea3bfec6583f7aa39d18b20cbf6d093"
+        },
+        {
+          "path": "samples/confirmed.json",
+          "sha256": "d53d73fda8ec816b185c2e2042bf7f8e492a5e08beb0e728a1e2705be26d039c"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "b0f1b48557042e2bccb0f80a8679c661cd9818d79a36bcdf0d804ba0997d790f"
+        },
+        {
+          "path": "tests/test_reconcile.py",
+          "sha256": "df2b2639c41d8d90cc1a8634a1b2c30cb9818cbc24d9e25c60614286e46727d7"
+        }
+      ],
+      "elapsed_seconds": 3.11,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    },
+    {
+      "id": "pg-auth-return-integrity-lab",
+      "title": "PG 인증 귀환·서버 확인 대조 실습",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 10,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "eee8020f2565fab3b775709feaf2d70e7277d7f97b2c208419ee90cf3f710188",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "audit.py",
+          "sha256": "06886cfb74aeab2c7cd33d45e7be199da0a64c26ff119342a3989cecbb741691"
+        },
+        {
+          "path": "README.md",
+          "sha256": "302164eb36ae3f8ac04ad03a9abd9f914165a819c37da35322d34b0d3ec9be57"
+        },
+        {
+          "path": "samples/authorized.json",
+          "sha256": "173636285fd09cbc1a553fdac6ea681b8d9f6a9d910263720a24758e2b69b2d2"
+        },
+        {
+          "path": "tests/test_audit.py",
+          "sha256": "bf7056c3f06a4382ab6f2088dbce6c17fc28e5d3a8576ec5e58e5c2c176c2295"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "76e5157637e594ce69024a038c4ae2f3d7b53a80946aee0e05bf590273a04cf7"
+        }
+      ],
+      "elapsed_seconds": 2.203,
+      "checked_at": "2026-10-01T17:24:29.533614+00:00"
+    },
+    {
+      "id": "schema-rollout-compatibility-lab",
+      "title": "관계형 스키마 순차 배포 호환성 실습",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 9,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "ebfd3bf9739f267d55ab11e9b7b580cc27c06c0f7650bc356845abee80729d91",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "audit.py",
+          "sha256": "0f0bf8633a4d03aa3b698c342b1aaa39cd3f71d9593b527e121178828a875bc2"
+        },
+        {
+          "path": "README.md",
+          "sha256": "ddf3002baf95d9afd382d929ca4e4d5ef8bd9ad12d70c094cb16aaf0b8fb2e1a"
+        },
+        {
+          "path": "samples/expand-migrate.json",
+          "sha256": "485fb8f5205dfde33451751603fc484afc0dab061b5f821db5a04b7449089191"
+        },
+        {
+          "path": "tests/test_audit.py",
+          "sha256": "a0306f18e90ef8e28cd931b3085eb2a2f868922e68025c6b3381bd29f6fe2edd"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "de88187ab60f9dcfa8198a47d9d2552fb463c8deccd5f73a389581ad33af0a3a"
+        }
+      ],
+      "elapsed_seconds": 2.875,
+      "checked_at": "2026-10-01T17:24:32.401446+00:00"
+    },
+    {
+      "id": "transactional-outbox-recovery-lab",
+      "title": "가상 이체 트랜잭션·발행 대기 복구 실습",
+      "runtime": "python",
+      "status": "PASS",
+      "tests": 13,
+      "failures": 0,
+      "skipped": 0,
+      "stages": [
+        {
+          "stage": "unittest",
+          "exit_code": 0
+        }
+      ],
+      "source_hash": "a22c98e06a648735e2bdabea0b9c0e36464b8047fd63da378c949091772f1c19",
+      "source_unchanged_during_run": true,
+      "sources": [
+        {
+          "path": "ledger.py",
+          "sha256": "007f2a2a6ed90650fbb364269f52fe087f95cb6c51d9335970ba695109ce5507"
+        },
+        {
+          "path": "README.md",
+          "sha256": "238be4eed66f9287003612a564efe9c1c1a08d08ff2adf75ba415bf95b1eb067"
+        },
+        {
+          "path": "tests/test_depth.py",
+          "sha256": "ada52e33d446aa8ca70396230d6f16f55b0fade301ce879efc650767a32805a7"
+        },
+        {
+          "path": "tests/test_ledger.py",
+          "sha256": "23ec8b450538afaffddb850ae7a380de4c353cd3569220950437f0b1549eecda"
+        }
+      ],
+      "elapsed_seconds": 1.703,
+      "checked_at": "2026-10-01T17:19:47.972653+00:00"
+    }
+  ],
+  "scope": "합성 자료·독립 로컬 프로세스 검사. 운영 성과·공인 코딩테스트 등급 검증이 아닙니다."
+}

@@ -2,6 +2,8 @@
 
 기존 프로젝트를 보존하고 공개 기술 자료를 한곳에 모았습니다. 이 목록은 채용 지원 이력과 별개이며, 가상 자료로 검증한 공개 구현만 소개합니다.
 
+현재 32개 소스의 검사 결과·알고리즘·복잡도는 [통합 검증 안내](quality/README.md)를 확인해 주세요. 아래 고정 버전 링크는 과거 구현의 출처로 보존합니다.
+
 | 프로젝트 | 문제와 구현 | 검증 근거와 한계 | 소스 및 고정 버전 |
 |---|---|---|---|
 | 장애 재현 실습 | 가상 서비스 장애의 전파, 운영 절차, SQLite 스냅샷, 재현과 사후 분석 보고서 출력을 다룹니다. Node.js 24, HTTP API, SQLite로 구현했습니다. | 정상 및 실패 경로 테스트가 포함돼 있습니다. 테스트 파일의 존재만으로 통과를 주장하지 않으며 실제 실행 기록을 확인해야 합니다. 기존 프로젝트이며 특정 지원 공고의 신규 작업으로 돌리지 않습니다. | [최신 소스](sre/README.md) · [고정 버전](https://github.com/ijinz9191-tech/portfolio/tree/7353bfe2cf80d6cd7cb976969e0a9a3c17c407bd/ai/sre) · [테스트](https://github.com/ijinz9191-tech/portfolio/tree/7353bfe2cf80d6cd7cb976969e0a9a3c17c407bd/ai/sre/tests) |
@@ -26,23 +28,15 @@
 | 공장 이벤트 근거 실습 | 오프라인 Python 검사가 가상 제조 단위의 각 작업장 시작·완료 인계를 확인합니다. 근거 부족과 잘못된 순서를 구분하고 정규화 입력에 해시를 부여합니다. | Conda Python 3.13.13에서 정상·누락·중복·시간 모호성·순서 무관 해시·명령행을 포함한 7개 테스트가 통과했습니다. 실제 MES 연동이나 공장 운영 경험을 주장하지 않습니다. | [설명과 실행 방법](factory-event-evidence-lab/README.md) / [가상 입력](factory-event-evidence-lab/samples/events.json) / [테스트](factory-event-evidence-lab/tests/test_audit.py). |
 | 로봇 명령 근거 실습 | 가상 로봇 명령의 요청·수락·완료 관측을 구분하고 중복, 시간 역전, 로봇별 명령 충돌을 검사합니다. 완료 관측이 없으면 근거 부족으로 남깁니다. | Conda Python에서 정상·실패·근거 누락·명령행 8개 테스트가 통과했습니다. 실제 로봇 제어나 운영 안전성 인증을 주장하지 않습니다. | [설명과 실행 방법](robot-command-evidence-lab/README.md) / [가상 입력](robot-command-evidence-lab/samples/commands.json) / [테스트](robot-command-evidence-lab/tests/test_audit.py). |
 | 정산 대사 근거 실습 | 가상의 거래 원장과 정산 명세를 ID·가맹점·정수 금액으로 대조하고 미정산·초과·불일치를 나눠 보고합니다. 환불과 원거래의 연결 및 복수 환불도 검사하며 합계가 상쇄돼도 건별 문제를 유지합니다. 정규화한 입력은 SHA-256으로 식별합니다. | Conda Python 3.13.13에서 정상·오류·상쇄 불일치·환불 연결·명령행 경로 10개 테스트가 통과했습니다. 실제 결제나 회사 시스템과 연결하지 않았습니다. | [설명과 실행 방법](settlement-reconciliation-evidence-lab/README.md) / [가상 입력](settlement-reconciliation-evidence-lab/samples/match.json) / [테스트](settlement-reconciliation-evidence-lab/tests/test_reconcile.py). |
-
 | 결제 시도·제공자 응답 근거 실습 | 가상의 결제 타임아웃 뒤 동일 멱등 키로 재전송된 요청을 제공자 결과와 대조합니다. 키 내용 충돌, 시도 누락, 관측 미확정, 중복 확정과 금액 차이를 구분합니다. | Conda Python 3.13.13에서 정상·모호·충돌·명령행 경로 9개 테스트가 통과했습니다. 로컬 ACK만으로 실제 결제 성공을 단정하지 않으며 외부 결제망에 연결하지 않습니다. | [설명과 실행 방법](payment-attempt-evidence-lab/README.md) / [가상 입력](payment-attempt-evidence-lab/samples/payment.json) / [테스트](payment-attempt-evidence-lab/tests/test_audit.py). |
-
 | 계좌 이벤트 순서·멱등 재생 실습 | 가상 계좌 이벤트를 버전순으로 재생해 동일 요청 재전송·내용 충돌·버전 누락·음수 중간 잔액·중간 스냅샷 및 예상 잔액 차이를 분리합니다. | Conda Python 3.13.13에서 정상·실패·명령행 10개 테스트가 통과했습니다. 실제 증권 거래나 고객 계좌를 다루지 않습니다. | [설명과 실행 방법](account-event-replay-lab/README.md) / [가상 입력](account-event-replay-lab/samples/account.json) / [테스트](account-event-replay-lab/tests/test_replay.py). |
 | 가상 이체 기장 완결성 검사 실습 | 계좌 간 이체 명령과 관측된 출금·입금 기장을 대조하고 순서별 잔액을 재생합니다. 재전송, 기장 누락·금액 차이, 잔액 부족을 구분합니다. | Conda Python 3.13.13에서 정상·실패·명령행 8개 테스트가 통과했습니다. 실제 금융 거래·고객 계좌나 데이터베이스 원자성을 주장하지 않습니다. | [설명과 실행 방법](transfer-posting-evidence-lab/README.md) / [가상 입력](transfer-posting-evidence-lab/samples/transfer.json) / [테스트](transfer-posting-evidence-lab/tests/test_audit.py). |
-
 | 서비스 변경 계약 영향 실습 | 가상 API 변경 전후의 경로·인증·필드를 등록된 이용 서비스 요구와 대조합니다. 인증 완화는 차단하고, 새 인증 요구에 대응하지 못한 이용자와 미등록 이용자 위험도 분리해 검토합니다. 영향 담당자의 확인과 복구 계획을 검사합니다. | Conda Python 3.13.13에서 정상 추가, 경로·필드 삭제, 인증 강화·완화, 입력 거부와 명령행을 포함한 11개 테스트가 통과했습니다. 실제 운영 서비스·고객 자료·배포 승인과 무관합니다. | [설명과 실행 방법](service-change-contract-lab/README.md) / [가상 입력](service-change-contract-lab/samples/change.json) / [테스트](service-change-contract-lab/tests/test_audit.py). |
-
 | 답변 근거 추적 실습 | 가상 문서에 대해 주장별 인용의 위치와 문서 SHA-256 버전을 검사합니다. 누락·중복·존재하지 않는 근거를 실패로 보고합니다. | Conda Python 3.13.13에서 정상·오류·명령행 7개 테스트가 통과했습니다. 의미적 사실성은 검사하지 않으며 실제 NHN 자료나 운영 AI 서비스를 사용하지 않습니다. | [설명과 실행 방법](grounded-answer-evidence-lab/README.md) / [가상 입력](grounded-answer-evidence-lab/samples/answer.json) / [테스트](grounded-answer-evidence-lab/tests/test_audit.py). |
-
 | 상품 변경 안전 검토 실습 | 가상 MD 상품의 버전, 할인 후 가격, 원가, 재고를 대조합니다. AI 제안도 동일한 정형 정책으로 검사하며 충돌·원가 이하·재고 있는 삭제를 차단하고 20% 초과 가격 하락은 검토로 구분합니다. | Conda Python 3.13.13에서 정상·버전 충돌·가격·재고·입력 거부·명령행 8개 테스트가 통과했습니다. 실제 GS리테일 자료나 운영 시스템을 사용하지 않았습니다. | [설명과 실행 방법](merchandising-change-safety-lab/README.md) / [가상 입력](merchandising-change-safety-lab/samples/safe-change.json) / [테스트](merchandising-change-safety-lab/tests/test_audit.py). |
 | 구독 접근권·제휴사 확인 대조 실습 | 합성 결제 확정·거절, 구독 접근권, 제휴사 응답을 구독 ID와 청구월별로 대조하고 누락·참조 차이·중복을 구분합니다. 기존 결제 재시도 실습에는 안전한 접근권 후보 판정을 추가했습니다. | Conda Python 3.13.13에서 기존 도구 11개·신규 도구 9개 정상·실패·입력 거부·명령행 테스트가 통과했습니다. 실제 결제·계정 권한·제휴 시스템과 연결하지 않았습니다. | [설명과 실행 방법](subscription-entitlement-reconciliation-lab/README.md) / [가상 입력](subscription-entitlement-reconciliation-lab/samples/confirmed.json) / [테스트](subscription-entitlement-reconciliation-lab/tests/test_reconcile.py). |
-
 | PG 인증 귀환·서버 확인 대조 실습 | 가상 브라우저 귀환과 서버 확인을 별도 증거로 대조해 일회성 값·주문·가맹점·금액 일치, 중복·누락·결과 상충을 검사합니다. 기존 결제 시도 도구에는 확인 뒤 취소 관측을 반영했습니다. | Conda Python에서 기존 도구 13개, 신규 도구 8개 테스트를 통과했습니다. 실제 결제 승인이나 운영 PG와 연결하지 않습니다. | [설명과 실행 방법](pg-auth-return-integrity-lab/README.md) / [가상 입력](pg-auth-return-integrity-lab/samples/authorized.json) / [테스트](pg-auth-return-integrity-lab/tests/test_audit.py). |
-
 | 관계형 스키마 순차 배포 호환성 실습 | 가상 Java 앱의 구버전·신버전 혼합 운영과 롤백 단계에서 읽기·쓰기 열, 기본값 없는 필수 열을 대조합니다. 기존 SQL 실행 계획 실습에는 전체 그룹 집계 대조를 추가했습니다. | Conda Python에서 기존 자료 10개, 신규 자료 7개 테스트가 통과했습니다. 정적 계약이며 실제 SQL·PL/SQL 실행이나 운영 배포를 검증하지 않습니다. | [설명과 실행 방법](schema-rollout-compatibility-lab/README.md) / [가상 입력](schema-rollout-compatibility-lab/samples/expand-migrate.json) / [테스트](schema-rollout-compatibility-lab/tests/test_audit.py). |
-
 | 가상 이체 트랜잭션·발행 대기 복구 실습 | SQLite에서 출금·입금·기장·outbox를 함께 기록하고, 소비자 inbox로 ACK 손실 후 재전달의 중복 반영을 막습니다. 기존 이체 검사에는 실패 뒤 후속 재생 차단을 추가했습니다. | Conda Python 기존 10개·신규 10개 검사 통과. 실제 로컬 DB 트랜잭션을 검사하며 은행 계좌·분산 브로커·대규모 동시성을 검증하지 않습니다. | [설명](transactional-outbox-recovery-lab/README.md) / [구현](transactional-outbox-recovery-lab/ledger.py) / [테스트](transactional-outbox-recovery-lab/tests/test_ledger.py). |
 
 소스 링크는 실행 중인 서비스 주소가 아닙니다. 모든 사례 자료는 가상입니다. 공개 사이트 소스는 [엔지니어링 포트폴리오](../site/README.md)를 참고하세요. 배포 주소는 확인 후 추가합니다.

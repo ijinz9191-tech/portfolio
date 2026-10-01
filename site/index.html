@@ -164,8 +164,8 @@
                   <path d="m8 12 3 3 5-6" /></svg
               ></span>
               <div>
-                <strong>검증 근거</strong>
-                <p>정상·실패 경로와 실행 기록</p>
+                <strong>511개 테스트 통과</strong>
+                <p>32개 프로젝트의 현재 소스 검증</p>
               </div>
             </div>
             <div class="overview-card">
@@ -179,6 +179,33 @@
               </div>
             </div>
           </div>
+          <section
+            id="quality"
+            class="quality-panel"
+            aria-labelledby="quality-title"
+          >
+            <div>
+              <p class="eyebrow">ALGORITHMS / INVARIANTS / RECOVERY</p>
+              <h2 id="quality-title">설계의 선택을 반례로 확인합니다</h2>
+              <p>
+                자료구조·시간 복잡도·상태 전이를 설명하고, 독립 기준 구현과
+                경계·복구·동시성 검사를 연결했습니다. Python 25개, Node.js 5개,
+                Java 2개를 각각 실행했습니다.
+              </p>
+            </div>
+            <div class="quality-links">
+              <a
+                href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/quality/README.md"
+                >전체 검증과 재현 방법 ↗</a
+              ><a
+                href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/quality/current.json"
+                >현재 소스·실행 기록 ↗</a
+              ><small
+                >합성 실습의 검증입니다. 공인 코딩테스트 등급이나 운영 성과를
+                나타내지 않습니다.</small
+              >
+            </div>
+          </section>
           <section id="projects" aria-labelledby="projects-title">
             <div class="section-heading">
               <div>
@@ -210,9 +237,24 @@
                     <li>HTTP API</li>
                     <li>Deterministic simulation</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>SQLite 저장점·메모리 롤백</strong
+                    ><span
+                      >저장 실패를 주입해 실행 상태와 디스크 상태가 함께
+                      복구되는지 확인합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 31개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -237,6 +279,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/sre/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/sre"
                       >Source & README ↗</a
@@ -275,9 +321,24 @@
                     <li>SQL</li>
                     <li>Read-only HTTP API</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>계약별 집계 공유</strong
+                    ><span
+                      >33개 계약의 원천 조회를 이벤트 종류별 2회로 공유하고 다음
+                      실행의 새 입력 반영을 확인합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 35개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>새로 구현한 내용</dt>
                         <dd>
@@ -306,6 +367,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/metric-contract-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/metric-contract-lab"
                       >Source & README ↗</a
@@ -343,9 +408,24 @@
                     <li>Bounded Queue</li>
                     <li>Circuit Breaker</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>TTL 최소 힙·병행 멱등성</strong
+                    ><span
+                      >32개 동시 요청의 단일 실행과, 오래된 만료 예약이 갱신
+                      캐시를 삭제하지 않는 조건을 검사합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 14개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>새로 구현한 내용</dt>
                         <dd>
@@ -373,6 +453,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/ai-inference-gateway/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/ai-inference-gateway"
                       >Source & README ↗</a
@@ -411,9 +495,24 @@
                     <li>Agent Evaluation</li>
                     <li>Read-only HTTP API</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>상충 근거·중복 실행 차단</strong
+                    ><span
+                      >근거 입력 순서를 바꿔도 상충을 차단하고 NaN·무한대
+                      임계값을 거절합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 27개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>새로 구현한 내용</dt>
                         <dd>
@@ -442,6 +541,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/agent-eval-control-plane/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/agent-eval-control-plane"
                       >Source & README ↗</a
@@ -480,9 +583,24 @@
                     <li>Change Control</li>
                     <li>Read-only HTTP API</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>전이 의존성 반복 탐색</strong
+                    ><span
+                      >2,000개 자산의 깊은 순환 관계와 미등록 의존성에서 승인
+                      범위의 누락을 검사합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 27개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>새로 구현한 내용</dt>
                         <dd>
@@ -511,6 +629,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/infra-change-evidence-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/infra-change-evidence-lab"
                       >Source & README ↗</a
@@ -551,9 +673,24 @@
                     <li>Idempotency</li>
                     <li>Optimistic Locking</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>원래 응답 보존·동시 용량 제한</strong
+                    ><span
+                      >후속 상태 변경·복원 이후에도 원래 명령 응답을 유지하고
+                      20개 동시 배정의 용량 상한을 검사합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 22개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>새로 구현한 내용</dt>
                         <dd>
@@ -581,6 +718,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/delivery-command-ledger/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/delivery-command-ledger"
                       >Source & README ↗</a
@@ -621,9 +762,24 @@
                     <li>Idempotency</li>
                     <li>Dead Letter</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>기한 힙·활성 메시지 인덱스</strong
+                    ><span
+                      >2,000개 메시지를 전체 스캔 기준과 비교하고 재예약·복원 후
+                      기한과 응답 순서를 검사합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 23개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>새로 구현한 내용</dt>
                         <dd>
@@ -653,6 +809,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/messenger-reliability-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/messenger-reliability-lab"
                       >Source &amp; README ↗</a
@@ -693,9 +853,24 @@
                     <li>RDMA Diagnostics</li>
                     <li>Audit Chain</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>PCIe 루트 후보 비교</strong
+                    ><span
+                      >같은 NUMA의 작은 카드 집합을 완전탐색 기준과 비교해 첫
+                      루트 선택 편향을 줄입니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 25개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>새로 구현한 내용</dt>
                         <dd>
@@ -723,6 +898,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/gpu-topology-reliability-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/gpu-topology-reliability-lab"
                       >Source &amp; README ↗</a
@@ -763,9 +942,24 @@
                     <li>CI/CD Gate</li>
                     <li>Agentic Workflow</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>펌웨어별 실행 가능 배치</strong
+                    ><span
+                      >첫 펌웨어가 불가능해도 다른 버전의 노드 용량을 비교해
+                      조건을 만족하는 예약을 찾습니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 23개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>새로 구현한 내용</dt>
                         <dd>
@@ -794,6 +988,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/agentic-sdlc-control-plane/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/agentic-sdlc-control-plane"
                       >Source &amp; README ↗</a
@@ -835,9 +1033,24 @@
                     <li>SLO Gate</li>
                     <li>Audit Chain</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>승격별 새 클러스터 관측</strong
+                    ><span
+                      >클러스터 관측 모드에서 동일 근거 재사용·부분 갱신·시간
+                      역행으로 다음 단계가 승격되지 않게 합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 27개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>Implementation</dt>
                         <dd>
@@ -867,6 +1080,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/service-mesh-release-safety-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/service-mesh-release-safety-lab"
                       >Source &amp; README</a
@@ -907,9 +1124,24 @@
                     <li>Zone resilience</li>
                     <li>Cost gate</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>정수 올림·최소 용량 탐색</strong
+                    ><span
+                      >2^60+3 복제본의 정확한 올림과 직전 노드 수의 실패를
+                      확인해 최소성을 검증합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 15개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -940,6 +1172,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/k8s-capacity-budget-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/k8s-capacity-budget-lab"
                       >Source &amp; README</a
@@ -975,9 +1211,24 @@
                     <li>Freshness gate</li>
                     <li>SHA-256 evidence</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>UTC 정규화·근거 경계</strong
+                    ><span
+                      >같은 순간의 다른 시간대 표현, 300초 경계와 301초 거절을
+                      검사합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 11개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1002,6 +1253,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/network-path-triage-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/network-path-triage-lab"
                       >Source &amp; README ↗</a
@@ -1034,9 +1289,24 @@
                     <li>Freshness gate</li>
                     <li>SHA-256 evidence</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>누적합·정확한 유리수 비교</strong
+                    ><span
+                      >10^40 요청 수의 임계값 경계를 검사하고 직접 합계 기준과
+                      여러 시간 창의 결과를 대조합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 15개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1063,6 +1333,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/slo-burn-evidence-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/slo-burn-evidence-lab"
                       >Source &amp; README ↗</a
@@ -1098,9 +1372,24 @@
                     <li>EXPLAIN QUERY PLAN</li>
                     <li>SHA-256 evidence</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>전체 키셋 페이지 검증</strong
+                    ><span
+                      >동일 시각·다른 페이지 크기에서 복합 키 순서와 전체 결과의
+                      중복·누락을 검사합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 13개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1125,6 +1414,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/query-plan-evidence-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/b102398eb20040ef7a6af2723756400e6f552bc9/ai/query-plan-evidence-lab"
                       >Source &amp; README ↗</a
@@ -1158,9 +1451,24 @@
                     <li>Incident triage</li>
                     <li>SHA-256 evidence</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>반복 DFS·역방향 인접 목록</strong
+                    ><span
+                      >1,500개 서비스의 깊은 체인과 순환을 검사하고 고정 난수
+                      DAG를 전이 폐쇄 기준과 대조합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 13개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1185,6 +1493,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/incident-dependency-triage-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/incident-dependency-triage-lab"
                       >Source &amp; README ↗</a
@@ -1217,9 +1529,24 @@
                     <li>Nearest-rank p95</li>
                     <li>SHA-256 evidence</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>자식 인덱스·시간 구간 합집합</strong
+                    ><span
+                      >겹친 하위 작업을 중복 차감하지 않고 깊은 추적과 정수
+                      시간축 기준을 비교합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 9개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1245,6 +1572,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/tail-latency-attribution-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/tail-latency-attribution-lab"
                       >Source &amp; README ↗</a
@@ -1282,9 +1613,24 @@
                     <li>Deadline review</li>
                     <li>SHA-256 evidence</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>인계 상태·실제 관측 간격</strong
+                    ><span
+                      >누락 단계를 추정하지 않고 기한 여유와 실제 인접 관측
+                      간격을 독립 계산과 비교합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 8개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1310,6 +1656,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/delivery-handoff-evidence-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/delivery-handoff-evidence-lab"
                       >Source &amp; README ↗</a
@@ -1345,9 +1695,24 @@
                     <li>Route continuity</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>출발지 공유 Dijkstra</strong
+                    ><span
+                      >평행 간선·순환 그래프를 Bellman–Ford 기준과 비교합니다.
+                      최단거리 하한은 필수 경유지를 제외합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 12개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1373,6 +1738,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/spatial-network-evidence-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/spatial-network-evidence-lab"
                       >Source &amp; README ↗</a
@@ -1410,9 +1779,24 @@
                     <li>Factory handoff</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>상태 전이·반개구간 스윕</strong
+                    ><span
+                      >마이크로초 시간과 맞닿은 완료·시작 경계를 검사해 완료된
+                      구간의 동시 lot 수를 계산합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 10개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1437,6 +1821,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/factory-event-evidence-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/b102398eb20040ef7a6af2723756400e6f552bc9/ai/factory-event-evidence-lab"
                       >Source &amp; README ↗</a
@@ -1472,9 +1860,24 @@
                     <li>Failure handling</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>명령 구간 충돌·정수 시간</strong
+                    ><span
+                      >1마이크로초 대기와 맞닿은 명령, 시간대가 다른 동일 순간의
+                      처리 결과를 검사합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 10개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1498,6 +1901,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/robot-command-evidence-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/1e2f0fe75fb5cd8b26b34a0afa1552f3967e97f7/ai/robot-command-evidence-lab"
                       >Source &amp; README ↗</a
@@ -1535,9 +1942,24 @@
                     <li>SHA-256</li>
                     <li>Offline CLI</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>건별 대조·절대 노출 합계</strong
+                    ><span
+                      >10,000개 정산과 독립 합계를 비교하고 순액이 0이어도 남는
+                      불일치 노출을 확인합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 13개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1560,6 +1982,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/settlement-reconciliation-evidence-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/settlement-reconciliation-evidence-lab"
                       >Source &amp; README ↗</a
@@ -1592,9 +2018,24 @@
                     <li>영향 분석</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>경로 템플릿 충돌 검사</strong
+                    ><span
+                      >변수 이름만 다른 경로의 모호성을 차단하고 HTTP 메서드가
+                      다른 동일 경로는 구분합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 14개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1620,6 +2061,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/service-change-contract-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/service-change-contract-lab"
                       >소스와 실행 방법 ↗</a
@@ -1652,9 +2097,24 @@
                     <li>복구 버전 확인</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>전후 명세의 역색인</strong
+                    ><span
+                      >삭제된 구간의 기존 영향까지 포함하고 200개 경로 명세를
+                      전체 스캔 기준과 비교합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 11개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1681,6 +2141,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/spatial-release-impact-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/spatial-release-impact-lab"
                       >소스와 실행 방법 ↗</a
@@ -1713,9 +2177,24 @@
                     <li>순서 검증</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>멱등 재생·64비트 잔액</strong
+                    ><span
+                      >20,000개 역순 이벤트와 재전송을 독립 누적 기준에 대조하고
+                      중간 잔액 오버플로를 검사합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 13개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1740,6 +2219,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/account-event-replay-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/account-event-replay-lab"
                       >소스와 실행 방법 ↗</a
@@ -1772,9 +2255,24 @@
                     <li>멱등성</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>기장 쌍·잔액 보존</strong
+                    ><span
+                      >대상 계좌 오버플로에서 출금도 적용되지 않는지 확인하고
+                      합계 보존과 잔액 범위를 검사합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 12개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1799,6 +2297,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/transfer-posting-evidence-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/transfer-posting-evidence-lab"
                       >소스와 실행 방법 ↗</a
@@ -1831,9 +2333,24 @@
                     <li>인용 위치</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>문서 정규화·해시 공유</strong
+                    ><span
+                      >1,000개 주장의 문서 재사용을 확인하고 공백 차이만 있는
+                      중복 인용을 검출합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 9개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1859,6 +2376,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/grounded-answer-evidence-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/grounded-answer-evidence-lab"
                       >소스와 실행 방법 ↗</a
@@ -1891,9 +2412,24 @@
                     <li>응답 근거</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>요청·제공자 상태 대조</strong
+                    ><span
+                      >ACK와 거절 근거의 상충을 확인하고 금액·멱등 키가
+                      불일치하면 접근 후보를 차단합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 16개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1918,6 +2454,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/payment-attempt-evidence-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/payment-attempt-evidence-lab"
                       >소스와 실행 방법 ↗</a
@@ -1950,9 +2490,24 @@
                     <li>가격 안전</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>버전 검사·정수 노출 계산</strong
+                    ><span
+                      >가격×재고 변화의 독립 계산과 stale 버전 차단을 확인해
+                      검토 결과와 적용 후보를 구분합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 10개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -1977,6 +2532,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/merchandising-change-safety-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/merchandising-change-safety-lab"
                       >소스와 실행 방법 ↗</a
@@ -2009,9 +2568,24 @@
                     <li>제휴 응답</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>결제 ID의 소유 기간 검사</strong
+                    ><span
+                      >다른 구독·기간의 결제 ID 재사용과 잘못된 연도·유니코드
+                      기간을 거절합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 11개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -2036,6 +2610,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/subscription-entitlement-reconciliation-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/subscription-entitlement-reconciliation-lab"
                       >소스와 실행 방법 ↗</a
@@ -2068,9 +2646,24 @@
                     <li>서버 확인</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>nonce 재사용·순열 검증</strong
+                    ><span
+                      >다른 주문에 재사용한 nonce를 거절하고 입력 순서가 달라도
+                      같은 근거 해시인지 확인합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 10개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -2095,6 +2688,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/pg-auth-return-integrity-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/pg-auth-return-integrity-lab"
                       >소스와 실행 방법 ↗</a
@@ -2127,9 +2724,24 @@
                     <li>관계형 DB</li>
                     <li>SHA-256</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>스키마·앱 쌍 메모이제이션</strong
+                    ><span
+                      >1,000개 단계에서 같은 계약은 한 번 계산하면서 단계별
+                      2,000개 실패 근거는 보존합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 9개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -2154,6 +2766,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/schema-rollout-compatibility-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/schema-rollout-compatibility-lab"
                       >소스와 실행 방법 ↗</a
@@ -2190,9 +2806,24 @@
                     <li>Outbox</li>
                     <li>멱등성</li>
                   </ul>
+                  <p class="depth-note">
+                    <strong>inbox·기장의 원자적 복구</strong
+                    ><span
+                      >두 번째 계좌 갱신 실패에서 첫 갱신과 inbox가 함께
+                      롤백되고 ACK가 남지 않는지 확인합니다.</span
+                    >
+                  </p>
                   <details class="project-details">
                     <summary>구현·검증 상세 보기</summary>
                     <dl>
+                      <div>
+                        <dt>현재 소스 검증</dt>
+                        <dd>
+                          2026-10-02 KST 로컬 실행: 13개 테스트 통과. 소스
+                          해시·실패·건너뜀 수를 통합 기록에서 확인할 수
+                          있습니다.
+                        </dd>
+                      </div>
                       <div>
                         <dt>구현 범위</dt>
                         <dd>
@@ -2217,6 +2848,10 @@
                     </dl>
                   </details>
                   <div class="project-links">
+                    <a
+                      href="https://github.com/ijinz9191-tech/portfolio/blob/main/ai/transactional-outbox-recovery-lab/README.md#구현-깊이와-검증"
+                      >알고리즘·복잡도·반례 ↗</a
+                    >
                     <a
                       href="https://github.com/ijinz9191-tech/portfolio/tree/main/ai/transactional-outbox-recovery-lab"
                       >소스와 실행 방법 ↗</a

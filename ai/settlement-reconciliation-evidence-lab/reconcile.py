@@ -25,10 +25,12 @@ def _record(row: object, label: str) -> tuple[str, str, int, str | None]:
         raise EvidenceError(f"{label}: invalid id")
     if not isinstance(merchant, str) or not merchant.strip():
         raise EvidenceError(f"{label}: invalid merchant")
-    if type(amount) is not int or amount == 0:
+    if type(amount) is not int or amount == 0 or not -(2**63) <= amount <= 2**63 - 1:
         raise EvidenceError(f"{label}: nonzero integer amount required")
     reversal_of = row.get("reversal_of")
-    if reversal_of is not None and (not isinstance(reversal_of, str) or not reversal_of.strip()):
+    if reversal_of is not None and (
+        not isinstance(reversal_of, str) or not reversal_of.strip()
+    ):
         raise EvidenceError(f"{label}: invalid reversal_of")
     return txid, merchant, amount, reversal_of
 
@@ -43,7 +45,10 @@ def reconcile(payload: object) -> dict:
     if not postings:
         raise EvidenceError("at least one posting is required")
     left, right = {}, {}
-    for name, rows, target in (("posting", postings, left), ("settlement", settlements, right)):
+    for name, rows, target in (
+        ("posting", postings, left),
+        ("settlement", settlements, right),
+    ):
         for row in rows:
             txid, merchant, amount, reversal_of = _record(row, name)
             if txid in target:
@@ -54,7 +59,9 @@ def reconcile(payload: object) -> dict:
     merchant_totals: dict[str, dict[str, int]] = {}
     for source, records in (("posting_won", left), ("settlement_won", right)):
         for merchant, amount, _ in records.values():
-            totals = merchant_totals.setdefault(merchant, {"posting_won": 0, "settlement_won": 0})
+            totals = merchant_totals.setdefault(
+                merchant, {"posting_won": 0, "settlement_won": 0}
+            )
             totals[source] += amount
     for txid in sorted(set(left) | set(right)):
         if txid not in left:
@@ -62,8 +69,14 @@ def reconcile(payload: object) -> dict:
         elif txid not in right:
             issues.append({"id": txid, "issue": "MISSING_SETTLEMENT"})
         elif left[txid][:2] != right[txid][:2]:
-            issues.append({"id": txid, "issue": "MERCHANT_OR_AMOUNT_MISMATCH",
-                           "posting": left[txid][:2], "settlement": right[txid][:2]})
+            issues.append(
+                {
+                    "id": txid,
+                    "issue": "MERCHANT_OR_AMOUNT_MISMATCH",
+                    "posting": left[txid][:2],
+                    "settlement": right[txid][:2],
+                }
+            )
         else:
             matched.append(txid)
     # 환불성 음수 거래가 실제 원거래 한 건과 연결되는지 별도로 확인한다.
@@ -73,28 +86,73 @@ def reconcile(payload: object) -> dict:
             continue
         reversals.setdefault(original_id, []).append(txid)
         original = left.get(original_id)
-        if original is None or original[0] != merchant or original[1] != -amount or amount >= 0 or original[1] <= 0:
-            issues.append({"id": txid, "issue": "INVALID_REVERSAL_LINK", "reversal_of": original_id})
+        if (
+            original is None
+            or original[0] != merchant
+            or original[1] != -amount
+            or amount >= 0
+            or original[1] <= 0
+        ):
+            issues.append(
+                {
+                    "id": txid,
+                    "issue": "INVALID_REVERSAL_LINK",
+                    "reversal_of": original_id,
+                }
+            )
     for original_id, linked_ids in sorted(reversals.items()):
+        if original_id in left and left[original_id][2] is not None:
+            issues.append({"id": original_id, "issue": "REVERSAL_OF_REVERSAL"})
         if len(linked_ids) > 1:
-            issues.append({"id": original_id, "issue": "MULTIPLE_REVERSALS", "reversal_ids": sorted(linked_ids)})
+            issues.append(
+                {
+                    "id": original_id,
+                    "issue": "MULTIPLE_REVERSALS",
+                    "reversal_ids": sorted(linked_ids),
+                }
+            )
     canonical = {
-        "postings": [{"id": k, "merchant": v[0], "amount_won": v[1],
-                      **({"reversal_of": v[2]} if v[2] is not None else {})} for k, v in sorted(left.items())],
-        "settlements": [{"id": k, "merchant": v[0], "amount_won": v[1]} for k, v in sorted(right.items())],
+        "postings": [
+            {
+                "id": k,
+                "merchant": v[0],
+                "amount_won": v[1],
+                **({"reversal_of": v[2]} if v[2] is not None else {}),
+            }
+            for k, v in sorted(left.items())
+        ],
+        "settlements": [
+            {"id": k, "merchant": v[0], "amount_won": v[1]}
+            for k, v in sorted(right.items())
+        ],
     }
-    digest = hashlib.sha256(json.dumps(canonical, ensure_ascii=False, sort_keys=True,
-                                     separators=(",", ":")).encode()).hexdigest()
+    digest = hashlib.sha256(
+        json.dumps(
+            canonical, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode()
+    ).hexdigest()
     # 건별 불일치가 합계에서 상쇄되더라도 건별 문제는 그대로 남긴다.
     aggregates = [
-        {"merchant": merchant, **totals,
-         "delta_won": totals["posting_won"] - totals["settlement_won"]}
+        {
+            "merchant": merchant,
+            **totals,
+            "delta_won": totals["posting_won"] - totals["settlement_won"],
+        }
         for merchant, totals in sorted(merchant_totals.items())
     ]
-    return {"decision": "MATCH" if not issues else "REVIEW_REQUIRED",
-            "matched_ids": matched, "issues": issues, "evidence_sha256": digest,
-            "merchant_totals": aggregates,
-            "limits": "Synthetic offline comparison only; no actual money movement or company settlement claim."}
+    matched_set = set(matched)
+    return {
+        "decision": "MATCH" if not issues else "REVIEW_REQUIRED",
+        "matched_ids": matched,
+        "issues": issues,
+        "evidence_sha256": digest,
+        "merchant_totals": aggregates,
+        "matched_absolute_won": sum(abs(left[txid][1]) for txid in matched),
+        "unmatched_absolute_won": sum(
+            abs(value[1]) for txid, value in left.items() if txid not in matched_set
+        ),
+        "limits": "Synthetic offline comparison only; no actual money movement or company settlement claim.",
+    }
 
 
 def main() -> int:

@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 
@@ -13,7 +13,15 @@ class AuditError(ValueError):
     """The command observations cannot support a safe conclusion."""
 
 
-FIELDS = {"request_id", "robot_id", "action", "requested_at", "accepted_at", "completed_at", "result"}
+FIELDS = {
+    "request_id",
+    "robot_id",
+    "action",
+    "requested_at",
+    "accepted_at",
+    "completed_at",
+    "result",
+}
 
 
 def _time(value: object) -> datetime:
@@ -45,6 +53,7 @@ def audit(document: dict) -> dict:
     seen_ids: set[str] = set()
     per_robot: dict[str, list[tuple[datetime, datetime | None, str]]] = {}
     results = []
+    timings = []
     for item in commands:
         if not isinstance(item, dict) or set(item) != FIELDS:
             raise AuditError("command fields are incomplete")
@@ -55,8 +64,12 @@ def audit(document: dict) -> dict:
             raise AuditError("duplicate request id")
         seen_ids.add(request_id)
         requested = _time(item["requested_at"])
-        accepted = _time(item["accepted_at"]) if item["accepted_at"] is not None else None
-        completed = _time(item["completed_at"]) if item["completed_at"] is not None else None
+        accepted = (
+            _time(item["accepted_at"]) if item["accepted_at"] is not None else None
+        )
+        completed = (
+            _time(item["completed_at"]) if item["completed_at"] is not None else None
+        )
         if accepted is not None and accepted < requested:
             raise AuditError("acceptance precedes request")
         if completed is not None and (accepted is None or completed <= accepted):
@@ -66,7 +79,21 @@ def audit(document: dict) -> dict:
         if (item["result"] is None) != (completed is None):
             raise AuditError("result and completion observation must agree")
         decision = item["result"] if completed is not None else "EVIDENCE_GAP"
-        results.append({"request_id": request_id, "robot_id": robot_id, "decision": decision})
+        # 정수 마이크로초로 대기/실행 시간을 나눠 부동소수 반올림을 피한다.
+        timings.append(
+            {
+                "request_id": request_id,
+                "queue_us": (accepted - requested) // timedelta(microseconds=1)
+                if accepted is not None
+                else None,
+                "execution_us": (completed - accepted) // timedelta(microseconds=1)
+                if completed is not None
+                else None,
+            }
+        )
+        results.append(
+            {"request_id": request_id, "robot_id": robot_id, "decision": decision}
+        )
         per_robot.setdefault(robot_id, []).append((requested, completed, request_id))
 
     for rows in per_robot.values():
@@ -75,12 +102,22 @@ def audit(document: dict) -> dict:
             if previous[1] is None or current[0] < previous[1]:
                 raise AuditError("overlapping or unresolved robot commands")
 
-    canonical = {"version": version, "commands": sorted(commands, key=lambda row: row["request_id"])}
-    digest = hashlib.sha256(json.dumps(canonical, sort_keys=True, ensure_ascii=False,
-                                      separators=(",", ":")).encode("utf-8")).hexdigest()
-    return {"decision": "COMMAND_EVIDENCE_AUDITED", "commands": sorted(results, key=lambda row: row["request_id"]),
-            "evidence_sha256": digest,
-            "limits": "Synthetic observations only; no robot control, safety certification, or employer deployment claim."}
+    canonical = {
+        "version": version,
+        "commands": sorted(commands, key=lambda row: row["request_id"]),
+    }
+    digest = hashlib.sha256(
+        json.dumps(
+            canonical, sort_keys=True, ensure_ascii=False, separators=(",", ":")
+        ).encode("utf-8")
+    ).hexdigest()
+    return {
+        "decision": "COMMAND_EVIDENCE_AUDITED",
+        "commands": sorted(results, key=lambda row: row["request_id"]),
+        "evidence_sha256": digest,
+        "timings": sorted(timings, key=lambda row: row["request_id"]),
+        "limits": "Synthetic observations only; no robot control, safety certification, or employer deployment claim.",
+    }
 
 
 def main() -> int:

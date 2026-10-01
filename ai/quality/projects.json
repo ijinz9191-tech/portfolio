@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "projects": [
+    {
+      "id": "sre",
+      "title": "Incident Replay Lab",
+      "runtime": "node"
+    },
+    {
+      "id": "metric-contract-lab",
+      "title": "Metric Contract Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "ai-inference-gateway",
+      "title": "AI Inference Gateway",
+      "runtime": "java"
+    },
+    {
+      "id": "agent-eval-control-plane",
+      "title": "Agent Eval Control Plane",
+      "runtime": "python"
+    },
+    {
+      "id": "infra-change-evidence-lab",
+      "title": "Infrastructure Change Evidence Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "delivery-command-ledger",
+      "title": "Delivery Command Ledger",
+      "runtime": "java"
+    },
+    {
+      "id": "messenger-reliability-lab",
+      "title": "Messenger Reliability Lab",
+      "runtime": "node"
+    },
+    {
+      "id": "gpu-topology-reliability-lab",
+      "title": "GPU Topology Reliability Lab",
+      "runtime": "node"
+    },
+    {
+      "id": "agentic-sdlc-control-plane",
+      "title": "Agentic SDLC Control Plane",
+      "runtime": "node"
+    },
+    {
+      "id": "service-mesh-release-safety-lab",
+      "title": "Service Mesh Release Safety Lab",
+      "runtime": "node"
+    },
+    {
+      "id": "k8s-capacity-budget-lab",
+      "title": "Kubernetes Capacity Budget Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "network-path-triage-lab",
+      "title": "Network Path Triage Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "slo-burn-evidence-lab",
+      "title": "SLO Burn Evidence Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "query-plan-evidence-lab",
+      "title": "Query Plan Evidence Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "incident-dependency-triage-lab",
+      "title": "Incident Dependency Triage Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "tail-latency-attribution-lab",
+      "title": "Tail Latency Attribution Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "delivery-handoff-evidence-lab",
+      "title": "Delivery Handoff Evidence Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "spatial-network-evidence-lab",
+      "title": "Spatial Network Evidence Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "factory-event-evidence-lab",
+      "title": "Factory Event Evidence Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "robot-command-evidence-lab",
+      "title": "Robot Command Evidence Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "settlement-reconciliation-evidence-lab",
+      "title": "Settlement Reconciliation Evidence Lab",
+      "runtime": "python"
+    },
+    {
+      "id": "service-change-contract-lab",
+      "title": "서비스 변경 계약 영향 실습",
+      "runtime": "python"
+    },
+    {
+      "id": "spatial-release-impact-lab",
+      "title": "공간 데이터 배포 영향 실습",
+      "runtime": "python"
+    },
+    {
+      "id": "account-event-replay-lab",
+      "title": "계좌 이벤트 순서·멱등 재생 실습",
+      "runtime": "python"
+    },
+    {
+      "id": "transfer-posting-evidence-lab",
+      "title": "가상 이체 기장 완결성 검사",
+      "runtime": "python"
+    },
+    {
+      "id": "grounded-answer-evidence-lab",
+      "title": "답변 근거 추적 실습",
+      "runtime": "python"
+    },
+    {
+      "id": "payment-attempt-evidence-lab",
+      "title": "결제 시도·제공자 응답 근거 실습",
+      "runtime": "python"
+    },
+    {
+      "id": "merchandising-change-safety-lab",
+      "title": "상품 변경 안전 검토 실습",
+      "runtime": "python"
+    },
+    {
+      "id": "subscription-entitlement-reconciliation-lab",
+      "title": "구독 접근권·제휴사 확인 대조 실습",
+      "runtime": "python"
+    },
+    {
+      "id": "pg-auth-return-integrity-lab",
+      "title": "PG 인증 귀환·서버 확인 대조 실습",
+      "runtime": "python"
+    },
+    {
+      "id": "schema-rollout-compatibility-lab",
+      "title": "관계형 스키마 순차 배포 호환성 실습",
+      "runtime": "python"
+    },
+    {
+      "id": "transactional-outbox-recovery-lab",
+      "title": "가상 이체 트랜잭션·발행 대기 복구 실습",
+      "runtime": "python"
+    }
+  ]
+}

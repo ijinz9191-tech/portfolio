@@ -1,4 +1,5 @@
 """Deterministic diagnosis of synthetic service path probes; no network access."""
+
 from __future__ import annotations
 
 import argparse
@@ -19,6 +20,8 @@ NEXT_PROBE = {
 
 
 def _instant(value: str) -> datetime:
+    if not isinstance(value, str):
+        raise ValueError("timestamps must be strings")
     parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     if parsed.tzinfo is None:
         raise ValueError("timestamps must include an offset")
@@ -27,8 +30,10 @@ def _instant(value: str) -> datetime:
 
 def diagnose(scenario: dict, now: str, max_age_seconds: int = 300) -> dict:
     """Return a first-fault hypothesis only when every observation is fresh."""
-    if max_age_seconds <= 0:
+    if type(max_age_seconds) is not int or max_age_seconds <= 0:
         raise ValueError("max_age_seconds must be positive")
+    if not isinstance(scenario, dict):
+        raise ValueError("scenario must be an object")
     observed_at = _instant(now)
     probes = scenario.get("probes")
     if not isinstance(probes, list) or len(probes) != len(PHASES):
@@ -41,11 +46,17 @@ def diagnose(scenario: dict, now: str, max_age_seconds: int = 300) -> dict:
         phase = probe["phase"]
         if phase in by_phase or probe.get("result") not in ("PASS", "FAIL", "UNKNOWN"):
             raise ValueError("duplicate phase or invalid result")
-        age = (observed_at - _instant(str(probe.get("observed_at", "")))).total_seconds()
+        instant = _instant(probe.get("observed_at", ""))
+        age = (observed_at - instant).total_seconds()
         if age < 0 or age > max_age_seconds:
             raise ValueError(f"stale or future probe: {phase}")
         by_phase[phase] = probe["result"]
-        evidence_by_phase[phase] = {"phase": phase, "result": probe["result"], "observed_at": probe["observed_at"]}
+        # 동일한 시각의 서로 다른 UTC 오프셋 표기는 같은 근거로 정규화한다.
+        evidence_by_phase[phase] = {
+            "phase": phase,
+            "result": probe["result"],
+            "observed_at": instant.isoformat(),
+        }
     if set(by_phase) != set(PHASES):
         raise ValueError("missing phase")
 
@@ -53,16 +64,38 @@ def diagnose(scenario: dict, now: str, max_age_seconds: int = 300) -> dict:
     if first_nonpass is None:
         status, hypothesis, next_probe = "HEALTHY", None, None
     elif by_phase[first_nonpass] == "UNKNOWN":
-        status, hypothesis, next_probe = "INSUFFICIENT_EVIDENCE", None, NEXT_PROBE[first_nonpass]
+        status, hypothesis, next_probe = (
+            "INSUFFICIENT_EVIDENCE",
+            None,
+            NEXT_PROBE[first_nonpass],
+        )
     else:
-        status, hypothesis, next_probe = "FAULT_CANDIDATE", first_nonpass, NEXT_PROBE[first_nonpass]
+        status, hypothesis, next_probe = (
+            "FAULT_CANDIDATE",
+            first_nonpass,
+            NEXT_PROBE[first_nonpass],
+        )
 
-    canonical = json.dumps({"probes": [evidence_by_phase[p] for p in PHASES], "now": now, "max_age_seconds": max_age_seconds}, sort_keys=True, separators=(",", ":"))
+    canonical = json.dumps(
+        {
+            "probes": [evidence_by_phase[p] for p in PHASES],
+            "now": observed_at.isoformat(),
+            "max_age_seconds": max_age_seconds,
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+    )
     return {
         "status": status,
         "first_fault_candidate": hypothesis,
         "next_probe": next_probe,
-        "downstream_failures": [p for p in PHASES[PHASES.index(first_nonpass) + 1:] if by_phase[p] == "FAIL"] if first_nonpass else [],
+        "downstream_failures": [
+            p
+            for p in PHASES[PHASES.index(first_nonpass) + 1 :]
+            if by_phase[p] == "FAIL"
+        ]
+        if first_nonpass
+        else [],
         "evidence_sha256": hashlib.sha256(canonical.encode()).hexdigest(),
         "scope": "synthetic diagnostic hypothesis; operator verification required",
     }
@@ -71,10 +104,16 @@ def diagnose(scenario: dict, now: str, max_age_seconds: int = 300) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("scenario", type=Path)
-    parser.add_argument("--now", required=True, help="explicit ISO 8601 timestamp with offset")
+    parser.add_argument(
+        "--now", required=True, help="explicit ISO 8601 timestamp with offset"
+    )
     parser.add_argument("--max-age-seconds", type=int, default=300)
     args = parser.parse_args()
-    result = diagnose(json.loads(args.scenario.read_text(encoding="utf-8")), args.now, args.max_age_seconds)
+    result = diagnose(
+        json.loads(args.scenario.read_text(encoding="utf-8")),
+        args.now,
+        args.max_age_seconds,
+    )
     print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
 
 

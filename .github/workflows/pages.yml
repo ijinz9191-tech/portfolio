@@ -11,6 +11,9 @@ on:
       - "site/test.mjs"
       - "package.json"
       - "package-lock.json"
+      - "ai/**"
+      - "scripts/**"
+      - "requirements-dev.txt"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -24,7 +27,64 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  verify-projects:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Node.js 준비
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Python 준비
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Java 준비
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: 고정된 개발용 포맷터 준비
+        run: |
+          npm ci --ignore-scripts
+          python -m pip install -r requirements-dev.txt
+          mkdir -p .tooling/java
+          curl --fail --location --output .tooling/java/google-java-format-1.36.0-all-deps.jar https://github.com/google/google-java-format/releases/download/v1.36.0/google-java-format-1.36.0-all-deps.jar
+          echo "23696de05dd20d85c1449c8de9f2419030799508f5356570e979f7f96e59d8d6  .tooling/java/google-java-format-1.36.0-all-deps.jar" | sha256sum --check
+      - name: 이번 변경 소스의 언어별 포맷 검사
+        run: |
+          node --input-type=module <<'JS'
+          import { execFileSync } from 'node:child_process';
+          import * as prettier from 'prettier';
+          import { readFile } from 'node:fs/promises';
+          const files = execFileSync('git', ['diff', '--name-only', '--diff-filter=ACMR', 'HEAD^', 'HEAD'], { encoding: 'utf8' }).trim().split('\n').filter(p => p && !p.includes('/artifacts/') && p !== 'ai/quality/current.json');
+          const python = files.filter(p => p.endsWith('.py'));
+          const java = files.filter(p => p.endsWith('.java'));
+          if (python.length) execFileSync('ruff', ['format', '--check', ...python], { stdio: 'inherit' });
+          if (java.length) execFileSync('java', ['-jar', '.tooling/java/google-java-format-1.36.0-all-deps.jar', '--dry-run', '--set-exit-if-changed', ...java], { stdio: 'inherit' });
+          for (const path of files.filter(p => /\.(m?js|json|html|css|ya?ml)$/.test(p))) {
+            const original = await readFile(path, 'utf8');
+            const formatted = await prettier.format(original, { ...await prettier.resolveConfig(path), filepath: path });
+            if (original !== formatted) throw new Error('포맷 확인 실패: ' + path);
+          }
+          JS
+      - name: 검사 도구의 실패 판정 검증
+        run: python -X utf8 -m unittest discover -s scripts/tests -v
+      - name: 32개 프로젝트 실제 실행
+        run: python -X utf8 scripts/verify_portfolio.py --report .tooling/ci-quality.json
+      - name: 검증 근거 보관
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-quality
+          path: .tooling/ci-quality.json
+          if-no-files-found: warn
   deploy:
+    needs: verify-projects
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

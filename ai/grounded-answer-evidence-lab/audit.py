@@ -29,6 +29,7 @@ def audit(payload: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("주장이 하나 이상 필요합니다")
 
     by_id: dict[str, str] = {}
+    document_index = {}
     for document in documents:
         if not isinstance(document, dict):
             raise ValueError("문서 형식이 올바르지 않습니다")
@@ -40,10 +41,16 @@ def audit(payload: dict[str, Any]) -> dict[str, Any]:
         if source_id in by_id:
             raise ValueError("문서 ID가 중복되었습니다")
         by_id[source_id] = source_text
+        # 문서별 버전 해시와 공백 정규화는 인용 수와 무관하게 한 번 계산한다.
+        document_index[source_id] = (digest(source_text), normal(source_text))
 
     results: list[dict[str, Any]] = []
     for number, claim in enumerate(claims, 1):
-        if not isinstance(claim, dict) or not isinstance(claim.get("statement"), str) or not claim["statement"].strip():
+        if (
+            not isinstance(claim, dict)
+            or not isinstance(claim.get("statement"), str)
+            or not claim["statement"].strip()
+        ):
             raise ValueError(f"{number}번 주장의 문장이 필요합니다")
         citations = claim.get("citations")
         if not isinstance(citations, list) or not citations:
@@ -57,7 +64,10 @@ def audit(payload: dict[str, Any]) -> dict[str, Any]:
             source_id = citation.get("source_id")
             quote = citation.get("quote")
             expected = citation.get("source_sha256")
-            if not all(isinstance(value, str) and value.strip() for value in (source_id, quote, expected)):
+            if not all(
+                isinstance(value, str) and value.strip()
+                for value in (source_id, quote, expected)
+            ):
                 problems.append("인용 필드 누락")
                 continue
             key = (source_id, normal(quote))
@@ -68,15 +78,19 @@ def audit(payload: dict[str, Any]) -> dict[str, Any]:
             if source is None:
                 problems.append("존재하지 않는 문서")
                 continue
-            if expected != digest(source):
+            source_hash, normalized_source = document_index[source_id]
+            normalized_quote = key[1]
+            if expected != source_hash:
                 problems.append("문서 버전 불일치")
-            if len(normal(quote)) < 12 or normal(quote) not in normal(source):
+            if len(normalized_quote) < 12 or normalized_quote not in normalized_source:
                 problems.append("문서에 없는 인용")
-        results.append({
-            "claim": number,
-            "traceable": not problems,
-            "problems": sorted(set(problems)),
-        })
+        results.append(
+            {
+                "claim": number,
+                "traceable": not problems,
+                "problems": sorted(set(problems)),
+            }
+        )
 
     return {
         "traceable": all(item["traceable"] for item in results),
